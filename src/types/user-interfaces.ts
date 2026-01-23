@@ -4,8 +4,9 @@ export interface User {
   email: string;
   code?: string | null;
   image?: string | null;
-  clerkId: string;
-  emailVerified?: Date | null;
+  role: "USER" | "ADMIN";
+  clerkId: string | null;
+  emailVerified?: boolean | null;
   createdAt: Date | string;
   updatedAt: Date | string;
 }

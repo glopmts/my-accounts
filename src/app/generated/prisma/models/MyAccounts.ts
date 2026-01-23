@@ -31,9 +31,10 @@ export type MyAccountsMinAggregateOutputType = {
   icon: string | null
   url: string | null
   type: $Enums.SecretType | null
+  notes: string | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  userId: string | null
 }
 
 export type MyAccountsMaxAggregateOutputType = {
@@ -43,9 +44,10 @@ export type MyAccountsMaxAggregateOutputType = {
   icon: string | null
   url: string | null
   type: $Enums.SecretType | null
+  notes: string | null
+  userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  userId: string | null
 }
 
 export type MyAccountsCountAggregateOutputType = {
@@ -55,9 +57,11 @@ export type MyAccountsCountAggregateOutputType = {
   icon: number
   url: number
   type: number
+  notes: number
+  userId: number
+  password: number
   createdAt: number
   updatedAt: number
-  userId: number
   _all: number
 }
 
@@ -69,9 +73,10 @@ export type MyAccountsMinAggregateInputType = {
   icon?: true
   url?: true
   type?: true
+  notes?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
-  userId?: true
 }
 
 export type MyAccountsMaxAggregateInputType = {
@@ -81,9 +86,10 @@ export type MyAccountsMaxAggregateInputType = {
   icon?: true
   url?: true
   type?: true
+  notes?: true
+  userId?: true
   createdAt?: true
   updatedAt?: true
-  userId?: true
 }
 
 export type MyAccountsCountAggregateInputType = {
@@ -93,9 +99,11 @@ export type MyAccountsCountAggregateInputType = {
   icon?: true
   url?: true
   type?: true
+  notes?: true
+  userId?: true
+  password?: true
   createdAt?: true
   updatedAt?: true
-  userId?: true
   _all?: true
 }
 
@@ -178,9 +186,11 @@ export type MyAccountsGroupByOutputType = {
   icon: string | null
   url: string | null
   type: $Enums.SecretType
+  notes: string | null
+  userId: string
+  password: string[]
   createdAt: Date
   updatedAt: Date
-  userId: string
   _count: MyAccountsCountAggregateOutputType | null
   _min: MyAccountsMinAggregateOutputType | null
   _max: MyAccountsMaxAggregateOutputType | null
@@ -211,11 +221,12 @@ export type MyAccountsWhereInput = {
   icon?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
   url?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
   type?: Prisma.EnumSecretTypeFilter<"MyAccounts"> | $Enums.SecretType
+  notes?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
+  userId?: Prisma.StringFilter<"MyAccounts"> | string
+  password?: Prisma.StringNullableListFilter<"MyAccounts">
   createdAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
-  userId?: Prisma.StringFilter<"MyAccounts"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  passwordAccounts?: Prisma.PasswordAccountListRelationFilter
 }
 
 export type MyAccountsOrderByWithRelationInput = {
@@ -225,11 +236,12 @@ export type MyAccountsOrderByWithRelationInput = {
   icon?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  password?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  passwordAccounts?: Prisma.PasswordAccountOrderByRelationAggregateInput
 }
 
 export type MyAccountsWhereUniqueInput = Prisma.AtLeast<{
@@ -242,11 +254,12 @@ export type MyAccountsWhereUniqueInput = Prisma.AtLeast<{
   icon?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
   url?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
   type?: Prisma.EnumSecretTypeFilter<"MyAccounts"> | $Enums.SecretType
+  notes?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
+  userId?: Prisma.StringFilter<"MyAccounts"> | string
+  password?: Prisma.StringNullableListFilter<"MyAccounts">
   createdAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
-  userId?: Prisma.StringFilter<"MyAccounts"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  passwordAccounts?: Prisma.PasswordAccountListRelationFilter
 }, "id">
 
 export type MyAccountsOrderByWithAggregationInput = {
@@ -256,9 +269,11 @@ export type MyAccountsOrderByWithAggregationInput = {
   icon?: Prisma.SortOrderInput | Prisma.SortOrder
   url?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  password?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
   _count?: Prisma.MyAccountsCountOrderByAggregateInput
   _max?: Prisma.MyAccountsMaxOrderByAggregateInput
   _min?: Prisma.MyAccountsMinOrderByAggregateInput
@@ -274,9 +289,11 @@ export type MyAccountsScalarWhereWithAggregatesInput = {
   icon?: Prisma.StringNullableWithAggregatesFilter<"MyAccounts"> | string | null
   url?: Prisma.StringNullableWithAggregatesFilter<"MyAccounts"> | string | null
   type?: Prisma.EnumSecretTypeWithAggregatesFilter<"MyAccounts"> | $Enums.SecretType
+  notes?: Prisma.StringNullableWithAggregatesFilter<"MyAccounts"> | string | null
+  userId?: Prisma.StringWithAggregatesFilter<"MyAccounts"> | string
+  password?: Prisma.StringNullableListFilter<"MyAccounts">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MyAccounts"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MyAccounts"> | Date | string
-  userId?: Prisma.StringWithAggregatesFilter<"MyAccounts"> | string
 }
 
 export type MyAccountsCreateInput = {
@@ -286,10 +303,11 @@ export type MyAccountsCreateInput = {
   icon?: string | null
   url?: string | null
   type?: $Enums.SecretType
+  notes?: string | null
+  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutAccountsInput
-  passwordAccounts?: Prisma.PasswordAccountCreateNestedManyWithoutMyAccountInput
 }
 
 export type MyAccountsUncheckedCreateInput = {
@@ -299,10 +317,11 @@ export type MyAccountsUncheckedCreateInput = {
   icon?: string | null
   url?: string | null
   type?: $Enums.SecretType
+  notes?: string | null
+  userId: string
+  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userId: string
-  passwordAccounts?: Prisma.PasswordAccountUncheckedCreateNestedManyWithoutMyAccountInput
 }
 
 export type MyAccountsUpdateInput = {
@@ -312,10 +331,11 @@ export type MyAccountsUpdateInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSecretTypeFieldUpdateOperationsInput | $Enums.SecretType
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutAccountsNestedInput
-  passwordAccounts?: Prisma.PasswordAccountUpdateManyWithoutMyAccountNestedInput
 }
 
 export type MyAccountsUncheckedUpdateInput = {
@@ -325,10 +345,11 @@ export type MyAccountsUncheckedUpdateInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSecretTypeFieldUpdateOperationsInput | $Enums.SecretType
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  passwordAccounts?: Prisma.PasswordAccountUncheckedUpdateManyWithoutMyAccountNestedInput
 }
 
 export type MyAccountsCreateManyInput = {
@@ -338,9 +359,11 @@ export type MyAccountsCreateManyInput = {
   icon?: string | null
   url?: string | null
   type?: $Enums.SecretType
+  notes?: string | null
+  userId: string
+  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userId: string
 }
 
 export type MyAccountsUpdateManyMutationInput = {
@@ -350,6 +373,8 @@ export type MyAccountsUpdateManyMutationInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSecretTypeFieldUpdateOperationsInput | $Enums.SecretType
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -361,9 +386,11 @@ export type MyAccountsUncheckedUpdateManyInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSecretTypeFieldUpdateOperationsInput | $Enums.SecretType
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type MyAccountsListRelationFilter = {
@@ -376,6 +403,14 @@ export type MyAccountsOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type MyAccountsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -383,9 +418,11 @@ export type MyAccountsCountOrderByAggregateInput = {
   icon?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  password?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
 }
 
 export type MyAccountsMaxOrderByAggregateInput = {
@@ -395,9 +432,10 @@ export type MyAccountsMaxOrderByAggregateInput = {
   icon?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
 }
 
 export type MyAccountsMinOrderByAggregateInput = {
@@ -407,14 +445,10 @@ export type MyAccountsMinOrderByAggregateInput = {
   icon?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
-}
-
-export type MyAccountsScalarRelationFilter = {
-  is?: Prisma.MyAccountsWhereInput
-  isNot?: Prisma.MyAccountsWhereInput
 }
 
 export type MyAccountsCreateNestedManyWithoutUserInput = {
@@ -459,22 +493,17 @@ export type MyAccountsUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.MyAccountsScalarWhereInput | Prisma.MyAccountsScalarWhereInput[]
 }
 
+export type MyAccountsCreatepasswordInput = {
+  set: string[]
+}
+
 export type EnumSecretTypeFieldUpdateOperationsInput = {
   set?: $Enums.SecretType
 }
 
-export type MyAccountsCreateNestedOneWithoutPasswordAccountsInput = {
-  create?: Prisma.XOR<Prisma.MyAccountsCreateWithoutPasswordAccountsInput, Prisma.MyAccountsUncheckedCreateWithoutPasswordAccountsInput>
-  connectOrCreate?: Prisma.MyAccountsCreateOrConnectWithoutPasswordAccountsInput
-  connect?: Prisma.MyAccountsWhereUniqueInput
-}
-
-export type MyAccountsUpdateOneRequiredWithoutPasswordAccountsNestedInput = {
-  create?: Prisma.XOR<Prisma.MyAccountsCreateWithoutPasswordAccountsInput, Prisma.MyAccountsUncheckedCreateWithoutPasswordAccountsInput>
-  connectOrCreate?: Prisma.MyAccountsCreateOrConnectWithoutPasswordAccountsInput
-  upsert?: Prisma.MyAccountsUpsertWithoutPasswordAccountsInput
-  connect?: Prisma.MyAccountsWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MyAccountsUpdateToOneWithWhereWithoutPasswordAccountsInput, Prisma.MyAccountsUpdateWithoutPasswordAccountsInput>, Prisma.MyAccountsUncheckedUpdateWithoutPasswordAccountsInput>
+export type MyAccountsUpdatepasswordInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type MyAccountsCreateWithoutUserInput = {
@@ -484,9 +513,10 @@ export type MyAccountsCreateWithoutUserInput = {
   icon?: string | null
   url?: string | null
   type?: $Enums.SecretType
+  notes?: string | null
+  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  passwordAccounts?: Prisma.PasswordAccountCreateNestedManyWithoutMyAccountInput
 }
 
 export type MyAccountsUncheckedCreateWithoutUserInput = {
@@ -496,9 +526,10 @@ export type MyAccountsUncheckedCreateWithoutUserInput = {
   icon?: string | null
   url?: string | null
   type?: $Enums.SecretType
+  notes?: string | null
+  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  passwordAccounts?: Prisma.PasswordAccountUncheckedCreateNestedManyWithoutMyAccountInput
 }
 
 export type MyAccountsCreateOrConnectWithoutUserInput = {
@@ -537,73 +568,11 @@ export type MyAccountsScalarWhereInput = {
   icon?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
   url?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
   type?: Prisma.EnumSecretTypeFilter<"MyAccounts"> | $Enums.SecretType
+  notes?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
+  userId?: Prisma.StringFilter<"MyAccounts"> | string
+  password?: Prisma.StringNullableListFilter<"MyAccounts">
   createdAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
-  userId?: Prisma.StringFilter<"MyAccounts"> | string
-}
-
-export type MyAccountsCreateWithoutPasswordAccountsInput = {
-  id?: string
-  title?: string | null
-  description?: string | null
-  icon?: string | null
-  url?: string | null
-  type?: $Enums.SecretType
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutAccountsInput
-}
-
-export type MyAccountsUncheckedCreateWithoutPasswordAccountsInput = {
-  id?: string
-  title?: string | null
-  description?: string | null
-  icon?: string | null
-  url?: string | null
-  type?: $Enums.SecretType
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  userId: string
-}
-
-export type MyAccountsCreateOrConnectWithoutPasswordAccountsInput = {
-  where: Prisma.MyAccountsWhereUniqueInput
-  create: Prisma.XOR<Prisma.MyAccountsCreateWithoutPasswordAccountsInput, Prisma.MyAccountsUncheckedCreateWithoutPasswordAccountsInput>
-}
-
-export type MyAccountsUpsertWithoutPasswordAccountsInput = {
-  update: Prisma.XOR<Prisma.MyAccountsUpdateWithoutPasswordAccountsInput, Prisma.MyAccountsUncheckedUpdateWithoutPasswordAccountsInput>
-  create: Prisma.XOR<Prisma.MyAccountsCreateWithoutPasswordAccountsInput, Prisma.MyAccountsUncheckedCreateWithoutPasswordAccountsInput>
-  where?: Prisma.MyAccountsWhereInput
-}
-
-export type MyAccountsUpdateToOneWithWhereWithoutPasswordAccountsInput = {
-  where?: Prisma.MyAccountsWhereInput
-  data: Prisma.XOR<Prisma.MyAccountsUpdateWithoutPasswordAccountsInput, Prisma.MyAccountsUncheckedUpdateWithoutPasswordAccountsInput>
-}
-
-export type MyAccountsUpdateWithoutPasswordAccountsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.EnumSecretTypeFieldUpdateOperationsInput | $Enums.SecretType
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutAccountsNestedInput
-}
-
-export type MyAccountsUncheckedUpdateWithoutPasswordAccountsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.EnumSecretTypeFieldUpdateOperationsInput | $Enums.SecretType
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type MyAccountsCreateManyUserInput = {
@@ -613,6 +582,8 @@ export type MyAccountsCreateManyUserInput = {
   icon?: string | null
   url?: string | null
   type?: $Enums.SecretType
+  notes?: string | null
+  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -624,9 +595,10 @@ export type MyAccountsUpdateWithoutUserInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSecretTypeFieldUpdateOperationsInput | $Enums.SecretType
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  passwordAccounts?: Prisma.PasswordAccountUpdateManyWithoutMyAccountNestedInput
 }
 
 export type MyAccountsUncheckedUpdateWithoutUserInput = {
@@ -636,9 +608,10 @@ export type MyAccountsUncheckedUpdateWithoutUserInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSecretTypeFieldUpdateOperationsInput | $Enums.SecretType
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  passwordAccounts?: Prisma.PasswordAccountUncheckedUpdateManyWithoutMyAccountNestedInput
 }
 
 export type MyAccountsUncheckedUpdateManyWithoutUserInput = {
@@ -648,39 +621,12 @@ export type MyAccountsUncheckedUpdateManyWithoutUserInput = {
   icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSecretTypeFieldUpdateOperationsInput | $Enums.SecretType
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-
-/**
- * Count Type MyAccountsCountOutputType
- */
-
-export type MyAccountsCountOutputType = {
-  passwordAccounts: number
-}
-
-export type MyAccountsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  passwordAccounts?: boolean | MyAccountsCountOutputTypeCountPasswordAccountsArgs
-}
-
-/**
- * MyAccountsCountOutputType without action
- */
-export type MyAccountsCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the MyAccountsCountOutputType
-   */
-  select?: Prisma.MyAccountsCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * MyAccountsCountOutputType without action
- */
-export type MyAccountsCountOutputTypeCountPasswordAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PasswordAccountWhereInput
-}
 
 
 export type MyAccountsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -690,12 +636,12 @@ export type MyAccountsSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   icon?: boolean
   url?: boolean
   type?: boolean
+  notes?: boolean
+  userId?: boolean
+  password?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  passwordAccounts?: boolean | Prisma.MyAccounts$passwordAccountsArgs<ExtArgs>
-  _count?: boolean | Prisma.MyAccountsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["myAccounts"]>
 
 export type MyAccountsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -705,9 +651,11 @@ export type MyAccountsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   icon?: boolean
   url?: boolean
   type?: boolean
+  notes?: boolean
+  userId?: boolean
+  password?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["myAccounts"]>
 
@@ -718,9 +666,11 @@ export type MyAccountsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   icon?: boolean
   url?: boolean
   type?: boolean
+  notes?: boolean
+  userId?: boolean
+  password?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["myAccounts"]>
 
@@ -731,16 +681,16 @@ export type MyAccountsSelectScalar = {
   icon?: boolean
   url?: boolean
   type?: boolean
+  notes?: boolean
+  userId?: boolean
+  password?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  userId?: boolean
 }
 
-export type MyAccountsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "icon" | "url" | "type" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["myAccounts"]>
+export type MyAccountsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "icon" | "url" | "type" | "notes" | "userId" | "password" | "createdAt" | "updatedAt", ExtArgs["result"]["myAccounts"]>
 export type MyAccountsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  passwordAccounts?: boolean | Prisma.MyAccounts$passwordAccountsArgs<ExtArgs>
-  _count?: boolean | Prisma.MyAccountsCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MyAccountsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -753,7 +703,6 @@ export type $MyAccountsPayload<ExtArgs extends runtime.Types.Extensions.Internal
   name: "MyAccounts"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
-    passwordAccounts: Prisma.$PasswordAccountPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -762,9 +711,11 @@ export type $MyAccountsPayload<ExtArgs extends runtime.Types.Extensions.Internal
     icon: string | null
     url: string | null
     type: $Enums.SecretType
+    notes: string | null
+    userId: string
+    password: string[]
     createdAt: Date
     updatedAt: Date
-    userId: string
   }, ExtArgs["result"]["myAccounts"]>
   composites: {}
 }
@@ -1160,7 +1111,6 @@ readonly fields: MyAccountsFieldRefs;
 export interface Prisma__MyAccountsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  passwordAccounts<T extends Prisma.MyAccounts$passwordAccountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MyAccounts$passwordAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1196,9 +1146,11 @@ export interface MyAccountsFieldRefs {
   readonly icon: Prisma.FieldRef<"MyAccounts", 'String'>
   readonly url: Prisma.FieldRef<"MyAccounts", 'String'>
   readonly type: Prisma.FieldRef<"MyAccounts", 'SecretType'>
+  readonly notes: Prisma.FieldRef<"MyAccounts", 'String'>
+  readonly userId: Prisma.FieldRef<"MyAccounts", 'String'>
+  readonly password: Prisma.FieldRef<"MyAccounts", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"MyAccounts", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"MyAccounts", 'DateTime'>
-  readonly userId: Prisma.FieldRef<"MyAccounts", 'String'>
 }
     
 
@@ -1592,30 +1544,6 @@ export type MyAccountsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many MyAccounts to delete.
    */
   limit?: number
-}
-
-/**
- * MyAccounts.passwordAccounts
- */
-export type MyAccounts$passwordAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PasswordAccount
-   */
-  select?: Prisma.PasswordAccountSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PasswordAccount
-   */
-  omit?: Prisma.PasswordAccountOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PasswordAccountInclude<ExtArgs> | null
-  where?: Prisma.PasswordAccountWhereInput
-  orderBy?: Prisma.PasswordAccountOrderByWithRelationInput | Prisma.PasswordAccountOrderByWithRelationInput[]
-  cursor?: Prisma.PasswordAccountWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PasswordAccountScalarFieldEnum | Prisma.PasswordAccountScalarFieldEnum[]
 }
 
 /**

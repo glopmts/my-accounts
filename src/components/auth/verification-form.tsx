@@ -65,8 +65,8 @@ export default function VerificationForm({
   // Se não estiver carregado, mostra loading
   if (!isLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-950 to-zinc-900">
-        <Card className="w-full max-w-md border-zinc-800 bg-zinc-950/50 backdrop-blur-sm">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br dark:from-zinc-950 dark:to-zinc-900">
+        <Card className="w-full max-w-md dark:border-zinc-800 dark:bg-zinc-950/50 backdrop-blur-sm">
           <CardContent className="pt-6">
             <div className="flex items-center justify-center">
               <Loader2 className="h-8 w-8 animate-spin text-zinc-400" />
@@ -79,18 +79,18 @@ export default function VerificationForm({
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-950 to-zinc-900 p-4">
-      <Card className="w-full max-w-md border-zinc-800 bg-zinc-950/50 backdrop-blur-sm">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br dark:from-zinc-950 dark:to-zinc-900 p-4">
+      <Card className="w-full max-w-md dark:border-zinc-800 dark:bg-zinc-950/50 backdrop-blur-sm">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-4">
-            <div className="rounded-full bg-zinc-800 p-3">
+            <div className="rounded-full dark:bg-zinc-800 p-3">
               <ShieldCheck className="h-8 w-8 text-zinc-300" />
             </div>
           </div>
           <CardTitle className="text-2xl font-bold text-center text-zinc-50">
             {type === "sign-up" ? "Verifique seu email" : "Confirme seu login"}
           </CardTitle>
-          <CardDescription className="text-center text-zinc-400">
+          <CardDescription className="text-center dark:text-zinc-400">
             {type === "sign-up"
               ? `Enviamos um código de 6 dígitos para`
               : `Digite o código enviado para`}{" "}
@@ -119,7 +119,7 @@ export default function VerificationForm({
                             autoFocus
                           />
                         </div>
-                        <p className="text-xs text-zinc-500 text-center">
+                        <p className="text-xs dark:text-zinc-500 text-center">
                           Digite o código de 6 dígitos enviado para seu email
                         </p>
                       </div>
@@ -135,14 +135,13 @@ export default function VerificationForm({
                   variant="outline"
                   onClick={onBack}
                   disabled={isLoading || isResending}
-                  className="border-zinc-800 hover:bg-zinc-900"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Voltar
                 </Button>
                 <Button
                   type="submit"
-                  className="bg-zinc-800 hover:bg-zinc-700 text-zinc-50"
+                  variant="default"
                   disabled={
                     isLoading || isResending || form.watch("code").length !== 6
                   }
@@ -163,13 +162,13 @@ export default function VerificationForm({
           </Form>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 pt-0">
-          <div className="text-sm text-center text-zinc-500">
+          <div className="text-sm text-center dark:text-zinc-500">
             Não recebeu o código?{" "}
             <Button
               variant="link"
               onClick={handleResendCode}
               disabled={isResending || resendCountdown > 0}
-              className="text-zinc-400 hover:text-zinc-300 p-0 h-auto font-normal"
+              className="dark:text-zinc-400 hover:text-zinc-300 p-0 h-auto font-normal"
             >
               {isResending ? (
                 <>
@@ -183,7 +182,7 @@ export default function VerificationForm({
               )}
             </Button>
           </div>
-          <div className="text-xs text-center text-zinc-600">
+          <div className="text-xs text-center dark:text-zinc-600">
             • O código expira em 10 minutos
             <br />• Verifique sua pasta de spam
           </div>

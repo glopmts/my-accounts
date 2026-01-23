@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "../components/theme-provider";
-import LayoutProtect from "./context/layout-protect";
+import LayoutProtect from "../context/layout-protect";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,6 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br" suppressHydrationWarning>
+      <link rel="shortcut icon" href="/icon.ico-1.png" type="image/x-icon" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

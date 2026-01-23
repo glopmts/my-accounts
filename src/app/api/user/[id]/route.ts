@@ -1,7 +1,7 @@
+import db from "@/lib/prisma";
+import { ApiResponse, User } from "@/types/user-interfaces";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import db from "../../../../lib/prisma";
-import { ApiResponse, User } from "../../../../types/user-interfaces";
 
 export async function GET(
   request: NextRequest,
@@ -18,19 +18,29 @@ export async function GET(
       );
     }
 
-    // Buscar usuário no banco
-    const user = await db.user.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-        clerkId: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+    let user: User | null = null;
+
+    const isUuid =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        id,
+      );
+    const isClerkId = id.startsWith("user_");
+
+    if (isUuid) {
+      user = await db.user.findUnique({
+        where: { id },
+      });
+    } else if (isClerkId) {
+      user = await db.user.findUnique({
+        where: { clerkId: id },
+      });
+    } else {
+      user = await db.user.findFirst({
+        where: {
+          OR: [{ id }, { clerkId: id }],
+        },
+      });
+    }
 
     if (!user) {
       return NextResponse.json<ApiResponse>(
@@ -39,7 +49,6 @@ export async function GET(
       );
     }
 
-    // Verificar se o usuário autenticado tem acesso a este recurso
     if (user.clerkId !== clerkUserId) {
       return NextResponse.json<ApiResponse>(
         { success: false, message: "Acesso negado" },
@@ -49,7 +58,10 @@ export async function GET(
 
     return NextResponse.json<ApiResponse<User>>({
       success: true,
-      data: user,
+      data: {
+        ...user,
+        clerkId: user.clerkId || "",
+      },
     });
   } catch (error) {
     console.error("Error fetching user:", error);

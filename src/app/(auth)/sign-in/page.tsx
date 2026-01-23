@@ -194,18 +194,18 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-950 to-zinc-900 p-4">
-      <Card className="w-full max-w-md border-zinc-800 bg-zinc-950/50 backdrop-blur-sm">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br dark:from-zinc-950 dark:to-zinc-900 p-4">
+      <Card className="w-full max-w-md dark:border-zinc-800 dark:bg-zinc-950/50 backdrop-blur-sm">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-4">
-            <div className="rounded-full bg-zinc-800 p-3">
+            <div className="rounded-full dark:bg-zinc-800 p-3">
               <Mail className="h-8 w-8 text-zinc-300" />
             </div>
           </div>
           <CardTitle className="text-2xl font-bold text-center text-zinc-50">
             Entrar com email
           </CardTitle>
-          <CardDescription className="text-center text-zinc-400">
+          <CardDescription className="text-center dark:text-zinc-400">
             Digite seu email para receber um código de acesso
           </CardDescription>
         </CardHeader>
@@ -223,7 +223,7 @@ export default function SignInPage() {
                         placeholder="seu@email.com"
                         type="email"
                         autoComplete="email"
-                        className="bg-zinc-900 border-zinc-800 text-zinc-50 focus:border-zinc-700 h-12 text-base"
+                        className="w-full"
                         {...field}
                         disabled={loading || !isLoaded}
                       />
@@ -266,10 +266,10 @@ export default function SignInPage() {
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-zinc-800"></div>
+                <div className="w-full border-t dark:border-zinc-800"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-zinc-950/50 px-2 text-zinc-500">
+                <span className="dark:bg-zinc-950/50 px-2 dark:text-zinc-500">
                   Ou continue com
                 </span>
               </div>
@@ -277,27 +277,27 @@ export default function SignInPage() {
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4 pt-0">
-          <div className="text-sm text-center text-zinc-500">
+          <div className="text-sm text-center dark:text-zinc-500">
             Ao continuar, você concorda com nossos{" "}
             <Link
               href="/terms"
-              className="text-zinc-400 hover:text-zinc-300 underline underline-offset-4"
+              className="dark:text-zinc-400 hover:text-zinc-300 underline underline-offset-4"
             >
               Termos
             </Link>{" "}
             e{" "}
             <Link
               href="/privacy"
-              className="text-zinc-400 hover:text-zinc-300 underline underline-offset-4"
+              className="dark:text-zinc-400 hover:text-zinc-300 underline underline-offset-4"
             >
               Política de Privacidade
             </Link>
           </div>
-          <div className="text-sm text-center text-zinc-500">
+          <div className="text-sm text-center dark:text-zinc-500">
             Não tem uma conta?{" "}
             <Link
               href="/sign-up"
-              className="text-zinc-400 hover:text-zinc-300 underline underline-offset-4"
+              className="dark:text-zinc-400 hover:text-zinc-300 underline underline-offset-4"
             >
               Cadastre-se
             </Link>

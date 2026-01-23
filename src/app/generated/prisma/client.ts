@@ -64,8 +64,3 @@ export type EmailCode = Prisma.EmailCodeModel
  * 
  */
 export type MyAccounts = Prisma.MyAccountsModel
-/**
- * Model PasswordAccount
- * 
- */
-export type PasswordAccount = Prisma.PasswordAccountModel

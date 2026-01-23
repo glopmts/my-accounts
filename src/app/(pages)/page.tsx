@@ -1,12 +1,11 @@
 "use client";
 
-import CardsHomeAccounts from "@/components/home/my-accounts-card";
-import { Spinner } from "@/components/ui/spinner";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { Spinner } from "../../components/ui/spinner";
 
-export default function HomePage() {
+const App = () => {
   const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
 
@@ -24,17 +23,11 @@ export default function HomePage() {
     );
   }
 
-  if (!isSignedIn) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <Spinner className="size-8" />
-      </div>
-    );
+  if (isSignedIn) {
+    router.push("/home");
   }
 
-  return (
-    <div className="min-h-screen p-8">
-      <CardsHomeAccounts />
-    </div>
-  );
-}
+  return null;
+};
+
+export default App;

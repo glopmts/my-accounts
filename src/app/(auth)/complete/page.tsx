@@ -126,18 +126,18 @@ export default function CompleteProfilePage() {
   // Se ainda está verificando se o usuário existe
   if (isCreating) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-950 to-zinc-900 p-4">
-        <Card className="w-full max-w-md border-zinc-800 bg-zinc-950/50 backdrop-blur-sm">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br dark:from-zinc-950 dark:to-zinc-900 p-4">
+        <Card className="w-full max-w-md dark:border-zinc-800 dark:bg-zinc-950/50 backdrop-blur-sm">
           <CardHeader className="space-y-1">
             <div className="flex justify-center mb-4">
-              <div className="rounded-full bg-zinc-800 p-3">
+              <div className="rounded-full dark:bg-zinc-800 p-3">
                 <Loader2 className="h-8 w-8 text-zinc-300 animate-spin" />
               </div>
             </div>
             <CardTitle className="text-2xl font-bold text-center text-zinc-50">
               Configurando sua conta
             </CardTitle>
-            <CardDescription className="text-center text-zinc-400">
+            <CardDescription className="text-center dark:text-zinc-400">
               Aguarde enquanto verificamos suas informações
             </CardDescription>
           </CardHeader>
@@ -159,18 +159,18 @@ export default function CompleteProfilePage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-950 to-zinc-900 p-4">
-      <Card className="w-full max-w-md border-zinc-800 bg-zinc-950/50 backdrop-blur-sm">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br dark:from-zinc-950 dark:to-zinc-900 p-4">
+      <Card className="w-full max-w-md dark:border-zinc-800 dark:bg-zinc-950/50 backdrop-blur-sm">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-4">
-            <div className="rounded-full bg-zinc-800 p-3">
+            <div className="rounded-full dark:bg-zinc-800 p-3">
               <User className="h-8 w-8 text-zinc-300" />
             </div>
           </div>
           <CardTitle className="text-2xl font-bold text-center text-zinc-50">
             Complete seu perfil
           </CardTitle>
-          <CardDescription className="text-center text-zinc-400">
+          <CardDescription className="text-center dark:text-zinc-400">
             Estamos quase lá! Preencha seu nome para continuar.
           </CardDescription>
         </CardHeader>
@@ -189,7 +189,7 @@ export default function CompleteProfilePage() {
                     <FormControl>
                       <Input
                         placeholder="Como gostaria de ser chamado?"
-                        className="bg-zinc-900 border-zinc-800 text-zinc-50 focus:border-zinc-700 h-12 text-base"
+                        className="w-full"
                         {...field}
                         disabled={isSubmitting}
                         autoFocus
@@ -203,7 +203,7 @@ export default function CompleteProfilePage() {
               <div className="space-y-4">
                 <Button
                   type="submit"
-                  className="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-50 h-12 text-base"
+                  className="w-full dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-50 h-12 text-base"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
@@ -216,11 +216,11 @@ export default function CompleteProfilePage() {
                   )}
                 </Button>
 
-                <div className="text-xs text-center text-zinc-500">
+                <div className="text-xs text-center dark:text-zinc-500">
                   Ao completar seu cadastro, você concorda com nossos{" "}
                   <a
                     href="/terms"
-                    className="text-zinc-400 hover:text-zinc-300 underline underline-offset-2"
+                    className="dark:text-zinc-400 hover:text-zinc-300 underline underline-offset-2"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -229,7 +229,7 @@ export default function CompleteProfilePage() {
                   e{" "}
                   <a
                     href="/privacy"
-                    className="text-zinc-400 hover:text-zinc-300 underline underline-offset-2"
+                    className="dark:text-zinc-400 hover:text-zinc-300 underline underline-offset-2"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -241,7 +241,7 @@ export default function CompleteProfilePage() {
           </Form>
         </CardContent>
         <CardFooter className="flex justify-center pt-0">
-          <p className="text-sm text-zinc-500 text-center">
+          <p className="text-sm dark:text-zinc-500 text-center">
             Esta etapa é necessária para novos usuários e cadastros via OAuth
           </p>
         </CardFooter>

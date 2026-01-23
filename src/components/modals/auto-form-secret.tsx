@@ -1,185 +1,400 @@
-import { Secret, SecretType } from "@/types/interfaces";
-import { FileCode, Key, Shield, StickyNote, X } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { SecretType } from "@/app/generated/prisma/enums";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
+import { MyAccounts } from "@/types/interfaces";
+import { FileCode, Key, Plus, Shield, StickyNote, X } from "lucide-react";
+import React from "react";
+import { useFormAccount } from "../../hooks/use-form-account";
+import CustomModal from "../custom-modal";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 
 interface AddSecretModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (secret: any) => void;
-  editingSecret?: Secret | null;
+  editingAccount?: MyAccounts | null;
+  onSuccess?: () => void;
+  triggerType?: "button" | "icon" | "text" | "custom";
+  triggerClassName?: string;
+  isOpen?: boolean;
+  onClose?: () => void;
+  trigger?: React.ReactNode;
+  onOpenChange?: (open: boolean) => void;
+}
+
+interface TriggerElementProps extends React.HTMLAttributes<HTMLElement> {
+  onClick?: () => void;
 }
 
 const AddSecretModal: React.FC<AddSecretModalProps> = ({
-  isOpen,
-  onClose,
-  onSave,
-  editingSecret,
+  editingAccount,
+  onSuccess,
+  isOpen: isOpenProp,
+  onClose: onCloseProp,
+  onOpenChange,
+  triggerType = "button",
+  triggerClassName = "",
 }) => {
-  const [type, setType] = useState<SecretType>("password");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [value, setValue] = useState("");
+  const {
+    isOpen: internalIsOpen,
+    open: internalOpen,
+    close: internalClose,
+    formData,
+    handleChange,
+    handleSubmit,
+    setFormData,
+    loading,
+    error,
+    validationErrors,
+    handlePasswordChange,
+    addPasswordField,
+    removePasswordField,
+    getTypeLabel,
+    trigger: trigger,
+  } = useFormAccount({
+    editingAccount,
+    onSuccess,
+    isOpenProp,
+    onCloseProp,
+  });
 
-  useEffect(() => {
-    if (editingSecret) {
-      setType(editingSecret.type);
-      setTitle(editingSecret.title);
-      setDescription(editingSecret.description);
-      setValue(editingSecret.value);
+  const isOpen = isOpenProp !== undefined ? isOpenProp : internalIsOpen;
+  const open = () => {
+    if (onOpenChange) {
+      onOpenChange(true);
     } else {
-      reset();
+      internalOpen();
     }
-  }, [editingSecret, isOpen]);
-
-  const reset = () => {
-    setType("password");
-    setTitle("");
-    setDescription("");
-    setValue("");
+  };
+  const close = () => {
+    if (onCloseProp) {
+      onCloseProp();
+    } else {
+      internalClose();
+    }
+    if (onOpenChange) {
+      onOpenChange(false);
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title || !value) return;
-
-    onSave({ type, title, description, value });
-    onClose();
-    reset();
+  const getTypeIcon = (type: SecretType) => {
+    switch (type) {
+      case SecretType.RESET_PASSWORD:
+        return <Key className="w-4 h-4" />;
+      case SecretType.API_KEY:
+        return <FileCode className="w-4 h-4" />;
+      case SecretType.ACCOUNTS:
+        return <Shield className="w-4 h-4" />;
+      default:
+        return <StickyNote className="w-4 h-4" />;
+    }
   };
 
-  if (!isOpen) return null;
+  const renderTrigger = () => {
+    if (editingAccount) {
+      return null;
+    }
+
+    const buttonClassName = `gap-2 ${triggerClassName}`;
+
+    switch (triggerType) {
+      case "icon":
+        return (
+          <Button
+            onClick={open}
+            size="icon"
+            className={`rounded-full bg-green-600 hover:bg-green-700 ${triggerClassName}`}
+          >
+            <Plus className="w-5 h-5" />
+          </Button>
+        );
+      case "text":
+        return (
+          <Button onClick={open} variant="outline" className={buttonClassName}>
+            <Plus className="w-4 h-4" />
+            Add New Account
+          </Button>
+        );
+      default:
+        return (
+          <Button
+            onClick={open}
+            className={`bg-green-600 hover:bg-green-700 text-white rounded-3xl ${buttonClassName}`}
+          >
+            <Plus className="w-4 h-4" />
+            Add New Account
+          </Button>
+        );
+    }
+  };
+
+  const handleTypeChange = (value: SecretType) => {
+    setFormData((prev) => ({ ...prev, type: value }));
+  };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-        onClick={onClose}
-      />
+    <>
+      {/* Botão Trigger */}
+      {renderTrigger()}
 
-      <div className="relative w-full max-w-lg bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl animate-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between p-6 border-b border-zinc-800">
-          <div className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-indigo-500" />
-            <h2 className="text-xl font-bold text-zinc-100">
-              {editingSecret ? "Edit Secret" : "Add Secret"}
-            </h2>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2 text-zinc-500 hover:text-zinc-100 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Type Selector */}
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              {
-                id: "password",
-                label: "Password",
-                icon: <Key className="w-4 h-4" />,
-              },
-              {
-                id: "env",
-                label: "Env Var",
-                icon: <FileCode className="w-4 h-4" />,
-              },
-              {
-                id: "note",
-                label: "Note",
-                icon: <StickyNote className="w-4 h-4" />,
-              },
-            ].map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setType(item.id as SecretType)}
-                className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl border transition-all ${
-                  type === item.id
-                    ? "bg-indigo-600/10 border-indigo-500 text-indigo-400"
-                    : "bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700"
-                }`}
-              >
-                {item.icon}
-                <span className="text-xs font-semibold">{item.label}</span>
-              </button>
-            ))}
-          </div>
-
+      {/* Modal */}
+      <CustomModal
+        isOpen={isOpen}
+        onClose={close}
+        title={editingAccount ? "Edit Secret" : "Add Secret"}
+        maxWidth="md:max-w-lg max-w-md  lg:max-w-xl"
+      >
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">
-                Title
-              </label>
-              <input
+              <Label
+                htmlFor="title"
+                className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2"
+              >
+                Title *
+              </Label>
+              <Input
+                id="title"
+                name="title"
                 autoFocus
                 type="text"
                 placeholder="Database Primary Key"
-                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={formData.title}
+                onChange={handleChange}
                 required
+                className={validationErrors.title ? "border-red-500" : ""}
               />
+              {validationErrors.title && (
+                <p className="mt-1 text-xs text-red-500">
+                  {validationErrors.title}
+                </p>
+              )}
             </div>
 
+            {/* Type Selector */}
             <div>
-              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">
-                Description (Optional)
-              </label>
-              <textarea
-                placeholder="Brief context about this entry..."
-                rows={2}
-                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">
-                {type === "password"
-                  ? "Password"
-                  : type === "env"
-                    ? "Variable Value"
-                    : "Secret Content"}
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder={
-                    type === "env"
-                      ? "API_KEY=sk_test_..."
-                      : "Enter sensitive content..."
-                  }
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                  required
-                />
+              <Label className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">
+                Type
+              </Label>
+              <div className="grid grid-cols-3 gap-3">
+                <Select value={formData.type} onValueChange={handleTypeChange}>
+                  <SelectTrigger className="w-full">
+                    <div className="flex items-center gap-2">
+                      {getTypeIcon(formData.type)}
+                      <span>{getTypeLabel(formData.type)}</span>
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent align="center">
+                    {Object.values(SecretType).map((typeValue) => (
+                      <SelectItem
+                        key={typeValue}
+                        value={typeValue}
+                        className="flex items-center gap-2"
+                      >
+                        <div className="flex items-center gap-2">
+                          {getTypeIcon(typeValue)}
+                          {getTypeLabel(typeValue)}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
+
+            <div>
+              <Label
+                htmlFor="description"
+                className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2"
+              >
+                Description (Optional)
+              </Label>
+              <Textarea
+                id="description"
+                name="description"
+                placeholder="Brief context about this entry..."
+                rows={2}
+                value={formData.description}
+                onChange={handleChange}
+                className="resize-none"
+              />
+            </div>
+
+            <div>
+              <Label
+                htmlFor="url"
+                className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2"
+              >
+                URL (Optional)
+              </Label>
+              <Input
+                id="url"
+                name="url"
+                type="url"
+                placeholder="https://example.com/login"
+                value={formData.url}
+                onChange={handleChange}
+                className={validationErrors.url ? "border-red-500" : ""}
+              />
+              {validationErrors.url && (
+                <p className="mt-1 text-xs text-red-500">
+                  {validationErrors.url}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <Label
+                htmlFor="icon"
+                className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2"
+              >
+                Icon URL (Optional)
+              </Label>
+              <Input
+                id="icon"
+                name="icon"
+                type="url"
+                placeholder="https://example.com/icon.png"
+                value={formData.icon}
+                onChange={handleChange}
+                className={validationErrors.icon ? "border-red-500" : ""}
+              />
+              {validationErrors.icon && (
+                <p className="mt-1 text-xs text-red-500">
+                  {validationErrors.icon}
+                </p>
+              )}
+            </div>
+
+            {/* Passwords Section */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <Label className="block text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                  Passwords
+                </Label>
+                <Button
+                  type="button"
+                  onClick={addPasswordField}
+                  variant="outline"
+                  size="sm"
+                  className="text-xs"
+                >
+                  Add Password
+                </Button>
+              </div>
+
+              <div className="space-y-3">
+                {formData.password.map((password, index) => (
+                  <div key={index} className="flex gap-2 items-center">
+                    <Input
+                      type="password"
+                      placeholder={`Password ${index + 1}`}
+                      value={password}
+                      onChange={(e) =>
+                        handlePasswordChange(index, e.target.value)
+                      }
+                      className="flex-1"
+                    />
+                    <Button
+                      type="button"
+                      onClick={() => removePasswordField(index)}
+                      variant="ghost"
+                      size="icon"
+                      className="text-red-500 hover:text-red-600 hover:bg-red-500/10"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+
+                {formData.password.length === 0 && (
+                  <p className="text-sm text-zinc-500 italic">
+                    No passwords added. Click &quot;Add Password&quot; to add
+                    one.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <Label
+                htmlFor="notes"
+                className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2"
+              >
+                Notes (Optional)
+              </Label>
+              <Textarea
+                id="notes"
+                name="notes"
+                placeholder="Additional notes or instructions..."
+                rows={3}
+                value={formData.notes}
+                onChange={handleChange}
+                className="resize-none"
+              />
+            </div>
           </div>
 
-          <div className="flex gap-3 pt-4">
-            <button
+          {/* Error Display */}
+          {error && (
+            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+              <p className="text-sm text-red-500">{error}</p>
+            </div>
+          )}
+
+          <div className="flex gap-3 pt-4 border-t border-zinc-800">
+            <Button
               type="button"
-              onClick={onClose}
-              className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 py-3 rounded-xl font-semibold transition-all"
+              onClick={close}
+              variant="outline"
+              className="flex-1 rounded-xl"
+              disabled={loading}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
-              className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl font-semibold shadow-lg shadow-indigo-600/20 transition-all active:scale-95"
+              className="flex-1 rounded-xl bg-green-600 hover:bg-green-700"
+              disabled={loading}
             >
-              {editingSecret ? "Update Secret" : "Create Secret"}
-            </button>
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <svg
+                    className="animate-spin h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Processing...
+                </span>
+              ) : editingAccount ? (
+                "Update Secret"
+              ) : (
+                "Create Secret"
+              )}
+            </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </CustomModal>
+    </>
   );
 };
 

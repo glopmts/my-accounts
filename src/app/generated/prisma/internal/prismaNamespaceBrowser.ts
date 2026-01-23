@@ -55,8 +55,7 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   EmailCode: 'EmailCode',
-  MyAccounts: 'MyAccounts',
-  PasswordAccount: 'PasswordAccount'
+  MyAccounts: 'MyAccounts'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -82,6 +81,7 @@ export const UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   clerkId: 'clerkId',
   code: 'code',
+  role: 'role',
   email: 'email',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -129,26 +129,14 @@ export const MyAccountsScalarFieldEnum = {
   icon: 'icon',
   url: 'url',
   type: 'type',
+  notes: 'notes',
+  userId: 'userId',
+  password: 'password',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  userId: 'userId'
+  updatedAt: 'updatedAt'
 } as const
 
 export type MyAccountsScalarFieldEnum = (typeof MyAccountsScalarFieldEnum)[keyof typeof MyAccountsScalarFieldEnum]
-
-
-export const PasswordAccountScalarFieldEnum = {
-  id: 'id',
-  username: 'username',
-  password: 'password',
-  url: 'url',
-  notes: 'notes',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  myAccountId: 'myAccountId'
-} as const
-
-export type PasswordAccountScalarFieldEnum = (typeof PasswordAccountScalarFieldEnum)[keyof typeof PasswordAccountScalarFieldEnum]
 
 
 export const SortOrder = {
