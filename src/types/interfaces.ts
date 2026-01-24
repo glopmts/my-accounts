@@ -21,6 +21,9 @@ export interface MyAccounts {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
+  position: number;
+  orderInCategory: number;
+  category: string | null;
   password: string[];
 }
 

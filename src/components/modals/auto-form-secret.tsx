@@ -106,7 +106,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
           <Button
             onClick={open}
             size="icon"
-            className={`rounded-full bg-green-600 hover:bg-green-700 ${triggerClassName}`}
+            className={`rounded-full dark:bg-zinc-600 dark:hover:bg-zinc-700 ${triggerClassName}`}
           >
             <Plus className="w-5 h-5" />
           </Button>
@@ -122,7 +122,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
         return (
           <Button
             onClick={open}
-            className={`bg-green-600 hover:bg-green-700 text-white rounded-3xl ${buttonClassName}`}
+            className={`dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white rounded-3xl ${buttonClassName}`}
           >
             <Plus className="w-4 h-4" />
             Add New Account

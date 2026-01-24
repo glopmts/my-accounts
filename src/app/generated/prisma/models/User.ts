@@ -225,6 +225,9 @@ export type UserWhereInput = {
   accounts_auth?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.MyAccountsListRelationFilter
+  fixeds?: Prisma.FixedListRelationFilter
+  archiveds?: Prisma.ArchivedListRelationFilter
+  sortingCategories?: Prisma.SortingCategoryListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -241,6 +244,9 @@ export type UserOrderByWithRelationInput = {
   accounts_auth?: Prisma.AccountOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.MyAccountsOrderByRelationAggregateInput
+  fixeds?: Prisma.FixedOrderByRelationAggregateInput
+  archiveds?: Prisma.ArchivedOrderByRelationAggregateInput
+  sortingCategories?: Prisma.SortingCategoryOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -260,6 +266,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   accounts_auth?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.MyAccountsListRelationFilter
+  fixeds?: Prisma.FixedListRelationFilter
+  archiveds?: Prisma.ArchivedListRelationFilter
+  sortingCategories?: Prisma.SortingCategoryListRelationFilter
 }, "id" | "clerkId" | "code" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -308,6 +317,9 @@ export type UserCreateInput = {
   accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -324,6 +336,9 @@ export type UserUncheckedCreateInput = {
   accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -340,6 +355,9 @@ export type UserUpdateInput = {
   accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -356,6 +374,9 @@ export type UserUncheckedUpdateInput = {
   accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -503,6 +524,48 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
+export type UserCreateNestedOneWithoutSortingCategoriesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSortingCategoriesInput, Prisma.UserUncheckedCreateWithoutSortingCategoriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSortingCategoriesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSortingCategoriesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSortingCategoriesInput, Prisma.UserUncheckedCreateWithoutSortingCategoriesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSortingCategoriesInput
+  upsert?: Prisma.UserUpsertWithoutSortingCategoriesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSortingCategoriesInput, Prisma.UserUpdateWithoutSortingCategoriesInput>, Prisma.UserUncheckedUpdateWithoutSortingCategoriesInput>
+}
+
+export type UserCreateNestedOneWithoutFixedsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFixedsInput, Prisma.UserUncheckedCreateWithoutFixedsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFixedsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFixedsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFixedsInput, Prisma.UserUncheckedCreateWithoutFixedsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFixedsInput
+  upsert?: Prisma.UserUpsertWithoutFixedsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFixedsInput, Prisma.UserUpdateWithoutFixedsInput>, Prisma.UserUncheckedUpdateWithoutFixedsInput>
+}
+
+export type UserCreateNestedOneWithoutArchivedsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutArchivedsInput, Prisma.UserUncheckedCreateWithoutArchivedsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutArchivedsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutArchivedsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutArchivedsInput, Prisma.UserUncheckedCreateWithoutArchivedsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutArchivedsInput
+  upsert?: Prisma.UserUpsertWithoutArchivedsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutArchivedsInput, Prisma.UserUpdateWithoutArchivedsInput>, Prisma.UserUncheckedUpdateWithoutArchivedsInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id?: string
   name?: string | null
@@ -516,6 +579,9 @@ export type UserCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -531,6 +597,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   updatedAt?: Date | string
   accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -562,6 +631,9 @@ export type UserUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -577,6 +649,9 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccounts_authInput = {
@@ -592,6 +667,9 @@ export type UserCreateWithoutAccounts_authInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccounts_authInput = {
@@ -607,6 +685,9 @@ export type UserUncheckedCreateWithoutAccounts_authInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccounts_authInput = {
@@ -638,6 +719,9 @@ export type UserUpdateWithoutAccounts_authInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccounts_authInput = {
@@ -653,6 +737,9 @@ export type UserUncheckedUpdateWithoutAccounts_authInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -668,6 +755,9 @@ export type UserCreateWithoutAccountsInput = {
   updatedAt?: Date | string
   accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -683,6 +773,9 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   updatedAt?: Date | string
   accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -714,6 +807,9 @@ export type UserUpdateWithoutAccountsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -729,6 +825,273 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSortingCategoriesInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSortingCategoriesInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSortingCategoriesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSortingCategoriesInput, Prisma.UserUncheckedCreateWithoutSortingCategoriesInput>
+}
+
+export type UserUpsertWithoutSortingCategoriesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSortingCategoriesInput, Prisma.UserUncheckedUpdateWithoutSortingCategoriesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSortingCategoriesInput, Prisma.UserUncheckedCreateWithoutSortingCategoriesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSortingCategoriesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSortingCategoriesInput, Prisma.UserUncheckedUpdateWithoutSortingCategoriesInput>
+}
+
+export type UserUpdateWithoutSortingCategoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSortingCategoriesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutFixedsInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFixedsInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFixedsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFixedsInput, Prisma.UserUncheckedCreateWithoutFixedsInput>
+}
+
+export type UserUpsertWithoutFixedsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFixedsInput, Prisma.UserUncheckedUpdateWithoutFixedsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFixedsInput, Prisma.UserUncheckedCreateWithoutFixedsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFixedsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFixedsInput, Prisma.UserUncheckedUpdateWithoutFixedsInput>
+}
+
+export type UserUpdateWithoutFixedsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFixedsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutArchivedsInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutArchivedsInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutArchivedsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutArchivedsInput, Prisma.UserUncheckedCreateWithoutArchivedsInput>
+}
+
+export type UserUpsertWithoutArchivedsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutArchivedsInput, Prisma.UserUncheckedUpdateWithoutArchivedsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutArchivedsInput, Prisma.UserUncheckedCreateWithoutArchivedsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutArchivedsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutArchivedsInput, Prisma.UserUncheckedUpdateWithoutArchivedsInput>
+}
+
+export type UserUpdateWithoutArchivedsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutArchivedsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -740,12 +1103,18 @@ export type UserCountOutputType = {
   accounts_auth: number
   sessions: number
   accounts: number
+  fixeds: number
+  archiveds: number
+  sortingCategories: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts_auth?: boolean | UserCountOutputTypeCountAccounts_authArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+  fixeds?: boolean | UserCountOutputTypeCountFixedsArgs
+  archiveds?: boolean | UserCountOutputTypeCountArchivedsArgs
+  sortingCategories?: boolean | UserCountOutputTypeCountSortingCategoriesArgs
 }
 
 /**
@@ -779,6 +1148,27 @@ export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.MyAccountsWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFixedsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FixedWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountArchivedsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ArchivedWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSortingCategoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SortingCategoryWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -794,6 +1184,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   accounts_auth?: boolean | Prisma.User$accounts_authArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
+  fixeds?: boolean | Prisma.User$fixedsArgs<ExtArgs>
+  archiveds?: boolean | Prisma.User$archivedsArgs<ExtArgs>
+  sortingCategories?: boolean | Prisma.User$sortingCategoriesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -841,6 +1234,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   accounts_auth?: boolean | Prisma.User$accounts_authArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
+  fixeds?: boolean | Prisma.User$fixedsArgs<ExtArgs>
+  archiveds?: boolean | Prisma.User$archivedsArgs<ExtArgs>
+  sortingCategories?: boolean | Prisma.User$sortingCategoriesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -852,6 +1248,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     accounts_auth: Prisma.$AccountPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     accounts: Prisma.$MyAccountsPayload<ExtArgs>[]
+    fixeds: Prisma.$FixedPayload<ExtArgs>[]
+    archiveds: Prisma.$ArchivedPayload<ExtArgs>[]
+    sortingCategories: Prisma.$SortingCategoryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1261,6 +1660,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   accounts_auth<T extends Prisma.User$accounts_authArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accounts_authArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MyAccountsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  fixeds<T extends Prisma.User$fixedsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$fixedsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FixedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  archiveds<T extends Prisma.User$archivedsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$archivedsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArchivedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sortingCategories<T extends Prisma.User$sortingCategoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sortingCategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SortingCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1757,6 +2159,78 @@ export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.MyAccountsScalarFieldEnum | Prisma.MyAccountsScalarFieldEnum[]
+}
+
+/**
+ * User.fixeds
+ */
+export type User$fixedsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Fixed
+   */
+  select?: Prisma.FixedSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Fixed
+   */
+  omit?: Prisma.FixedOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FixedInclude<ExtArgs> | null
+  where?: Prisma.FixedWhereInput
+  orderBy?: Prisma.FixedOrderByWithRelationInput | Prisma.FixedOrderByWithRelationInput[]
+  cursor?: Prisma.FixedWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FixedScalarFieldEnum | Prisma.FixedScalarFieldEnum[]
+}
+
+/**
+ * User.archiveds
+ */
+export type User$archivedsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Archived
+   */
+  select?: Prisma.ArchivedSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Archived
+   */
+  omit?: Prisma.ArchivedOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ArchivedInclude<ExtArgs> | null
+  where?: Prisma.ArchivedWhereInput
+  orderBy?: Prisma.ArchivedOrderByWithRelationInput | Prisma.ArchivedOrderByWithRelationInput[]
+  cursor?: Prisma.ArchivedWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ArchivedScalarFieldEnum | Prisma.ArchivedScalarFieldEnum[]
+}
+
+/**
+ * User.sortingCategories
+ */
+export type User$sortingCategoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SortingCategory
+   */
+  select?: Prisma.SortingCategorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SortingCategory
+   */
+  omit?: Prisma.SortingCategoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SortingCategoryInclude<ExtArgs> | null
+  where?: Prisma.SortingCategoryWhereInput
+  orderBy?: Prisma.SortingCategoryOrderByWithRelationInput | Prisma.SortingCategoryOrderByWithRelationInput[]
+  cursor?: Prisma.SortingCategoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SortingCategoryScalarFieldEnum | Prisma.SortingCategoryScalarFieldEnum[]
 }
 
 /**

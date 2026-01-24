@@ -55,7 +55,10 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   EmailCode: 'EmailCode',
-  MyAccounts: 'MyAccounts'
+  MyAccounts: 'MyAccounts',
+  SortingCategory: 'SortingCategory',
+  Fixed: 'Fixed',
+  Archived: 'Archived'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -130,6 +133,9 @@ export const MyAccountsScalarFieldEnum = {
   url: 'url',
   type: 'type',
   notes: 'notes',
+  position: 'position',
+  category: 'category',
+  orderInCategory: 'orderInCategory',
   userId: 'userId',
   password: 'password',
   createdAt: 'createdAt',
@@ -137,6 +143,42 @@ export const MyAccountsScalarFieldEnum = {
 } as const
 
 export type MyAccountsScalarFieldEnum = (typeof MyAccountsScalarFieldEnum)[keyof typeof MyAccountsScalarFieldEnum]
+
+
+export const SortingCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  order: 'order',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SortingCategoryScalarFieldEnum = (typeof SortingCategoryScalarFieldEnum)[keyof typeof SortingCategoryScalarFieldEnum]
+
+
+export const FixedScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  myaccountId: 'myaccountId',
+  isFixed: 'isFixed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FixedScalarFieldEnum = (typeof FixedScalarFieldEnum)[keyof typeof FixedScalarFieldEnum]
+
+
+export const ArchivedScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  myaccountId: 'myaccountId',
+  isArchived: 'isArchived',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ArchivedScalarFieldEnum = (typeof ArchivedScalarFieldEnum)[keyof typeof ArchivedScalarFieldEnum]
 
 
 export const SortOrder = {

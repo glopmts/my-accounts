@@ -112,14 +112,6 @@ export async function syncUserWithDatabase(
         name: validatedData.name || null,
         image: validatedData.image || null,
       },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-        image: true,
-        createdAt: true,
-      },
     });
 
     revalidatePath("/", "layout");

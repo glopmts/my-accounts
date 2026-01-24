@@ -42,3 +42,18 @@ export type EmailCode = Prisma.EmailCodeModel
  * 
  */
 export type MyAccounts = Prisma.MyAccountsModel
+/**
+ * Model SortingCategory
+ * 
+ */
+export type SortingCategory = Prisma.SortingCategoryModel
+/**
+ * Model Fixed
+ * 
+ */
+export type Fixed = Prisma.FixedModel
+/**
+ * Model Archived
+ * 
+ */
+export type Archived = Prisma.ArchivedModel

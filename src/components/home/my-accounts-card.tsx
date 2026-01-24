@@ -1,25 +1,27 @@
 "use client";
 
-import { useState } from "react";
-import { useMyAccounts } from "../../hooks/use-my-accounts";
-import { useAuthCustom } from "../../lib/useAuth";
-import { useMyAccountsQuery } from "../../services/query/use-accounts-quey";
-import { LayoutGrid, List, ViewMode } from "../../types/constantes";
-import { MyAccounts, SecretTypeSelector } from "../../types/interfaces";
+import { useMyAccounts } from "@/hooks/use-my-accounts";
+import { useAuthCustom } from "@/lib/useAuth";
+import { useMyAccountsQuery } from "@/services/query/use-accounts-quey";
+import { LayoutGrid, List, ViewMode } from "@/types/constantes";
+import { MyAccounts } from "@/types/interfaces";
+import { useCallback, useMemo, useState } from "react";
 import { AccountCard } from "../card-account";
 import AddSecretModal from "../modals/auto-form-secret";
 import DetailsAccountModel from "../modals/details-account-select";
+import { SortableContainer } from "../sortable/SortableContainer";
+import { SortableItem } from "../sortable/SortableItem";
 import { Skeleton } from "../ui/skeleton";
 
-const CardsHomeAccounts = () => {
-  const { userId, isLoading } = useAuthCustom();
+const CardsHomeContent = () => {
+  const { userId } = useAuthCustom();
   const {
     data: accounts,
     isLoading: isAccountsLoading,
     refetch,
   } = useMyAccountsQuery(userId);
 
-  const { deleteAccount } = useMyAccounts({
+  const { deleteAccount, handleSaveOrder } = useMyAccounts({
     refetch,
     userId,
   });
@@ -28,109 +30,168 @@ const CardsHomeAccounts = () => {
   const [isView, setView] = useState(false);
   const [isViewData, setViewData] = useState<MyAccounts | null>(null);
   const [editingAccount, setEditingAccount] = useState<MyAccounts | null>(null);
-  const [selectedType, setSelectedType] = useState<SecretTypeSelector | "ALL">(
-    "ALL",
-  );
-  const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
 
-  const renderSkeletonCards = () => {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <div key={index} className="p-4 border rounded shadow">
-            <Skeleton className="h-6 w-3/4 mb-2" />
-            <Skeleton className="h-4 w-1/2 mb-2" />
-            <Skeleton className="h-4 w-full" />
-          </div>
-        ))}
-      </div>
-    );
-  };
+  const sortedAccounts = useMemo(() => {
+    if (!accounts) return [];
 
-  if (isLoading || isAccountsLoading) {
-    return <div className="w-full h-full">{renderSkeletonCards()}</div>;
-  }
+    // Ordena apenas pela posição
+    return [...accounts].sort((a, b) => (a.position || 0) - (b.position || 0));
+  }, [accounts]);
 
-  const handleEdit = (account: MyAccounts) => {
+  const handleOrderChange = useCallback((newAccounts: MyAccounts[]) => {
+    const currentIsDragging =
+      document.body.classList.contains("dragging-active");
+    if (!currentIsDragging) {
+      return;
+    }
+    return;
+  }, []);
+
+  // Handlers
+  const handleEdit = useCallback((account: MyAccounts) => {
     setEditingAccount(account);
-    setIsEditingModalOpen((prev) => !prev);
-  };
+    setIsEditingModalOpen(true);
+  }, []);
 
-  const handleView = (account: MyAccounts) => {
+  const handleView = useCallback((account: MyAccounts) => {
     setViewData(account);
-    setView((prev) => !prev);
-  };
+    setView(true);
+  }, []);
 
-  const handleCloseEditModal = () => {
-    setIsEditingModalOpen(false);
-    setEditingAccount(null);
-  };
-
-  const handleCloseViewModal = () => {
-    setView(false);
-    setViewData(null);
-  };
-
-  const handleSuccess = () => {
-    setIsEditingModalOpen(false);
-    setEditingAccount(null);
-  };
-
-  return (
-    <div className="w-full h-full">
-      <div className="pb-2 flex justify-between items-center w-full">
-        <h2 className="text-2xl font-semibold">Minhas contas</h2>
-        {/* Modal para adicionar (não controlado) */}
-        <AddSecretModal refetch={refetch} />
-      </div>
-      <div className="w-full h-full">
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-zinc-900">
-          <div className="flex items-center gap-6">
-            <button
-              onClick={() => setViewMode("grid")}
-              className={`flex items-center gap-2 text-sm font-medium transition-colors ${viewMode === "grid" ? "text-zinc-100" : "text-zinc-500 hover:text-zinc-300"}`}
-            >
-              <LayoutGrid size={18} /> Grid
-            </button>
-            <button
-              onClick={() => setViewMode("list")}
-              className={`flex items-center gap-2 text-sm font-medium transition-colors ${viewMode === "list" ? "text-zinc-100" : "text-zinc-500 hover:text-zinc-300"}`}
-            >
-              <List size={18} /> List
-            </button>
-          </div>
-          <div className="text-xs text-zinc-500">
-            Showing {accounts?.length} results
-          </div>
+  if (isAccountsLoading) {
+    return (
+      <div className="w-full h-full p-4">
+        <div className="pb-2 flex justify-between items-center w-full mb-8">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-10 w-32" />
         </div>
         <div
           className={
             viewMode === "grid"
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500"
-              : "space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500"
+              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              : "space-y-4"
           }
         >
-          {accounts?.map((account) => (
-            <AccountCard
-              key={account.id}
-              account={account}
-              viewMode={viewMode}
-              onDelete={deleteAccount}
-              onEdit={handleEdit}
-              onView={handleView}
-            />
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div
+              key={index}
+              className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-5"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <Skeleton className="h-10 w-10 rounded-lg" />
+                <Skeleton className="h-5 w-16 rounded-full" />
+              </div>
+              <Skeleton className="h-6 w-3/4 mb-2" />
+              <Skeleton className="h-4 w-full mb-4" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
           ))}
         </div>
       </div>
+    );
+  }
 
-      {/* Modal para edição (controlado) */}
+  return (
+    <div className="w-full h-full space-y-6 animate-in fade-in duration-500">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+        <div>
+          <h2 className="text-2xl font-semibold text-zinc-100">
+            Minhas contas
+          </h2>
+          <p className="text-sm text-zinc-500 mt-1">
+            Arraste para reordenar • Salva automaticamente
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="text-xs dark:text-zinc-400 dark:bg-zinc-900/50 px-3 py-1.5 rounded-lg border dark:border-zinc-800">
+            {sortedAccounts.length} item
+            {sortedAccounts.length !== 1 ? "s" : ""}
+          </div>
+          <AddSecretModal refetch={refetch} />
+        </div>
+      </div>
+
+      {/* View Mode Toggle e Content */}
+      <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 delay-150">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-900">
+          <div className="flex items-center gap-2 p-1 bg-zinc-900/50 rounded-lg border border-zinc-800">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                viewMode === "grid"
+                  ? "bg-zinc-800 text-zinc-100 shadow-sm"
+                  : "text-zinc-500 hover:text-zinc-300"
+              }`}
+            >
+              <LayoutGrid size={16} />
+              Grid
+            </button>
+            <button
+              onClick={() => setViewMode("list")}
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                viewMode === "list"
+                  ? "bg-zinc-800 text-zinc-100 shadow-sm"
+                  : "text-zinc-500 hover:text-zinc-300"
+              }`}
+            >
+              <List size={16} />
+              List
+            </button>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="text-xs text-zinc-500 flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-blue-500/50 animate-pulse"></div>
+              <span>Arraste os cards para reordenar</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Accounts Grid/List - Use sortedAccounts diretamente */}
+        <SortableContainer
+          accounts={sortedAccounts}
+          onOrderChange={handleOrderChange}
+          onSaveOrder={handleSaveOrder}
+        >
+          <div
+            className={
+              viewMode === "grid"
+                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                : "space-y-4"
+            }
+          >
+            {sortedAccounts.map((account) => (
+              <SortableItem key={account.id} id={account.id} isSorting={true}>
+                <AccountCard
+                  account={account}
+                  viewMode={viewMode}
+                  onDelete={deleteAccount}
+                  onEdit={handleEdit}
+                  onView={handleView}
+                />
+              </SortableItem>
+            ))}
+          </div>
+        </SortableContainer>
+      </div>
+
+      {/* Modals */}
       {editingAccount && (
         <AddSecretModal
           editingAccount={editingAccount}
           isOpen={isEditingModalOpen}
-          onClose={handleCloseEditModal}
-          onSuccess={handleSuccess}
+          onClose={() => {
+            setIsEditingModalOpen(false);
+            setEditingAccount(null);
+            refetch();
+          }}
+          onSuccess={() => {
+            setIsEditingModalOpen(false);
+            setEditingAccount(null);
+            refetch();
+          }}
           triggerType="custom"
           refetch={refetch}
         />
@@ -140,12 +201,42 @@ const CardsHomeAccounts = () => {
         <DetailsAccountModel
           account={isViewData}
           isOpen={isView}
-          onClose={handleCloseViewModal}
+          onClose={() => {
+            setView(false);
+            setViewData(null);
+          }}
           handleDelete={deleteAccount}
         />
       )}
     </div>
   );
+};
+
+// Componente principal
+const CardsHomeAccounts = () => {
+  const { userId, isLoading } = useAuthCustom();
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-full p-4">
+        <Skeleton className="h-8 w-48 mb-8" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index}
+              className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-5"
+            >
+              <Skeleton className="h-6 w-3/4 mb-2" />
+              <Skeleton className="h-4 w-full mb-4" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return <CardsHomeContent />;
 };
 
 export default CardsHomeAccounts;

@@ -43,6 +43,45 @@ export const useMyAccounts = ({ refetch, userId }: PropsMyAccounts = {}) => {
     }
   }, []);
 
+  const handleSaveOrder = useCallback(
+    async (updatedAccounts: MyAccounts[]) => {
+      try {
+        const accountsToUpdate = updatedAccounts.map((account, index) => ({
+          id: account.id,
+          position: index,
+        }));
+
+        const response = await fetch("/api/accounts/order", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            accounts: accountsToUpdate,
+            userId,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to update order");
+        }
+
+        if (data?.success) {
+          console.log("Ordem salva com sucesso");
+          setTimeout(() => refetch && refetch(), 300);
+        }
+
+        return data;
+      } catch (error) {
+        console.error("Erro ao salvar ordem:", error);
+        throw error;
+      }
+    },
+    [userId, refetch],
+  );
+
   const updateAccount = useCallback(async (data: SchemaAccountUpdater) => {
     setLoading(true);
     setError(null);
@@ -159,6 +198,7 @@ export const useMyAccounts = ({ refetch, userId }: PropsMyAccounts = {}) => {
     deleteAccount,
     getUserAccounts,
     getAccountById,
+    handleSaveOrder,
     clearError: () => setError(null),
   };
 };

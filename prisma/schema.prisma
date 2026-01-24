@@ -8,19 +8,22 @@ datasource db {
 }
 
 model User {
-  id            String       @id @default(cuid())
-  name          String?
-  image         String?
-  emailVerified Boolean      @default(false)
-  clerkId       String?      @unique
-  code          String?      @unique
-  role          UserRole     @default(USER)
-  email         String       @unique
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  accounts_auth Account[]
-  sessions      Session[]
-  accounts      MyAccounts[]
+  id                String            @id @default(cuid())
+  name              String?
+  image             String?
+  emailVerified     Boolean           @default(false)
+  clerkId           String?           @unique
+  code              String?           @unique
+  role              UserRole          @default(USER)
+  email             String            @unique
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  accounts_auth     Account[]
+  sessions          Session[]
+  accounts          MyAccounts[]
+  fixeds            Fixed[]
+  archiveds         Archived[]
+  sortingCategories SortingCategory[]
 }
 
 model Session {
@@ -61,12 +64,50 @@ model MyAccounts {
   type        SecretType @default(OUTHER)
   notes       String?
 
+  position        Int     @default(0)
+  category        String? // 'top', 'middle', 'bottom', 'center', 'independent'
+  orderInCategory Int     @default(0)
+
   userId   String
   user     User     @relation(fields: [userId], references: [id])
   password String[]
 
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  fixeds    Fixed[]
+  archiveds Archived[]
+}
+
+model SortingCategory {
+  id        String   @id @default(cuid())
+  name      String // 'top', 'middle', 'bottom', 'center', 'independent'
+  order     Int      @default(0)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Fixed {
+  id          String     @id @default(cuid())
+  userId      String
+  myaccountId String
+  isFixed     Boolean    @default(true)
+  myaccount   MyAccounts @relation(fields: [myaccountId], references: [id])
+  user        User       @relation(fields: [userId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Archived {
+  id          String     @id @default(cuid())
+  userId      String
+  myaccountId String
+  isArchived  Boolean    @default(true)
+  myaccount   MyAccounts @relation(fields: [myaccountId], references: [id])
+  user        User       @relation(fields: [userId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 enum SecretType {
