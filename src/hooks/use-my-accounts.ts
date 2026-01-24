@@ -1,12 +1,20 @@
+"use client";
+
 import { ApiResponse, myAccountsService } from "@/services/my-accounts.service";
 import {
   SchemaAccountCreater,
   SchemaAccountUpdater,
 } from "@/utils/validations/schema-my-accounts";
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
 import { MyAccounts } from "../types/interfaces";
 
-export const useMyAccounts = () => {
+type PropsMyAccounts = {
+  refetch?: () => void;
+  userId?: string | null;
+};
+
+export const useMyAccounts = ({ refetch, userId }: PropsMyAccounts = {}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +48,10 @@ export const useMyAccounts = () => {
     setError(null);
 
     try {
-      const response = await myAccountsService.updateAccount(data);
+      const response = await myAccountsService.updateAccount(
+        data,
+        userId || "",
+      );
 
       if (!response.success) {
         setError(response.message || "Erro ao atualizar conta");
@@ -60,30 +71,35 @@ export const useMyAccounts = () => {
     }
   }, []);
 
-  const deleteAccount = useCallback(async (accountId: string) => {
-    setLoading(true);
-    setError(null);
+  const deleteAccount = useCallback(
+    async (accountId: string) => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const response = await myAccountsService.deleteAccount(accountId);
+      try {
+        const response = await myAccountsService.deleteAccount(accountId);
 
-      if (!response.success) {
-        setError(response.message || "Erro ao deletar conta");
+        if (!response.success) {
+          setError(response.message || "Erro ao deletar conta");
+        }
+
+        refetch?.();
+        toast.success("Conta deletado com sucesso!");
+        return response;
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Erro inesperado";
+        setError(errorMessage);
+        return {
+          success: false,
+          message: errorMessage,
+        } as ApiResponse;
+      } finally {
+        setLoading(false);
       }
-
-      return response;
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Erro inesperado";
-      setError(errorMessage);
-      return {
-        success: false,
-        message: errorMessage,
-      } as ApiResponse;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    [refetch],
+  );
 
   const getUserAccounts = useCallback(async (userId: string) => {
     setLoading(true);

@@ -46,9 +46,10 @@ export class MyAccountsService {
   // Atualizar conta
   async updateAccount(
     data: SchemaAccountUpdater,
+    userId: string | null,
   ): Promise<ApiResponse<MyAccounts>> {
     try {
-      const response = await api.put("/accounts", {
+      const response = await api.put("/accounts/update", {
         accountData: data,
       });
 
@@ -75,12 +76,13 @@ export class MyAccountsService {
   // Deletar conta
   async deleteAccount(accountId: string): Promise<ApiResponse> {
     try {
-      const response = await api.delete(`/accounts?accountId=${accountId}`);
+      const response = await api.delete(
+        `/accounts/delete?accountId=${accountId}`,
+      );
 
       return response.data;
     } catch (error) {
       console.error("Error deleting account:", error);
-
       if (error instanceof Error) {
         return {
           success: false,
@@ -88,7 +90,6 @@ export class MyAccountsService {
           error: error.message,
         };
       }
-
       return {
         success: false,
         message: "Erro desconhecido ao deletar conta",

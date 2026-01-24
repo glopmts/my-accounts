@@ -33,7 +33,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen p-3 w-full h-full flex-1">
       <CardsHomeAccounts />
     </div>
   );

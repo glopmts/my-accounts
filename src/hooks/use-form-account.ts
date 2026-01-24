@@ -13,20 +13,20 @@ interface ErrorType {
   errors: { path: string[]; message: string }[];
 }
 
-interface UseFormAccountProps {
+type UseFormAccountProps = {
   editingAccount?: MyAccounts | null;
   onSuccess?: () => void;
   isOpenProp?: boolean;
   onCloseProp?: () => void;
-  trigger?: React.ReactNode;
-}
+  refetch?: () => void;
+};
 
 export function useFormAccount({
   editingAccount,
   onSuccess,
-  trigger,
   isOpenProp,
   onCloseProp,
+  refetch,
 }: UseFormAccountProps) {
   const { userId } = useAuthCustom();
   const { createAccount, updateAccount, loading, error } = useMyAccounts();
@@ -35,7 +35,8 @@ export function useFormAccount({
     open: modalOpen,
     close: modalClose,
   } = useModal();
-  const hasInitialized = useRef(false);
+
+  const hasInitialized = useRef<string | null>(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -68,15 +69,20 @@ export function useFormAccount({
 
   useEffect(() => {
     if (!isOpen) {
-      hasInitialized.current = false;
+      hasInitialized.current = null;
       return;
     }
 
-    if (hasInitialized.current && editingAccount?.id === formData.title) {
+    // Evitar re-inicialização desnecessária
+    const accountId = editingAccount?.id || "new";
+
+    // Se já inicializamos para esta conta específica, não re-inicialize
+    if (hasInitialized.current === accountId) {
       return;
     }
 
-    hasInitialized.current = true;
+    // Marcar como inicializado para esta conta
+    hasInitialized.current = accountId;
 
     requestAnimationFrame(() => {
       if (editingAccount) {
@@ -102,7 +108,7 @@ export function useFormAccount({
       }
       setValidationErrors({});
     });
-  }, [isOpen, editingAccount, formData.title]);
+  }, [isOpen, editingAccount]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -128,8 +134,10 @@ export function useFormAccount({
           id: editingAccount.id,
           ...validatedData,
         });
+        refetch?.();
       } else {
         result = await createAccount(validatedData);
+        refetch?.();
       }
 
       if (result.success) {
@@ -138,6 +146,7 @@ export function useFormAccount({
         );
         onSuccess?.();
         close();
+        refetch?.();
       } else {
         toast.error(result.message || "Ocorreu um erro");
       }
@@ -237,6 +246,5 @@ export function useFormAccount({
     addPasswordField,
     removePasswordField,
     getTypeLabel,
-    trigger: trigger,
   };
 }

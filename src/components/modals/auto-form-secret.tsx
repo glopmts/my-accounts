@@ -4,16 +4,17 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { MyAccounts } from "@/types/interfaces";
 import { FileCode, Key, Plus, Shield, StickyNote, X } from "lucide-react";
 import React from "react";
 import { useFormAccount } from "../../hooks/use-form-account";
 import CustomModal from "../custom-modal";
+import EditorContent from "../md-editor";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
 
 interface AddSecretModalProps {
   editingAccount?: MyAccounts | null;
@@ -22,12 +23,9 @@ interface AddSecretModalProps {
   triggerClassName?: string;
   isOpen?: boolean;
   onClose?: () => void;
+  refetch?: () => void;
   trigger?: React.ReactNode;
   onOpenChange?: (open: boolean) => void;
-}
-
-interface TriggerElementProps extends React.HTMLAttributes<HTMLElement> {
-  onClick?: () => void;
 }
 
 const AddSecretModal: React.FC<AddSecretModalProps> = ({
@@ -36,6 +34,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
   isOpen: isOpenProp,
   onClose: onCloseProp,
   onOpenChange,
+  refetch,
   triggerType = "button",
   triggerClassName = "",
 }) => {
@@ -54,12 +53,12 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
     addPasswordField,
     removePasswordField,
     getTypeLabel,
-    trigger: trigger,
   } = useFormAccount({
     editingAccount,
     onSuccess,
     isOpenProp,
     onCloseProp,
+    refetch,
   });
 
   const isOpen = isOpenProp !== undefined ? isOpenProp : internalIsOpen;
@@ -136,6 +135,21 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
     setFormData((prev) => ({ ...prev, type: value }));
   };
 
+  const handleEditorChange = (
+    value:
+      | string
+      | React.ChangeEvent<
+          HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >,
+  ) => {
+    if (typeof value === "string") {
+      setFormData((prev) => ({ ...prev, description: value }));
+      setFormData((prev) => ({ ...prev, notes: value }));
+    } else {
+      handleChange(value);
+    }
+  };
+
   return (
     <>
       {/* Botão Trigger */}
@@ -183,10 +197,12 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
               <div className="grid grid-cols-3 gap-3">
                 <Select value={formData.type} onValueChange={handleTypeChange}>
                   <SelectTrigger className="w-full">
-                    <div className="flex items-center gap-2">
-                      {getTypeIcon(formData.type)}
-                      <span>{getTypeLabel(formData.type)}</span>
-                    </div>
+                    <SelectValue>
+                      <div className="flex items-center gap-2">
+                        {getTypeIcon(formData.type)}
+                        <span>{getTypeLabel(formData.type)}</span>
+                      </div>
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent align="center">
                     {Object.values(SecretType).map((typeValue) => (
@@ -213,14 +229,13 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
               >
                 Description (Optional)
               </Label>
-              <Textarea
+              <EditorContent
                 id="description"
                 name="description"
                 placeholder="Brief context about this entry..."
                 rows={2}
                 value={formData.description}
-                onChange={handleChange}
-                className="resize-none"
+                onChange={handleEditorChange}
               />
             </div>
 
@@ -327,13 +342,13 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
               >
                 Notes (Optional)
               </Label>
-              <Textarea
+              <EditorContent
                 id="notes"
                 name="notes"
                 placeholder="Additional notes or instructions..."
                 rows={3}
                 value={formData.notes}
-                onChange={handleChange}
+                onChange={handleEditorChange}
                 className="resize-none"
               />
             </div>

@@ -14,9 +14,9 @@ export default async function ProtectedLayout({
   }
 
   return (
-    <div className="min-h-screen flex-1 w-full h-full">
+    <section className="min-h-screen flex-1 w-full h-full">
       <Header />
-      <main className="container mx-auto px-4 py-8">{children}</main>
-    </div>
+      <main className=" w-full px-4 py-8">{children}</main>
+    </section>
   );
 }

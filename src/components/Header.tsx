@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthCustom } from "../lib/useAuth";
 import { User } from "../types/user-interfaces";
 import { Button } from "./ui/button";
@@ -22,6 +22,7 @@ import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { cn } from "../lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar-custom";
+import { Spinner } from "./ui/spinner";
 
 const Links = [
   {
@@ -69,7 +70,7 @@ const Header = () => {
 
   return (
     <header
-      className={`w-full p-1 sticky top-0 mt-2.5 bg-background z-30 ${shadoew ? "shadow-md" : ""}`}
+      className={`w-full p-1 sticky top-0 mt-2.5 bg-background z-30 ${shadoew ? "shadow-md border-b transition-discrete transition-all" : ""}`}
     >
       <nav className="w-full h-full flex justify-between items-center px-4">
         <Link
@@ -108,10 +109,14 @@ const Header = () => {
               </Button>
             ))}
           </div>
-          {!isLoading && user && (
-            <Suspense>
-              <UserDropdown user={user} logout={handleSignOut} />
-            </Suspense>
+          {isLoading ? (
+            <div className="p-3">
+              <Spinner />
+            </div>
+          ) : (
+            <div className="p-2">
+              <UserDropdown user={user!} logout={handleSignOut} />
+            </div>
           )}
         </div>
       </nav>

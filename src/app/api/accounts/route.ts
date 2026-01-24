@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
+import { schemaAccountCreater } from "@/utils/validations/schema-my-accounts";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import { schemaAccountCreater } from "../../../utils/validations/schema-my-accounts";
 
 export async function GET(request: NextRequest) {
   try {
@@ -46,7 +46,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // 5. Buscar as contas
     const accounts = await prisma.myAccounts.findMany({
       where: {
         userId: isAdmin ? undefined : userId,
@@ -71,7 +70,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-/// Creater e delete de accounts
+/// Creater
 
 export async function POST(request: NextRequest) {
   try {
@@ -126,81 +125,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error creating account:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Erro interno do servidor",
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 },
-    );
-  }
-}
-
-export async function DELETE(request: NextRequest) {
-  try {
-    const { userId: clerkUserId } = await auth();
-
-    if (!clerkUserId) {
-      return NextResponse.json(
-        { success: false, message: "Não autorizado" },
-        { status: 401 },
-      );
-    }
-
-    const searchParams = request.nextUrl.searchParams;
-    const accountId = searchParams.get("accountId");
-
-    if (!accountId) {
-      return NextResponse.json(
-        { success: false, message: "ID da conta é obrigatório" },
-        { status: 400 },
-      );
-    }
-
-    const authenticatedUser = await prisma.user.findUnique({
-      where: { clerkId: clerkUserId },
-      select: { id: true, role: true },
-    });
-
-    if (!authenticatedUser) {
-      return NextResponse.json(
-        { success: false, message: "Usuário não encontrado no banco" },
-        { status: 404 },
-      );
-    }
-
-    const account = await prisma.account.findUnique({
-      where: { id: accountId },
-    });
-
-    if (!account) {
-      return NextResponse.json(
-        { success: false, message: "Conta não encontrada" },
-        { status: 404 },
-      );
-    }
-
-    const isAdmin = authenticatedUser.role === "ADMIN";
-    const isOwner = authenticatedUser.id === account.userId;
-
-    if (!isAdmin && !isOwner) {
-      return NextResponse.json(
-        { success: false, message: "Acesso negado" },
-        { status: 403 },
-      );
-    }
-
-    await prisma.account.delete({
-      where: { id: accountId },
-    });
-
-    return NextResponse.json({
-      success: true,
-      message: "Conta deletada com sucesso",
-    });
-  } catch (error) {
-    console.error("Error deleting account:", error);
     return NextResponse.json(
       {
         success: false,
