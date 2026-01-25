@@ -59,7 +59,7 @@ export const SortableProvider: React.FC<{
     return accounts.map((account, index) => ({
       id: account.id,
       position: index, // Posição global na lista
-      orderInCategory: account.orderInCategory || index, // Ordem dentro da categoria
+      orderInCategory: account.orderInCategory || index,
       category: account.category || "default",
     }));
   };

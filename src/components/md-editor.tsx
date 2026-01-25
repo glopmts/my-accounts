@@ -1,4 +1,5 @@
 import MDEditor from "@uiw/react-md-editor";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 interface EditorContentProps {
@@ -26,6 +27,12 @@ const EditorContent: React.FC<EditorContentProps> = ({
   className = "",
 }) => {
   const [editorValue, setEditorValue] = useState<string>(value);
+  const { theme, resolvedTheme, systemTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setEditorValue(value);
@@ -55,12 +62,18 @@ const EditorContent: React.FC<EditorContentProps> = ({
     }
   };
 
+  const currentTheme = resolvedTheme || "light";
+
   return (
     <div className={`container-editor ${className}`}>
       <MDEditor
         value={editorValue}
         onChange={handleEditorChange}
         height={200}
+        style={{
+          backgroundColor: currentTheme === "dark" ? "#333" : "#fff",
+          color: currentTheme === "dark" ? "#fff" : "#000",
+        }}
         preview="edit"
         textareaProps={{
           placeholder,

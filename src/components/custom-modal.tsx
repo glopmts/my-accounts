@@ -52,7 +52,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
       {/* Overlay */}
       {!hideOverlay && (
         <div
-          className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300"
+          className="absolute inset-0 bg-zinc-400/20 dark:bg-black/80 backdrop-blur-sm transition-opacity duration-300"
           onClick={closeOnOverlayClick ? onClose : undefined}
         />
       )}
@@ -61,7 +61,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
       <div
         className={`
           relative w-full ${maxWidth} 
-          bg-zinc-900 border border-zinc-800 
+          dark:bg-zinc-900 border bg-zinc-400/50 dark:border-zinc-800 
           rounded-2xl shadow-2xl 
           animate-in zoom-in-95 duration-200 
           max-h-[90vh] overflow-y-auto
@@ -70,20 +70,24 @@ const CustomModal: React.FC<CustomModalProps> = ({
       >
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between p-6 border-b border-zinc-800 sticky top-0 bg-zinc-900 z-10">
+          <div className="flex items-center justify-between p-6 border-b bg-zinc-400 dark:border-zinc-800 sticky top-0 dark:bg-zinc-900 z-10">
             <div className="flex-1">
               {title && (
-                <h2 className="text-xl font-bold text-zinc-100">{title}</h2>
+                <h2 className="text-xl text-black font-bold dark:text-zinc-100">
+                  {title}
+                </h2>
               )}
               {description && (
-                <p className="text-sm text-zinc-400 mt-1">{description}</p>
+                <p className="text-sm dark:text-zinc-400 text-black mt-1">
+                  {description}
+                </p>
               )}
             </div>
 
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="p-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-all"
+                className="p-2 dark:text-zinc-400 text-black dark:hover:text-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-all"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />

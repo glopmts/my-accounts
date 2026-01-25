@@ -10,8 +10,12 @@ const App = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push("/sign-in");
+    if (!isLoaded) return;
+
+    if (isSignedIn) {
+      router.replace("/home");
+    } else {
+      router.replace("/sign-in");
     }
   }, [isLoaded, isSignedIn, router]);
 
@@ -21,10 +25,6 @@ const App = () => {
         <Spinner className="size-8" />
       </div>
     );
-  }
-
-  if (isSignedIn) {
-    router.push("/home");
   }
 
   return null;

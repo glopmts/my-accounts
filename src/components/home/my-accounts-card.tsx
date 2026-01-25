@@ -93,18 +93,18 @@ const CardsHomeContent = () => {
   }
 
   return (
-    <div className="w-full h-full space-y-6 animate-in fade-in duration-500">
+    <div className="w-full h-full space-y-6 animate-in fade-in duration-500 md:p-3">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+      <div className="flex  w-full flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
         <div>
-          <h2 className="text-2xl font-semibold text-zinc-100">
+          <h2 className="text-2xl font-semibold dark:text-zinc-100">
             Minhas contas
           </h2>
-          <p className="text-sm text-zinc-500 mt-1">
+          <p className="text-sm dark:text-zinc-500 mt-1">
             Arraste para reordenar • Salva automaticamente
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-auto">
           <div className="text-xs dark:text-zinc-400 dark:bg-zinc-900/50 px-3 py-1.5 rounded-lg border dark:border-zinc-800">
             {sortedAccounts.length} item
             {sortedAccounts.length !== 1 ? "s" : ""}
@@ -115,14 +115,14 @@ const CardsHomeContent = () => {
 
       {/* View Mode Toggle e Content */}
       <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 delay-150">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-900">
-          <div className="flex items-center gap-2 p-1 bg-zinc-900/50 rounded-lg border border-zinc-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b dark:border-zinc-900">
+          <div className="flex items-center gap-2 p-1 dark:bg-zinc-900/50 rounded-lg border dark:border-zinc-800">
             <button
               onClick={() => setViewMode("grid")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              className={`flex cursor-pointer items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
                 viewMode === "grid"
-                  ? "bg-zinc-800 text-zinc-100 shadow-sm"
-                  : "text-zinc-500 hover:text-zinc-300"
+                  ? "dark:bg-zinc-800 dark:text-zinc-100 shadow-sm bg-zinc-300"
+                  : "dark:text-zinc-500 dark:hover:text-zinc-300"
               }`}
             >
               <LayoutGrid size={16} />
@@ -130,10 +130,10 @@ const CardsHomeContent = () => {
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              className={`flex  cursor-pointer items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
                 viewMode === "list"
-                  ? "bg-zinc-800 text-zinc-100 shadow-sm"
-                  : "text-zinc-500 hover:text-zinc-300"
+                  ? "dark:bg-zinc-800 dark:text-zinc-100 shadow-sm bg-zinc-400"
+                  : "dark:text-zinc-500 dark:hover:text-zinc-300"
               }`}
             >
               <List size={16} />
@@ -142,7 +142,7 @@ const CardsHomeContent = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="text-xs text-zinc-500 flex items-center gap-2">
+            <div className="text-xs dark:text-zinc-500 flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-blue-500/50 animate-pulse"></div>
               <span>Arraste os cards para reordenar</span>
             </div>
@@ -224,7 +224,7 @@ const CardsHomeAccounts = () => {
           {Array.from({ length: 3 }).map((_, index) => (
             <div
               key={index}
-              className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-5"
+              className="dark:bg-zinc-900/50 border dark:border-zinc-800 rounded-xl p-5"
             >
               <Skeleton className="h-6 w-3/4 mb-2" />
               <Skeleton className="h-4 w-full mb-4" />

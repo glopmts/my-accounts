@@ -115,7 +115,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
         return (
           <Button onClick={open} variant="outline" className={buttonClassName}>
             <Plus className="w-4 h-4" />
-            Add New Account
+            Nova conta
           </Button>
         );
       default:
@@ -125,7 +125,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
             className={`dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white rounded-3xl ${buttonClassName}`}
           >
             <Plus className="w-4 h-4" />
-            Add New Account
+            Nova conta
           </Button>
         );
     }
@@ -159,7 +159,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
       <CustomModal
         isOpen={isOpen}
         onClose={close}
-        title={editingAccount ? "Edit Secret" : "Add Secret"}
+        title={editingAccount ? "Edit Conta" : "Nova Conta"}
         maxWidth="md:max-w-lg max-w-md  lg:max-w-xl"
       >
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -167,7 +167,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
             <div>
               <Label
                 htmlFor="title"
-                className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2"
+                className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest mb-2"
               >
                 Title *
               </Label>
@@ -191,7 +191,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
 
             {/* Type Selector */}
             <div>
-              <Label className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">
+              <Label className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest mb-2">
                 Type
               </Label>
               <div className="grid grid-cols-3 gap-3">
@@ -225,7 +225,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
             <div>
               <Label
                 htmlFor="description"
-                className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2"
+                className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest mb-2"
               >
                 Description (Optional)
               </Label>
@@ -242,7 +242,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
             <div>
               <Label
                 htmlFor="url"
-                className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2"
+                className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest mb-2"
               >
                 URL (Optional)
               </Label>
@@ -265,7 +265,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
             <div>
               <Label
                 htmlFor="icon"
-                className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2"
+                className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest mb-2"
               >
                 Icon URL (Optional)
               </Label>
@@ -288,7 +288,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
             {/* Passwords Section */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <Label className="block text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                <Label className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest">
                   Passwords
                 </Label>
                 <Button
@@ -338,7 +338,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
             <div>
               <Label
                 htmlFor="notes"
-                className="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2"
+                className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest mb-2"
               >
                 Notes (Optional)
               </Label>

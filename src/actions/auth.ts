@@ -2,34 +2,11 @@
 
 import db from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import { User } from "../types/user-interfaces";
-
-// Schema de validação
-const createUserSchema = z.object({
-  clerkId: z.string().min(1, "Clerk ID é obrigatório"),
-  email: z.string().email("Email inválido").toLowerCase().trim(),
-  name: z
-    .string()
-    .min(2, "Nome deve ter pelo menos 2 caracteres")
-    .max(100)
-    .optional(),
-  image: z.string().url("URL inválida").optional().or(z.literal("")),
-});
-
-const updateUserSchema = z.object({
-  clerkId: z.string().min(1, "Clerk ID é obrigatório"),
-  name: z
-    .string()
-    .min(2, "Nome deve ter pelo menos 2 caracteres")
-    .max(100)
-    .optional(),
-  image: z.string().url("URL inválida").optional().or(z.literal("")),
-});
-
-// Tipos
-export type CreateUserInput = z.infer<typeof createUserSchema>;
-export type UpdateUserInput = z.infer<typeof updateUserSchema>;
+import {
+  CreateUserInput,
+  createUserSchema,
+} from "../utils/validations/user-schema";
 
 // Função auxiliar para verificar se usuário existe
 async function checkUserExists(email: string, clerkId?: string) {

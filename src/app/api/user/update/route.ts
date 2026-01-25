@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { schemaAccountUpdater } from "@/utils/validations/schema-my-accounts";
+import { updateUserSchema } from "@/utils/validations/user-schema";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -15,9 +15,9 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { accountData } = body;
+    const { userId, ...userData } = body;
 
-    const validatedData = schemaAccountUpdater.parse(accountData);
+    const validatedData = updateUserSchema.parse(userData);
 
     const authenticatedUser = await prisma.user.findUnique({
       where: { clerkId: clerkUserId },
@@ -31,34 +31,31 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    if (authenticatedUser.id !== accountData.userId) {
+    if (authenticatedUser.id !== userId) {
       return NextResponse.json(
         { success: false, message: "Acesso negado" },
         { status: 403 },
       );
     }
 
-    const newAccount = await prisma.myAccounts.update({
+    const updatedUser = await prisma.user.update({
       where: {
-        id: validatedData.id,
+        id: userId,
       },
-      data: {
-        type: validatedData.type,
-        title: validatedData.title,
-        description: validatedData.description,
-        icon: validatedData.icon,
-        password: validatedData.password,
-        url: validatedData.url,
-        notes: validatedData.notes,
-      },
+      data: validatedData,
     });
 
-    return NextResponse.json({
-      success: true,
-      data: newAccount,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Usuário atualizado com sucesso",
+        data: updatedUser,
+      },
+      { status: 200 },
+    );
   } catch (error) {
-    console.error("Error update account:", error);
+    console.error("Error update user:", error);
+
     return NextResponse.json(
       {
         success: false,

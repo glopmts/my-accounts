@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuthCustom } from "../lib/useAuth";
 import { User } from "../types/user-interfaces";
 import { Button } from "./ui/button";
@@ -22,16 +23,15 @@ import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { cn } from "../lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar-custom";
+import LanguageSwitcher from "./language-switcher";
+import MenuMobile from "./menu-mobile";
+import { ModeToggle } from "./mode-toggle";
 import { Spinner } from "./ui/spinner";
 
 const Links = [
   {
     name: "Home",
     href: "/home",
-  },
-  {
-    name: "Profile",
-    href: "/profile",
   },
   {
     name: "Arquivados",
@@ -44,6 +44,8 @@ const Header = () => {
   const { user, isLoading, error } = useAuthCustom();
   const { signOut } = useAuth();
   const pathame = usePathname();
+
+  const { t, i18n } = useTranslation("common");
 
   useEffect(() => {
     const handleShadow = () => {
@@ -72,10 +74,10 @@ const Header = () => {
     <header
       className={`w-full p-1 sticky top-0 mt-2.5 bg-background z-30 ${shadoew ? "shadow-md border-b transition-discrete transition-all" : ""}`}
     >
-      <nav className="w-full h-full flex justify-between items-center px-4">
+      <nav className="w-full h-full flex justify-between items-center px-1.5 md:px-5">
         <Link
           href={"/"}
-          className="flex items-center gap-3"
+          className="hidden md:flex items-center gap-3"
           title="Pagina Inicial"
         >
           <div className="relative w-11 h-11">
@@ -88,27 +90,36 @@ const Header = () => {
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-lg">Minhas Contas</span>
+            <span className="font-bold text-lg">{t("header.title")}</span>
             <span className="truncate w-28">
-              {user?.name ? `Olá, ${user.name}` : "Olá"}
+              {user?.name
+                ? `${t("header.message")}, ${user.name}`
+                : `${t("header.message")}`}
             </span>
           </div>
         </Link>
+        <div className="md:hidden">
+          <MenuMobile
+            Links={Links}
+            handleSignOut={handleSignOut}
+            user={user!}
+          />
+        </div>
         {error && <span className="text-red-600">Error: {error.message}</span>}
         <div className="flex gap-3 items-center">
-          <div className="flex gap-2 items-center">
+          <div className="hidden md:flex gap-2 items-center ">
             {Links.map((link) => (
               <Button
                 key={link.name}
                 asChild
-                variant={`${pathame === link.href ? "secondary" : "ghost"}`}
+                variant={`${pathame === link.href ? "active" : "ghost"}`}
               >
-                <Link href={link.href} className="hover:underline">
-                  {link.name}
-                </Link>
+                <Link href={link.href}>{link.name}</Link>
               </Button>
             ))}
           </div>
+          <ModeToggle />
+          <LanguageSwitcher />
           {isLoading ? (
             <div className="p-3">
               <Spinner />
@@ -167,13 +178,13 @@ function UserDropdown({ user, logout }: UserDropdownProps) {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="/profile" className="flex items-center gap-2">
               <UserIcon className="h-4 w-4" />
               Profile
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link href="/settings" className="flex items-center gap-2">
               <Settings className="h-4 w-4" />
               Settings
