@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { api } from "../../lib/axios";
-import { MyAccounts } from "../../types/interfaces";
+import { api } from "@/lib/axios";
+import { MyAccounts } from "@/types/interfaces";
 
 export const useMyAccountsQuery = (userId?: string) => {
   return useQuery({

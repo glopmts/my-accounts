@@ -11,11 +11,15 @@ import {
   TYPE_METADATA,
 } from "../types/constantes";
 import { MyAccounts } from "../types/interfaces";
+import ArchivedButton from "./buttons_actions/archived-button";
 
 interface AccountCardProps {
   account: MyAccounts;
   onEdit: (acc: MyAccounts) => void;
   onDelete: (id: string) => void;
+  refetch: () => void;
+  isArchived?: boolean;
+  userId: string;
   onView: (acc: MyAccounts) => void;
   viewMode: "grid" | "list";
 }
@@ -25,7 +29,9 @@ export const AccountCard: React.FC<AccountCardProps> = ({
   onEdit,
   onDelete,
   onView,
+  refetch,
   viewMode,
+  userId,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -145,6 +151,11 @@ export const AccountCard: React.FC<AccountCardProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
+          <ArchivedButton
+            myaccountId={account.id}
+            refetch={refetch}
+            userId={userId}
+          />
           <button
             onClick={() => onEdit(account)}
             className="p-2 dark:hover:bg-zinc-800 rounded-lg dark:text-zinc-500 dark:hover:text-zinc-100 transition-colors"

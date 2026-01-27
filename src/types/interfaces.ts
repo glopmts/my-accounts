@@ -43,3 +43,13 @@ export interface SecurityAudit {
   feedback: string;
   suggestions: string[];
 }
+
+export interface ArchivedProps {
+  id: string;
+  userId: string;
+  myaccountId: string;
+  isArchived: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  myaccount: MyAccounts[];
+}

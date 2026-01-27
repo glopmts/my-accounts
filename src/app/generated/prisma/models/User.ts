@@ -222,12 +222,15 @@ export type UserWhereInput = {
   email?: Prisma.StringFilter<"User"> | string
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  ownedGroups?: Prisma.UserGroupListRelationFilter
+  memberGroups?: Prisma.GroupMemberListRelationFilter
   accounts_auth?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.MyAccountsListRelationFilter
   fixeds?: Prisma.FixedListRelationFilter
   archiveds?: Prisma.ArchivedListRelationFilter
   sortingCategories?: Prisma.SortingCategoryListRelationFilter
+  userGroups?: Prisma.UserGroupListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -241,12 +244,15 @@ export type UserOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  ownedGroups?: Prisma.UserGroupOrderByRelationAggregateInput
+  memberGroups?: Prisma.GroupMemberOrderByRelationAggregateInput
   accounts_auth?: Prisma.AccountOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.MyAccountsOrderByRelationAggregateInput
   fixeds?: Prisma.FixedOrderByRelationAggregateInput
   archiveds?: Prisma.ArchivedOrderByRelationAggregateInput
   sortingCategories?: Prisma.SortingCategoryOrderByRelationAggregateInput
+  userGroups?: Prisma.UserGroupOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -263,12 +269,15 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  ownedGroups?: Prisma.UserGroupListRelationFilter
+  memberGroups?: Prisma.GroupMemberListRelationFilter
   accounts_auth?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.MyAccountsListRelationFilter
   fixeds?: Prisma.FixedListRelationFilter
   archiveds?: Prisma.ArchivedListRelationFilter
   sortingCategories?: Prisma.SortingCategoryListRelationFilter
+  userGroups?: Prisma.UserGroupListRelationFilter
 }, "id" | "clerkId" | "code" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -314,12 +323,15 @@ export type UserCreateInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -333,12 +345,15 @@ export type UserUncheckedCreateInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -352,12 +367,15 @@ export type UserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -371,12 +389,15 @@ export type UserUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -460,6 +481,11 @@ export type UserMinOrderByAggregateInput = {
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -566,6 +592,50 @@ export type UserUpdateOneRequiredWithoutArchivedsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutArchivedsInput, Prisma.UserUpdateWithoutArchivedsInput>, Prisma.UserUncheckedUpdateWithoutArchivedsInput>
 }
 
+export type UserCreateNestedOneWithoutOwnedGroupsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedGroupsInput, Prisma.UserUncheckedCreateWithoutOwnedGroupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedGroupsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutUserGroupsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserGroupsInput, Prisma.UserUncheckedCreateWithoutUserGroupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserGroupsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOwnedGroupsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOwnedGroupsInput, Prisma.UserUncheckedCreateWithoutOwnedGroupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOwnedGroupsInput
+  upsert?: Prisma.UserUpsertWithoutOwnedGroupsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOwnedGroupsInput, Prisma.UserUpdateWithoutOwnedGroupsInput>, Prisma.UserUncheckedUpdateWithoutOwnedGroupsInput>
+}
+
+export type UserUpdateOneWithoutUserGroupsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserGroupsInput, Prisma.UserUncheckedCreateWithoutUserGroupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserGroupsInput
+  upsert?: Prisma.UserUpsertWithoutUserGroupsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserGroupsInput, Prisma.UserUpdateWithoutUserGroupsInput>, Prisma.UserUncheckedUpdateWithoutUserGroupsInput>
+}
+
+export type UserCreateNestedOneWithoutMemberGroupsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMemberGroupsInput, Prisma.UserUncheckedCreateWithoutMemberGroupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMemberGroupsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMemberGroupsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMemberGroupsInput, Prisma.UserUncheckedCreateWithoutMemberGroupsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMemberGroupsInput
+  upsert?: Prisma.UserUpsertWithoutMemberGroupsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMemberGroupsInput, Prisma.UserUpdateWithoutMemberGroupsInput>, Prisma.UserUncheckedUpdateWithoutMemberGroupsInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id?: string
   name?: string | null
@@ -577,11 +647,14 @@ export type UserCreateWithoutSessionsInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -595,11 +668,14 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -629,11 +705,14 @@ export type UserUpdateWithoutSessionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -647,11 +726,14 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccounts_authInput = {
@@ -665,11 +747,14 @@ export type UserCreateWithoutAccounts_authInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccounts_authInput = {
@@ -683,11 +768,14 @@ export type UserUncheckedCreateWithoutAccounts_authInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccounts_authInput = {
@@ -717,11 +805,14 @@ export type UserUpdateWithoutAccounts_authInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccounts_authInput = {
@@ -735,11 +826,14 @@ export type UserUncheckedUpdateWithoutAccounts_authInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -753,11 +847,14 @@ export type UserCreateWithoutAccountsInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -771,11 +868,14 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -805,11 +905,14 @@ export type UserUpdateWithoutAccountsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -823,11 +926,14 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSortingCategoriesInput = {
@@ -841,11 +947,14 @@ export type UserCreateWithoutSortingCategoriesInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSortingCategoriesInput = {
@@ -859,11 +968,14 @@ export type UserUncheckedCreateWithoutSortingCategoriesInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSortingCategoriesInput = {
@@ -893,11 +1005,14 @@ export type UserUpdateWithoutSortingCategoriesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSortingCategoriesInput = {
@@ -911,11 +1026,14 @@ export type UserUncheckedUpdateWithoutSortingCategoriesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFixedsInput = {
@@ -929,11 +1047,14 @@ export type UserCreateWithoutFixedsInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFixedsInput = {
@@ -947,11 +1068,14 @@ export type UserUncheckedCreateWithoutFixedsInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
   archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFixedsInput = {
@@ -981,11 +1105,14 @@ export type UserUpdateWithoutFixedsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFixedsInput = {
@@ -999,11 +1126,14 @@ export type UserUncheckedUpdateWithoutFixedsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
   archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutArchivedsInput = {
@@ -1017,11 +1147,14 @@ export type UserCreateWithoutArchivedsInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutArchivedsInput = {
@@ -1035,11 +1168,14 @@ export type UserUncheckedCreateWithoutArchivedsInput = {
   email: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
   accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
   fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
   sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutArchivedsInput = {
@@ -1069,11 +1205,14 @@ export type UserUpdateWithoutArchivedsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutArchivedsInput = {
@@ -1087,11 +1226,314 @@ export type UserUncheckedUpdateWithoutArchivedsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
   accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
   fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
   sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutOwnedGroupsInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberGroups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
+  accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutOwnedGroupsInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberGroups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
+  accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutOwnedGroupsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedGroupsInput, Prisma.UserUncheckedCreateWithoutOwnedGroupsInput>
+}
+
+export type UserCreateWithoutUserGroupsInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberCreateNestedManyWithoutUserInput
+  accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUserGroupsInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutOwnerInput
+  memberGroups?: Prisma.GroupMemberUncheckedCreateNestedManyWithoutUserInput
+  accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUserGroupsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserGroupsInput, Prisma.UserUncheckedCreateWithoutUserGroupsInput>
+}
+
+export type UserUpsertWithoutOwnedGroupsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOwnedGroupsInput, Prisma.UserUncheckedUpdateWithoutOwnedGroupsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOwnedGroupsInput, Prisma.UserUncheckedCreateWithoutOwnedGroupsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOwnedGroupsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOwnedGroupsInput, Prisma.UserUncheckedUpdateWithoutOwnedGroupsInput>
+}
+
+export type UserUpdateWithoutOwnedGroupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberGroups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
+  accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOwnedGroupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberGroups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutUserGroupsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUserGroupsInput, Prisma.UserUncheckedUpdateWithoutUserGroupsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserGroupsInput, Prisma.UserUncheckedCreateWithoutUserGroupsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUserGroupsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUserGroupsInput, Prisma.UserUncheckedUpdateWithoutUserGroupsInput>
+}
+
+export type UserUpdateWithoutUserGroupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUpdateManyWithoutUserNestedInput
+  accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUserGroupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutOwnerNestedInput
+  memberGroups?: Prisma.GroupMemberUncheckedUpdateManyWithoutUserNestedInput
+  accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutMemberGroupsInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupCreateNestedManyWithoutOwnerInput
+  accounts_auth?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMemberGroupsInput = {
+  id?: string
+  name?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  clerkId?: string | null
+  code?: string | null
+  role?: $Enums.UserRole
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutOwnerInput
+  accounts_auth?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.MyAccountsUncheckedCreateNestedManyWithoutUserInput
+  fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutUserInput
+  archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutUserInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedCreateNestedManyWithoutUserInput
+  userGroups?: Prisma.UserGroupUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMemberGroupsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMemberGroupsInput, Prisma.UserUncheckedCreateWithoutMemberGroupsInput>
+}
+
+export type UserUpsertWithoutMemberGroupsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMemberGroupsInput, Prisma.UserUncheckedUpdateWithoutMemberGroupsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMemberGroupsInput, Prisma.UserUncheckedCreateWithoutMemberGroupsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMemberGroupsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMemberGroupsInput, Prisma.UserUncheckedUpdateWithoutMemberGroupsInput>
+}
+
+export type UserUpdateWithoutMemberGroupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUpdateManyWithoutOwnerNestedInput
+  accounts_auth?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMemberGroupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  clerkId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ownedGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutOwnerNestedInput
+  accounts_auth?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.MyAccountsUncheckedUpdateManyWithoutUserNestedInput
+  fixeds?: Prisma.FixedUncheckedUpdateManyWithoutUserNestedInput
+  archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutUserNestedInput
+  sortingCategories?: Prisma.SortingCategoryUncheckedUpdateManyWithoutUserNestedInput
+  userGroups?: Prisma.UserGroupUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1100,21 +1542,27 @@ export type UserUncheckedUpdateWithoutArchivedsInput = {
  */
 
 export type UserCountOutputType = {
+  ownedGroups: number
+  memberGroups: number
   accounts_auth: number
   sessions: number
   accounts: number
   fixeds: number
   archiveds: number
   sortingCategories: number
+  userGroups: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ownedGroups?: boolean | UserCountOutputTypeCountOwnedGroupsArgs
+  memberGroups?: boolean | UserCountOutputTypeCountMemberGroupsArgs
   accounts_auth?: boolean | UserCountOutputTypeCountAccounts_authArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   fixeds?: boolean | UserCountOutputTypeCountFixedsArgs
   archiveds?: boolean | UserCountOutputTypeCountArchivedsArgs
   sortingCategories?: boolean | UserCountOutputTypeCountSortingCategoriesArgs
+  userGroups?: boolean | UserCountOutputTypeCountUserGroupsArgs
 }
 
 /**
@@ -1125,6 +1573,20 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOwnedGroupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserGroupWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMemberGroupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GroupMemberWhereInput
 }
 
 /**
@@ -1169,6 +1631,13 @@ export type UserCountOutputTypeCountSortingCategoriesArgs<ExtArgs extends runtim
   where?: Prisma.SortingCategoryWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUserGroupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserGroupWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1181,12 +1650,15 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   email?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  ownedGroups?: boolean | Prisma.User$ownedGroupsArgs<ExtArgs>
+  memberGroups?: boolean | Prisma.User$memberGroupsArgs<ExtArgs>
   accounts_auth?: boolean | Prisma.User$accounts_authArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   fixeds?: boolean | Prisma.User$fixedsArgs<ExtArgs>
   archiveds?: boolean | Prisma.User$archivedsArgs<ExtArgs>
   sortingCategories?: boolean | Prisma.User$sortingCategoriesArgs<ExtArgs>
+  userGroups?: boolean | Prisma.User$userGroupsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1231,12 +1703,15 @@ export type UserSelectScalar = {
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "image" | "emailVerified" | "clerkId" | "code" | "role" | "email" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  ownedGroups?: boolean | Prisma.User$ownedGroupsArgs<ExtArgs>
+  memberGroups?: boolean | Prisma.User$memberGroupsArgs<ExtArgs>
   accounts_auth?: boolean | Prisma.User$accounts_authArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   fixeds?: boolean | Prisma.User$fixedsArgs<ExtArgs>
   archiveds?: boolean | Prisma.User$archivedsArgs<ExtArgs>
   sortingCategories?: boolean | Prisma.User$sortingCategoriesArgs<ExtArgs>
+  userGroups?: boolean | Prisma.User$userGroupsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1245,12 +1720,15 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    ownedGroups: Prisma.$UserGroupPayload<ExtArgs>[]
+    memberGroups: Prisma.$GroupMemberPayload<ExtArgs>[]
     accounts_auth: Prisma.$AccountPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     accounts: Prisma.$MyAccountsPayload<ExtArgs>[]
     fixeds: Prisma.$FixedPayload<ExtArgs>[]
     archiveds: Prisma.$ArchivedPayload<ExtArgs>[]
     sortingCategories: Prisma.$SortingCategoryPayload<ExtArgs>[]
+    userGroups: Prisma.$UserGroupPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1657,12 +2135,15 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  ownedGroups<T extends Prisma.User$ownedGroupsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedGroupsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  memberGroups<T extends Prisma.User$memberGroupsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$memberGroupsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts_auth<T extends Prisma.User$accounts_authArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accounts_authArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MyAccountsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   fixeds<T extends Prisma.User$fixedsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$fixedsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FixedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   archiveds<T extends Prisma.User$archivedsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$archivedsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArchivedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sortingCategories<T extends Prisma.User$sortingCategoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sortingCategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SortingCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userGroups<T extends Prisma.User$userGroupsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userGroupsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2090,6 +2571,54 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * User.ownedGroups
+ */
+export type User$ownedGroupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserGroup
+   */
+  select?: Prisma.UserGroupSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserGroup
+   */
+  omit?: Prisma.UserGroupOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserGroupInclude<ExtArgs> | null
+  where?: Prisma.UserGroupWhereInput
+  orderBy?: Prisma.UserGroupOrderByWithRelationInput | Prisma.UserGroupOrderByWithRelationInput[]
+  cursor?: Prisma.UserGroupWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserGroupScalarFieldEnum | Prisma.UserGroupScalarFieldEnum[]
+}
+
+/**
+ * User.memberGroups
+ */
+export type User$memberGroupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GroupMember
+   */
+  select?: Prisma.GroupMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GroupMember
+   */
+  omit?: Prisma.GroupMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GroupMemberInclude<ExtArgs> | null
+  where?: Prisma.GroupMemberWhereInput
+  orderBy?: Prisma.GroupMemberOrderByWithRelationInput | Prisma.GroupMemberOrderByWithRelationInput[]
+  cursor?: Prisma.GroupMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GroupMemberScalarFieldEnum | Prisma.GroupMemberScalarFieldEnum[]
+}
+
+/**
  * User.accounts_auth
  */
 export type User$accounts_authArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2231,6 +2760,30 @@ export type User$sortingCategoriesArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.SortingCategoryScalarFieldEnum | Prisma.SortingCategoryScalarFieldEnum[]
+}
+
+/**
+ * User.userGroups
+ */
+export type User$userGroupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserGroup
+   */
+  select?: Prisma.UserGroupSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserGroup
+   */
+  omit?: Prisma.UserGroupOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserGroupInclude<ExtArgs> | null
+  where?: Prisma.UserGroupWhereInput
+  orderBy?: Prisma.UserGroupOrderByWithRelationInput | Prisma.UserGroupOrderByWithRelationInput[]
+  cursor?: Prisma.UserGroupWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserGroupScalarFieldEnum | Prisma.UserGroupScalarFieldEnum[]
 }
 
 /**

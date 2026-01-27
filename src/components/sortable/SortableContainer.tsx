@@ -68,19 +68,15 @@ export const SortableContainer: React.FC<SortableContainerProps> = ({
       return;
     }
 
-    // Cria novo array com as posições atualizadas
     const newAccounts = arrayMove(accounts, oldIndex, newIndex);
 
-    // Atualiza as posições
     const updatedAccounts = newAccounts.map((account, index) => ({
       ...account,
-      position: index, // Apenas position
+      position: index,
     }));
 
-    // Atualiza a UI imediatamente
     onOrderChange(updatedAccounts);
 
-    // Salva automaticamente no backend
     try {
       setIsSaving(true);
       await onSaveOrder(updatedAccounts);

@@ -166,10 +166,12 @@ const CardsHomeContent = () => {
               <SortableItem key={account.id} id={account.id} isSorting={true}>
                 <AccountCard
                   account={account}
+                  userId={userId}
                   viewMode={viewMode}
                   onDelete={deleteAccount}
                   onEdit={handleEdit}
                   onView={handleView}
+                  refetch={refetch}
                 />
               </SortableItem>
             ))}

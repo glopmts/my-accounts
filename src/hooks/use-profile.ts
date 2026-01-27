@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { api } from "../lib/axios";
 import { useAuthCustom } from "../lib/useAuth";
@@ -8,19 +8,20 @@ export function useProfile() {
   const [isEdite, setEdite] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isSendingVerification, setIsSendingVerification] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [form, setForm] = useState({
     name: user?.name || "",
     image: user?.image || "",
   });
 
-  useState(() => {
+  useEffect(() => {
     if (user) {
       setForm({
         name: user.name || "",
         image: user.image || "",
       });
     }
-  });
+  }, [user]);
 
   const handleEdite = () => {
     setEdite((prev) => !prev);
@@ -55,6 +56,34 @@ export function useProfile() {
       console.error("Update error:", error);
       toast.error("Erro ao atualizar perfil");
       setIsUpdate(false);
+    }
+  };
+
+  const handleImageUpload = async (url: string) => {
+    if (!userId) {
+      toast.error("Usuário não encontrado");
+      return;
+    }
+
+    try {
+      setIsUploading(true);
+
+      setForm((prev) => ({ ...prev, image: url }));
+
+      const response = await api.put("/user/update", {
+        userId: userId,
+        image: url,
+      });
+
+      if (response.data.success) {
+        toast.success("Imagem de perfil atualizada!");
+        refetch();
+      }
+    } catch (error) {
+      console.error("Image update error:", error);
+      toast.error("Erro ao atualizar imagem");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -96,6 +125,7 @@ export function useProfile() {
     isEdite,
     isUpdate,
     isSendingVerification,
+    isUploading,
 
     form,
 
@@ -103,6 +133,7 @@ export function useProfile() {
     setEdite,
     setForm,
     handleEdite,
+    handleImageUpload,
     handleSendVerificationEmail,
     handleUpdate,
   };

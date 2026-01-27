@@ -1,24 +1,20 @@
 "use client";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/avatar-custom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
+import { useProfile } from "@/hooks/use-profile";
 import { cn } from "@/lib/utils";
+import { fnDateBasic } from "@/utils/formatDates";
 import { Mail, Pen, PenOff, ShieldAlert, ShieldCheck } from "lucide-react";
-import { useProfile } from "../../../hooks/use-profile";
+import { ImageProfile } from "./image-profile";
 
 const Profile = () => {
   const {
     user,
     isLoading,
-    userId,
     error,
 
     isEdite,
@@ -26,10 +22,12 @@ const Profile = () => {
     isSendingVerification,
 
     form,
+    isUploading,
 
     refetch,
     setEdite,
     setForm,
+    handleImageUpload,
     handleEdite,
     handleSendVerificationEmail,
     handleUpdate,
@@ -113,16 +111,12 @@ const Profile = () => {
                 {/* Avatar Section */}
                 <div className="flex flex-col items-center gap-4">
                   <div className="relative">
-                    <Avatar className="w-24 h-24 md:w-32 md:h-32 border-4 border-background shadow-lg">
-                      <AvatarImage
-                        src={user?.image || ""}
-                        alt={user?.name || "User Avatar"}
-                        className="object-cover"
-                      />
-                      <AvatarFallback className="text-2xl font-semibold bg-primary/10 text-primary">
-                        {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
-                      </AvatarFallback>
-                    </Avatar>
+                    <ImageProfile
+                      currentImage={form.image}
+                      userName={user?.name || "User"}
+                      onImageUpdate={handleImageUpload}
+                      isUploading={isUploading}
+                    />
                     <div className="absolute -bottom-2 -right-2">
                       <div
                         className={cn(
@@ -270,11 +264,7 @@ const Profile = () => {
                   <p className="text-sm font-medium text-muted-foreground">
                     Membro desde
                   </p>
-                  <p className="font-medium">
-                    {new Date(user.createdAt || Date.now()).toLocaleDateString(
-                      "pt-BR",
-                    )}
-                  </p>
+                  <p className="font-medium">{fnDateBasic(user.createdAt)}</p>
                 </div>
                 <div className="space-y-2 p-4 rounded-lg bg-zinc-50 dark:bg-zinc-900/50">
                   <p className="text-sm font-medium text-muted-foreground">

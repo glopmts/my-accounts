@@ -58,7 +58,10 @@ export const ModelName = {
   MyAccounts: 'MyAccounts',
   SortingCategory: 'SortingCategory',
   Fixed: 'Fixed',
-  Archived: 'Archived'
+  Archived: 'Archived',
+  UserGroup: 'UserGroup',
+  GroupMember: 'GroupMember',
+  GroupPermission: 'GroupPermission'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -179,6 +182,45 @@ export const ArchivedScalarFieldEnum = {
 } as const
 
 export type ArchivedScalarFieldEnum = (typeof ArchivedScalarFieldEnum)[keyof typeof ArchivedScalarFieldEnum]
+
+
+export const UserGroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
+} as const
+
+export type UserGroupScalarFieldEnum = (typeof UserGroupScalarFieldEnum)[keyof typeof UserGroupScalarFieldEnum]
+
+
+export const GroupMemberScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  userId: 'userId',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GroupMemberScalarFieldEnum = (typeof GroupMemberScalarFieldEnum)[keyof typeof GroupMemberScalarFieldEnum]
+
+
+export const GroupPermissionScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  myaccountId: 'myaccountId',
+  canView: 'canView',
+  canEdit: 'canEdit',
+  canDelete: 'canDelete',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GroupPermissionScalarFieldEnum = (typeof GroupPermissionScalarFieldEnum)[keyof typeof GroupPermissionScalarFieldEnum]
 
 
 export const SortOrder = {

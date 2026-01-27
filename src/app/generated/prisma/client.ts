@@ -79,3 +79,18 @@ export type Fixed = Prisma.FixedModel
  * 
  */
 export type Archived = Prisma.ArchivedModel
+/**
+ * Model UserGroup
+ * User Group
+ */
+export type UserGroup = Prisma.UserGroupModel
+/**
+ * Model GroupMember
+ * 
+ */
+export type GroupMember = Prisma.GroupMemberModel
+/**
+ * Model GroupPermission
+ * 
+ */
+export type GroupPermission = Prisma.GroupPermissionModel

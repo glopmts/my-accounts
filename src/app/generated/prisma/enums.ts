@@ -9,6 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
+export const MemberStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  REJECTED: 'REJECTED'
+} as const
+
+export type MemberStatus = (typeof MemberStatus)[keyof typeof MemberStatus]
+
+
 export const SecretType = {
   RESET_PASSWORD: 'RESET_PASSWORD',
   VERIFY_EMAIL: 'VERIFY_EMAIL',

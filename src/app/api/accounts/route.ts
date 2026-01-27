@@ -49,6 +49,15 @@ export async function GET(request: NextRequest) {
     const accounts = await prisma.myAccounts.findMany({
       where: {
         userId: isAdmin ? undefined : userId,
+        AND: [
+          {
+            archiveds: {
+              every: {
+                isArchived: false,
+              },
+            },
+          },
+        ],
       },
       orderBy: { createdAt: "desc" },
     });
