@@ -7,14 +7,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MyAccounts } from "@/types/interfaces";
-import { FileCode, Key, Plus, Shield, StickyNote, X } from "lucide-react";
-import React from "react";
+import {
+  Eye,
+  EyeOff,
+  FileCode,
+  Fingerprint,
+  Key,
+  KeyRound,
+  Lock,
+  MessageSquare,
+  Notebook,
+  Plus,
+  Shield,
+  StickyNote,
+  X,
+} from "lucide-react";
+import React, { useState } from "react";
 import { useFormAccount } from "../../hooks/use-form-account";
 import CustomModal from "../custom-modal";
 import EditorContent from "../md-editor";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 
 interface AddSecretModalProps {
   editingAccount?: MyAccounts | null;
@@ -61,6 +76,8 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
     refetch,
   });
 
+  const [showPassword, setShowPassword] = useState<Record<number, boolean>>({});
+
   const isOpen = isOpenProp !== undefined ? isOpenProp : internalIsOpen;
   const open = () => {
     if (onOpenChange) {
@@ -90,6 +107,21 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
         return <Shield className="w-4 h-4" />;
       default:
         return <StickyNote className="w-4 h-4" />;
+    }
+  };
+
+  const getPasswordTypeIcon = (type: string) => {
+    switch (type) {
+      case "password":
+        return <Lock className="w-4 h-4" />;
+      case "pin":
+        return <Fingerprint className="w-4 h-4" />;
+      case "token":
+        return <KeyRound className="w-4 h-4" />;
+      case "security_answer":
+        return <MessageSquare className="w-4 h-4" />;
+      default:
+        return <Lock className="w-4 h-4" />;
     }
   };
 
@@ -135,6 +167,10 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
     setFormData((prev) => ({ ...prev, type: value }));
   };
 
+  const handlePasswordTypeChange = (index: number, value: string) => {
+    handlePasswordChange(index, "type", value);
+  };
+
   const handleEditorChange = (
     value:
       | string
@@ -150,6 +186,13 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
     }
   };
 
+  const togglePasswordVisibility = (index: number) => {
+    setShowPassword((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
   return (
     <>
       {/* Botão Trigger */}
@@ -160,7 +203,7 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
         isOpen={isOpen}
         onClose={close}
         title={editingAccount ? "Edit Conta" : "Nova Conta"}
-        maxWidth="md:max-w-lg max-w-md  lg:max-w-xl"
+        maxWidth="md:max-w-2xl max-w-md lg:max-w-3xl"
       >
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
@@ -194,31 +237,77 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
               <Label className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest mb-2">
                 Type
               </Label>
-              <div className="grid grid-cols-3 gap-3">
-                <Select value={formData.type} onValueChange={handleTypeChange}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue>
+              <Select value={formData.type} onValueChange={handleTypeChange}>
+                <SelectTrigger className="w-full">
+                  <SelectValue>
+                    <div className="flex items-center gap-2">
+                      {getTypeIcon(formData.type)}
+                      <span>{getTypeLabel(formData.type)}</span>
+                    </div>
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent align="center">
+                  {Object.values(SecretType).map((typeValue) => (
+                    <SelectItem
+                      key={typeValue}
+                      value={typeValue}
+                      className="flex items-center gap-2"
+                    >
                       <div className="flex items-center gap-2">
-                        {getTypeIcon(formData.type)}
-                        <span>{getTypeLabel(formData.type)}</span>
+                        {getTypeIcon(typeValue)}
+                        {getTypeLabel(typeValue)}
                       </div>
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent align="center">
-                    {Object.values(SecretType).map((typeValue) => (
-                      <SelectItem
-                        key={typeValue}
-                        value={typeValue}
-                        className="flex items-center gap-2"
-                      >
-                        <div className="flex items-center gap-2">
-                          {getTypeIcon(typeValue)}
-                          {getTypeLabel(typeValue)}
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label
+                  htmlFor="url"
+                  className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest mb-2"
+                >
+                  URL (Optional)
+                </Label>
+                <Input
+                  id="url"
+                  name="url"
+                  type="url"
+                  placeholder="https://example.com/login"
+                  value={formData.url}
+                  onChange={handleChange}
+                  className={validationErrors.url ? "border-red-500" : ""}
+                />
+                {validationErrors.url && (
+                  <p className="mt-1 text-xs text-red-500">
+                    {validationErrors.url}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label
+                  htmlFor="icon"
+                  className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest mb-2"
+                >
+                  Icon URL (Optional)
+                </Label>
+                <Input
+                  id="icon"
+                  name="icon"
+                  type="url"
+                  placeholder="https://example.com/icon.png"
+                  value={formData.icon}
+                  onChange={handleChange}
+                  className={validationErrors.icon ? "border-red-500" : ""}
+                />
+                {validationErrors.icon && (
+                  <p className="mt-1 text-xs text-red-500">
+                    {validationErrors.icon}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -229,65 +318,20 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
               >
                 Description (Optional)
               </Label>
-              <EditorContent
+              <Textarea
                 id="description"
                 name="description"
                 placeholder="Brief context about this entry..."
                 rows={2}
                 value={formData.description}
-                onChange={handleEditorChange}
-              />
-            </div>
-
-            <div>
-              <Label
-                htmlFor="url"
-                className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest mb-2"
-              >
-                URL (Optional)
-              </Label>
-              <Input
-                id="url"
-                name="url"
-                type="url"
-                placeholder="https://example.com/login"
-                value={formData.url}
                 onChange={handleChange}
-                className={validationErrors.url ? "border-red-500" : ""}
+                className="resize-none"
               />
-              {validationErrors.url && (
-                <p className="mt-1 text-xs text-red-500">
-                  {validationErrors.url}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <Label
-                htmlFor="icon"
-                className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest mb-2"
-              >
-                Icon URL (Optional)
-              </Label>
-              <Input
-                id="icon"
-                name="icon"
-                type="url"
-                placeholder="https://example.com/icon.png"
-                value={formData.icon}
-                onChange={handleChange}
-                className={validationErrors.icon ? "border-red-500" : ""}
-              />
-              {validationErrors.icon && (
-                <p className="mt-1 text-xs text-red-500">
-                  {validationErrors.icon}
-                </p>
-              )}
             </div>
 
             {/* Passwords Section */}
-            <div>
-              <div className="flex justify-between items-center mb-2">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
                 <Label className="block text-xs font-bold dark:text-zinc-400 uppercase tracking-widest">
                   Passwords
                 </Label>
@@ -298,39 +342,184 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
                   size="sm"
                   className="text-xs"
                 >
+                  <Plus className="w-3 h-3 mr-1" />
                   Add Password
                 </Button>
               </div>
 
-              <div className="space-y-3">
-                {formData.password.map((password, index) => (
-                  <div key={index} className="flex gap-2 items-center">
-                    <Input
-                      type="password"
-                      placeholder={`Password ${index + 1}`}
-                      value={password}
-                      onChange={(e) =>
-                        handlePasswordChange(index, e.target.value)
-                      }
-                      className="flex-1"
-                    />
-                    <Button
-                      type="button"
-                      onClick={() => removePasswordField(index)}
-                      variant="ghost"
-                      size="icon"
-                      className="text-red-500 hover:text-red-600 hover:bg-red-500/10"
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
+              <div className="space-y-4">
+                {formData.passwords.map((password, index) => (
+                  <div
+                    key={index}
+                    className="p-4 border border-zinc-700 rounded-lg space-y-3"
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <Notebook className="w-4 h-4 text-zinc-500" />
+                        <span className="text-sm font-medium">
+                          Password {index + 1}
+                        </span>
+                      </div>
+                      {formData.passwords.length > 1 && (
+                        <Button
+                          type="button"
+                          onClick={() => removePasswordField(index)}
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 text-red-500 hover:text-red-600 hover:bg-red-500/10"
+                        >
+                          <X className="w-3 h-3" />
+                        </Button>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label className="text-xs text-zinc-500 mb-1 block">
+                          Label *
+                        </Label>
+                        <Input
+                          type="text"
+                          placeholder="e.g., Main Password, PIN, Security Answer"
+                          value={password.label}
+                          onChange={(e) =>
+                            handlePasswordChange(index, "label", e.target.value)
+                          }
+                          className="text-sm"
+                        />
+                        {validationErrors[`passwords[${index}].label`] && (
+                          <p className="mt-1 text-xs text-red-500">
+                            {validationErrors[`passwords[${index}].label`]}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <Label className="text-xs text-zinc-500 mb-1 block">
+                          Type
+                        </Label>
+                        <Select
+                          value={password.type}
+                          onValueChange={(value) =>
+                            handlePasswordTypeChange(index, value)
+                          }
+                        >
+                          <SelectTrigger className="text-sm">
+                            <SelectValue>
+                              <div className="flex items-center gap-2">
+                                {getPasswordTypeIcon(password.type)}
+                                <span className="capitalize">
+                                  {password.type}
+                                </span>
+                              </div>
+                            </SelectValue>
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="password">
+                              <div className="flex items-center gap-2">
+                                <Lock className="w-4 h-4" />
+                                <span>Password</span>
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="pin">
+                              <div className="flex items-center gap-2">
+                                <Fingerprint className="w-4 h-4" />
+                                <span>PIN</span>
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="token">
+                              <div className="flex items-center gap-2">
+                                <KeyRound className="w-4 h-4" />
+                                <span>Token</span>
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="security_answer">
+                              <div className="flex items-center gap-2">
+                                <MessageSquare className="w-4 h-4" />
+                                <span>Security Answer</span>
+                              </div>
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label className="text-xs text-zinc-500 mb-1 block">
+                        Value{" "}
+                        {password.id ? "(Leave empty to keep current)" : "*"}
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          type={showPassword[index] ? "text" : "password"}
+                          placeholder={
+                            password.id
+                              ? "Enter new value or leave empty to keep current"
+                              : "Enter password value"
+                          }
+                          value={password.value}
+                          onChange={(e) =>
+                            handlePasswordChange(index, "value", e.target.value)
+                          }
+                          className="text-sm pr-10"
+                        />
+                        <Button
+                          type="button"
+                          onClick={() => togglePasswordVisibility(index)}
+                          variant="ghost"
+                          size="icon"
+                          className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7"
+                        >
+                          {showPassword[index] ? (
+                            <EyeOff className="w-4 h-4" />
+                          ) : (
+                            <Eye className="w-4 h-4" />
+                          )}
+                        </Button>
+                      </div>
+                      {validationErrors[`passwords[${index}].value`] && (
+                        <p className="mt-1 text-xs text-red-500">
+                          {validationErrors[`passwords[${index}].value`]}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label className="text-xs text-zinc-500 mb-1 block">
+                          Hint (Optional)
+                        </Label>
+                        <Input
+                          type="text"
+                          placeholder="Password hint"
+                          value={password.hint || ""}
+                          onChange={(e) =>
+                            handlePasswordChange(index, "hint", e.target.value)
+                          }
+                          className="text-sm"
+                        />
+                      </div>
+                    </div>
                   </div>
                 ))}
 
-                {formData.password.length === 0 && (
-                  <p className="text-sm text-zinc-500 italic">
-                    No passwords added. Click &quot;Add Password&quot; to add
-                    one.
-                  </p>
+                {formData.passwords.length === 0 && (
+                  <div className="text-center p-8 border-2 border-dashed border-zinc-700 rounded-lg">
+                    <Lock className="w-12 h-12 mx-auto text-zinc-600 mb-2" />
+                    <p className="text-sm text-zinc-500">
+                      No passwords added yet.
+                    </p>
+                    <Button
+                      type="button"
+                      onClick={addPasswordField}
+                      variant="outline"
+                      size="sm"
+                      className="mt-3"
+                    >
+                      <Plus className="w-3 h-3 mr-1" />
+                      Add Your First Password
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>
@@ -401,9 +590,9 @@ const AddSecretModal: React.FC<AddSecretModalProps> = ({
                   Processing...
                 </span>
               ) : editingAccount ? (
-                "Update Secret"
+                "Update Account"
               ) : (
-                "Create Secret"
+                "Create Account"
               )}
             </Button>
           </div>

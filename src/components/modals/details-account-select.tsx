@@ -12,16 +12,13 @@ import {
   Clock,
   Copy,
   ExternalLink,
-  Eye,
-  EyeOff,
   FileText,
   Globe,
-  Key,
   Shield,
   Trash2,
 } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { toast } from "sonner";
 import { TYPE_METADATA } from "../../types/constantes";
 import { MyAccounts } from "../../types/interfaces";
@@ -40,10 +37,6 @@ const DetailsAccountModel = ({
   onClose,
   handleDelete,
 }: PropsDataAccount) => {
-  const [showPasswords, setShowPasswords] = useState<boolean[]>(
-    account.password.map(() => false),
-  );
-
   if (!account) return null;
 
   const meta = TYPE_METADATA[account.type];
@@ -55,12 +48,6 @@ const DetailsAccountModel = ({
     } catch (err) {
       toast.error("Falha ao copiar");
     }
-  };
-
-  const togglePasswordVisibility = (index: number) => {
-    setShowPasswords((prev) =>
-      prev.map((show, i) => (i === index ? !show : show)),
-    );
   };
 
   const formatDate = (date: Date) => {
@@ -203,55 +190,6 @@ const DetailsAccountModel = ({
             </div>
             <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
               {account.type}
-            </div>
-          </div>
-
-          {/* Senhas */}
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-sm font-medium dark:text-gray-400">
-              <Key className="w-4 h-4 shrink-0" />
-              <span>Senhas</span>
-            </div>
-            <div className="space-y-2">
-              {account.password.map((pwd, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-3 dark:bg-zinc-800 border rounded-lg gap-2"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="font-mono text-sm break-all">
-                      {showPasswords[index] ? pwd : "•".repeat(12)}
-                    </div>
-                    {account.password.length > 1 && (
-                      <span className="text-xs text-gray-500">
-                        Senha #{index + 1}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-1 shrink-0">
-                    <Button
-                      onClick={() => togglePasswordVisibility(index)}
-                      className="p-2"
-                      variant="outline"
-                      title={showPasswords[index] ? "Ocultar" : "Mostrar"}
-                    >
-                      {showPasswords[index] ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </Button>
-                    <Button
-                      onClick={() => copyToClipboard(pwd, "Senha")}
-                      className="p-2"
-                      title="Copiar"
-                      variant="outline"
-                    >
-                      <Copy className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
 

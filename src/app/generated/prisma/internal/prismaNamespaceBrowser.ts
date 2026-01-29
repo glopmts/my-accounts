@@ -56,6 +56,7 @@ export const ModelName = {
   Account: 'Account',
   EmailCode: 'EmailCode',
   MyAccounts: 'MyAccounts',
+  Password: 'Password',
   SortingCategory: 'SortingCategory',
   Fixed: 'Fixed',
   Archived: 'Archived',
@@ -99,6 +100,8 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const SessionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  sessionToken: 'sessionToken',
+  isValid: 'isValid',
   createdAt: 'createdAt',
   expiresAt: 'expiresAt'
 } as const
@@ -140,12 +143,26 @@ export const MyAccountsScalarFieldEnum = {
   category: 'category',
   orderInCategory: 'orderInCategory',
   userId: 'userId',
-  password: 'password',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type MyAccountsScalarFieldEnum = (typeof MyAccountsScalarFieldEnum)[keyof typeof MyAccountsScalarFieldEnum]
+
+
+export const PasswordScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  label: 'label',
+  value: 'value',
+  type: 'type',
+  hint: 'hint',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PasswordScalarFieldEnum = (typeof PasswordScalarFieldEnum)[keyof typeof PasswordScalarFieldEnum]
 
 
 export const SortingCategoryScalarFieldEnum = {

@@ -4,8 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { SecretType } from "../app/generated/prisma/enums";
 import { useAuthCustom } from "../lib/useAuth";
-import { MyAccounts } from "../types/interfaces";
-import { schemaAccountCreater } from "../utils/validations/schema-my-accounts";
+import { MyAccounts, PasswordFormData } from "../types/interfaces";
+import {
+  schemaAccountCreater,
+  schemaAccountUpdater,
+} from "../utils/validations/schema-my-accounts";
 import { useMyAccounts } from "./use-my-accounts";
 import { useModal } from "./useModalCustom";
 
@@ -45,7 +48,7 @@ export function useFormAccount({
     url: "",
     notes: "",
     icon: "",
-    password: [] as string[],
+    passwords: [] as PasswordFormData[],
   });
 
   const [validationErrors, setValidationErrors] = useState<
@@ -73,15 +76,12 @@ export function useFormAccount({
       return;
     }
 
-    // Evitar re-inicialização desnecessária
     const accountId = editingAccount?.id || "new";
 
-    // Se já inicializamos para esta conta específica, não re-inicialize
     if (hasInitialized.current === accountId) {
       return;
     }
 
-    // Marcar como inicializado para esta conta
     hasInitialized.current = accountId;
 
     requestAnimationFrame(() => {
@@ -93,7 +93,15 @@ export function useFormAccount({
           url: editingAccount.url || "",
           notes: editingAccount.notes || "",
           icon: editingAccount.icon || "",
-          password: editingAccount.password || [],
+          passwords:
+            editingAccount.passwords?.map((p) => ({
+              id: p.id,
+              label: p.label || "Password",
+              value: "", // Não preencher por segurança
+              type: (p.type as any) || "password",
+              hint: p.hint || "",
+              notes: p.notes || "",
+            })) || [],
         });
       } else {
         setFormData({
@@ -103,7 +111,15 @@ export function useFormAccount({
           url: "",
           notes: "",
           icon: "",
-          password: [],
+          passwords: [
+            {
+              label: "Main Password",
+              value: "",
+              type: "password",
+              hint: "",
+              notes: "",
+            },
+          ],
         });
       }
       setValidationErrors({});
@@ -120,24 +136,72 @@ export function useFormAccount({
         return;
       }
 
-      // Validar dados
-      const validatedData = schemaAccountCreater.parse({
-        ...formData,
-        userId,
-      });
-
       let result;
 
       if (editingAccount) {
         // Atualizar conta existente
-        result = await updateAccount({
+        const updateData = {
           id: editingAccount.id,
-          ...validatedData,
-        });
-        refetch?.();
+          userId,
+          type: formData.type,
+          title: formData.title,
+          description: formData.description || undefined,
+          icon: formData.icon || undefined,
+          url: formData.url || undefined,
+          notes: formData.notes || undefined,
+          passwords: formData.passwords.map((pwd) => {
+            const passwordData: any = {
+              label: pwd.label,
+              type: pwd.type,
+              hint: pwd.hint || undefined,
+              notes: pwd.notes || undefined,
+            };
+
+            // Se é uma senha existente (tem id)
+            if (pwd.id) {
+              passwordData.id = pwd.id;
+              passwordData._action = pwd.value ? "update" : "keep";
+              if (pwd.value) {
+                passwordData.value = pwd.value;
+              }
+            } else {
+              // Nova senha
+              if (pwd.value) {
+                passwordData.value = pwd.value;
+              }
+            }
+
+            return passwordData;
+          }),
+        };
+
+        // Validar com schema de update
+        const validatedData = schemaAccountUpdater.parse(updateData);
+        result = await updateAccount(validatedData);
       } else {
+        // Criar nova conta
+        const createData = {
+          userId,
+          type: formData.type,
+          title: formData.title,
+          description: formData.description || undefined,
+          icon: formData.icon || undefined,
+          url: formData.url || undefined,
+          notes: formData.notes || undefined,
+          passwords: formData.passwords
+            .filter((p) => p.value.trim() !== "")
+            .map((p) => ({
+              label: p.label,
+              value: p.value,
+              type: p.type,
+              hint: p.hint || undefined,
+              notes: p.notes || undefined,
+            })),
+        };
+
+        // Validar com schema de criação
+        const validatedData = schemaAccountCreater.parse(createData);
         result = await createAccount(validatedData);
-        refetch?.();
       }
 
       if (result.success) {
@@ -156,7 +220,8 @@ export function useFormAccount({
         const fieldErrors: Record<string, string> = {};
         zodErrors.forEach((err: { path: string[]; message: string }) => {
           if (err.path && err.path.length > 0) {
-            fieldErrors[err.path[0]] = err.message;
+            const fieldName = err.path.join(".");
+            fieldErrors[fieldName] = err.message;
           }
         });
         setValidationErrors(fieldErrors);
@@ -177,7 +242,7 @@ export function useFormAccount({
       ...prev,
       [name]: value,
     }));
-    // Limpar erro do campo quando usuário começa a digitar
+
     if (validationErrors[name]) {
       setValidationErrors((prev) => {
         const newErrors = { ...prev };
@@ -187,26 +252,54 @@ export function useFormAccount({
     }
   };
 
-  const handlePasswordChange = (index: number, value: string) => {
-    const newPasswords = [...formData.password];
-    newPasswords[index] = value;
-    setFormData((prev) => ({
-      ...prev,
-      password: newPasswords,
-    }));
+  const handlePasswordChange = (
+    index: number,
+    field: keyof PasswordFormData,
+    value: string,
+  ) => {
+    setFormData((prev) => {
+      const newPasswords = [...prev.passwords];
+      newPasswords[index] = {
+        ...newPasswords[index],
+        [field]: value,
+      };
+      return {
+        ...prev,
+        passwords: newPasswords,
+      };
+    });
+
+    // Limpar erro específico
+    const errorKey = `passwords[${index}].${field}`;
+    if (validationErrors[errorKey]) {
+      setValidationErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[errorKey];
+        return newErrors;
+      });
+    }
   };
 
   const addPasswordField = () => {
     setFormData((prev) => ({
       ...prev,
-      password: [...prev.password, ""],
+      passwords: [
+        ...prev.passwords,
+        {
+          label: `Password ${prev.passwords.length + 1}`,
+          value: "",
+          type: "password" as const,
+          hint: "",
+          notes: "",
+        },
+      ],
     }));
   };
 
   const removePasswordField = (index: number) => {
     setFormData((prev) => ({
       ...prev,
-      password: prev.password.filter((_, i) => i !== index),
+      passwords: prev.passwords.filter((_, i) => i !== index),
     }));
   };
 

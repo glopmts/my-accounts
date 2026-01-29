@@ -2,6 +2,36 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import db from "../../../../lib/prisma";
 
+function generateUniqueCode(): string {
+  const letter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+
+  const numbers = Math.floor(100000 + Math.random() * 900000).toString();
+
+  return `${letter}${numbers}`;
+}
+
+async function generateUniqueUserCode(): Promise<string> {
+  let code: string;
+  let isUnique = false;
+
+  for (let i = 0; i < 10; i++) {
+    code = generateUniqueCode();
+
+    const existingCode = await db.user.findUnique({
+      where: { code },
+    });
+
+    if (!existingCode) {
+      isUnique = true;
+      return code;
+    }
+  }
+
+  const letter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+  const timestamp = Date.now().toString().slice(-6);
+  return `${letter}${timestamp}`;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const client = await clerkClient();
@@ -12,7 +42,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Dados inválidos" }, { status: 400 });
     }
 
-    // Verifica se o usuário já existe
     const existingUser = await db.user.findUnique({
       where: { clerkId: userId },
     });
@@ -24,16 +53,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Obtém informações adicionais do Clerk
+    const code = await generateUniqueUserCode();
+
     const clerkUser = await client.users.getUser(userId);
 
-    // Cria o usuário no banco
     const user = await db.user.create({
       data: {
         name: name,
         clerkId: userId,
         email: clerkUser.emailAddresses[0]?.emailAddress || "",
         image: clerkUser.imageUrl || null,
+        code: code,
       },
     });
 
@@ -44,6 +74,7 @@ export async function POST(req: NextRequest) {
           id: user.id,
           name: user.name,
           email: user.email,
+          code: user.code,
         },
       },
       { status: 201 },

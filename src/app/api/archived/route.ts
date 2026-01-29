@@ -124,7 +124,11 @@ export async function GET(request: NextRequest) {
         userId: authenticatedUser.id,
       },
       include: {
-        myaccount: true,
+        myaccount: {
+          include: {
+            passwords: true,
+          },
+        },
       },
     });
 

@@ -80,7 +80,6 @@ export type MyAccountsCountAggregateOutputType = {
   category: number
   orderInCategory: number
   userId: number
-  password: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -141,7 +140,6 @@ export type MyAccountsCountAggregateInputType = {
   category?: true
   orderInCategory?: true
   userId?: true
-  password?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -245,7 +243,6 @@ export type MyAccountsGroupByOutputType = {
   category: string | null
   orderInCategory: number
   userId: string
-  password: string[]
   createdAt: Date
   updatedAt: Date
   _count: MyAccountsCountAggregateOutputType | null
@@ -285,10 +282,10 @@ export type MyAccountsWhereInput = {
   category?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
   orderInCategory?: Prisma.IntFilter<"MyAccounts"> | number
   userId?: Prisma.StringFilter<"MyAccounts"> | string
-  password?: Prisma.StringNullableListFilter<"MyAccounts">
   createdAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  passwords?: Prisma.PasswordListRelationFilter
   fixeds?: Prisma.FixedListRelationFilter
   archiveds?: Prisma.ArchivedListRelationFilter
   groupPermissions?: Prisma.GroupPermissionListRelationFilter
@@ -306,10 +303,10 @@ export type MyAccountsOrderByWithRelationInput = {
   category?: Prisma.SortOrderInput | Prisma.SortOrder
   orderInCategory?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  password?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  passwords?: Prisma.PasswordOrderByRelationAggregateInput
   fixeds?: Prisma.FixedOrderByRelationAggregateInput
   archiveds?: Prisma.ArchivedOrderByRelationAggregateInput
   groupPermissions?: Prisma.GroupPermissionOrderByRelationAggregateInput
@@ -330,10 +327,10 @@ export type MyAccountsWhereUniqueInput = Prisma.AtLeast<{
   category?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
   orderInCategory?: Prisma.IntFilter<"MyAccounts"> | number
   userId?: Prisma.StringFilter<"MyAccounts"> | string
-  password?: Prisma.StringNullableListFilter<"MyAccounts">
   createdAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  passwords?: Prisma.PasswordListRelationFilter
   fixeds?: Prisma.FixedListRelationFilter
   archiveds?: Prisma.ArchivedListRelationFilter
   groupPermissions?: Prisma.GroupPermissionListRelationFilter
@@ -351,7 +348,6 @@ export type MyAccountsOrderByWithAggregationInput = {
   category?: Prisma.SortOrderInput | Prisma.SortOrder
   orderInCategory?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  password?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.MyAccountsCountOrderByAggregateInput
@@ -376,7 +372,6 @@ export type MyAccountsScalarWhereWithAggregatesInput = {
   category?: Prisma.StringNullableWithAggregatesFilter<"MyAccounts"> | string | null
   orderInCategory?: Prisma.IntWithAggregatesFilter<"MyAccounts"> | number
   userId?: Prisma.StringWithAggregatesFilter<"MyAccounts"> | string
-  password?: Prisma.StringNullableListFilter<"MyAccounts">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MyAccounts"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MyAccounts"> | Date | string
 }
@@ -392,10 +387,10 @@ export type MyAccountsCreateInput = {
   position?: number
   category?: string | null
   orderInCategory?: number
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutAccountsInput
+  passwords?: Prisma.PasswordCreateNestedManyWithoutAccountInput
   fixeds?: Prisma.FixedCreateNestedManyWithoutMyaccountInput
   archiveds?: Prisma.ArchivedCreateNestedManyWithoutMyaccountInput
   groupPermissions?: Prisma.GroupPermissionCreateNestedManyWithoutMyaccountInput
@@ -413,9 +408,9 @@ export type MyAccountsUncheckedCreateInput = {
   category?: string | null
   orderInCategory?: number
   userId: string
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  passwords?: Prisma.PasswordUncheckedCreateNestedManyWithoutAccountInput
   fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutMyaccountInput
   archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutMyaccountInput
   groupPermissions?: Prisma.GroupPermissionUncheckedCreateNestedManyWithoutMyaccountInput
@@ -432,10 +427,10 @@ export type MyAccountsUpdateInput = {
   position?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutAccountsNestedInput
+  passwords?: Prisma.PasswordUpdateManyWithoutAccountNestedInput
   fixeds?: Prisma.FixedUpdateManyWithoutMyaccountNestedInput
   archiveds?: Prisma.ArchivedUpdateManyWithoutMyaccountNestedInput
   groupPermissions?: Prisma.GroupPermissionUpdateManyWithoutMyaccountNestedInput
@@ -453,9 +448,9 @@ export type MyAccountsUncheckedUpdateInput = {
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwords?: Prisma.PasswordUncheckedUpdateManyWithoutAccountNestedInput
   fixeds?: Prisma.FixedUncheckedUpdateManyWithoutMyaccountNestedInput
   archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutMyaccountNestedInput
   groupPermissions?: Prisma.GroupPermissionUncheckedUpdateManyWithoutMyaccountNestedInput
@@ -473,7 +468,6 @@ export type MyAccountsCreateManyInput = {
   category?: string | null
   orderInCategory?: number
   userId: string
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -489,7 +483,6 @@ export type MyAccountsUpdateManyMutationInput = {
   position?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -506,7 +499,6 @@ export type MyAccountsUncheckedUpdateManyInput = {
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -521,14 +513,6 @@ export type MyAccountsOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type StringNullableListFilter<$PrismaModel = never> = {
-  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
-  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
-  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
-}
-
 export type MyAccountsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -541,7 +525,6 @@ export type MyAccountsCountOrderByAggregateInput = {
   category?: Prisma.SortOrder
   orderInCategory?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  password?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -635,10 +618,6 @@ export type MyAccountsUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.MyAccountsScalarWhereInput | Prisma.MyAccountsScalarWhereInput[]
 }
 
-export type MyAccountsCreatepasswordInput = {
-  set: string[]
-}
-
 export type EnumSecretTypeFieldUpdateOperationsInput = {
   set?: $Enums.SecretType
 }
@@ -651,9 +630,18 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type MyAccountsUpdatepasswordInput = {
-  set?: string[]
-  push?: string | string[]
+export type MyAccountsCreateNestedOneWithoutPasswordsInput = {
+  create?: Prisma.XOR<Prisma.MyAccountsCreateWithoutPasswordsInput, Prisma.MyAccountsUncheckedCreateWithoutPasswordsInput>
+  connectOrCreate?: Prisma.MyAccountsCreateOrConnectWithoutPasswordsInput
+  connect?: Prisma.MyAccountsWhereUniqueInput
+}
+
+export type MyAccountsUpdateOneRequiredWithoutPasswordsNestedInput = {
+  create?: Prisma.XOR<Prisma.MyAccountsCreateWithoutPasswordsInput, Prisma.MyAccountsUncheckedCreateWithoutPasswordsInput>
+  connectOrCreate?: Prisma.MyAccountsCreateOrConnectWithoutPasswordsInput
+  upsert?: Prisma.MyAccountsUpsertWithoutPasswordsInput
+  connect?: Prisma.MyAccountsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MyAccountsUpdateToOneWithWhereWithoutPasswordsInput, Prisma.MyAccountsUpdateWithoutPasswordsInput>, Prisma.MyAccountsUncheckedUpdateWithoutPasswordsInput>
 }
 
 export type MyAccountsCreateNestedOneWithoutFixedsInput = {
@@ -709,9 +697,9 @@ export type MyAccountsCreateWithoutUserInput = {
   position?: number
   category?: string | null
   orderInCategory?: number
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  passwords?: Prisma.PasswordCreateNestedManyWithoutAccountInput
   fixeds?: Prisma.FixedCreateNestedManyWithoutMyaccountInput
   archiveds?: Prisma.ArchivedCreateNestedManyWithoutMyaccountInput
   groupPermissions?: Prisma.GroupPermissionCreateNestedManyWithoutMyaccountInput
@@ -728,9 +716,9 @@ export type MyAccountsUncheckedCreateWithoutUserInput = {
   position?: number
   category?: string | null
   orderInCategory?: number
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  passwords?: Prisma.PasswordUncheckedCreateNestedManyWithoutAccountInput
   fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutMyaccountInput
   archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutMyaccountInput
   groupPermissions?: Prisma.GroupPermissionUncheckedCreateNestedManyWithoutMyaccountInput
@@ -777,9 +765,100 @@ export type MyAccountsScalarWhereInput = {
   category?: Prisma.StringNullableFilter<"MyAccounts"> | string | null
   orderInCategory?: Prisma.IntFilter<"MyAccounts"> | number
   userId?: Prisma.StringFilter<"MyAccounts"> | string
-  password?: Prisma.StringNullableListFilter<"MyAccounts">
   createdAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MyAccounts"> | Date | string
+}
+
+export type MyAccountsCreateWithoutPasswordsInput = {
+  id?: string
+  title?: string | null
+  description?: string | null
+  icon?: string | null
+  url?: string | null
+  type?: $Enums.SecretType
+  notes?: string | null
+  position?: number
+  category?: string | null
+  orderInCategory?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutAccountsInput
+  fixeds?: Prisma.FixedCreateNestedManyWithoutMyaccountInput
+  archiveds?: Prisma.ArchivedCreateNestedManyWithoutMyaccountInput
+  groupPermissions?: Prisma.GroupPermissionCreateNestedManyWithoutMyaccountInput
+}
+
+export type MyAccountsUncheckedCreateWithoutPasswordsInput = {
+  id?: string
+  title?: string | null
+  description?: string | null
+  icon?: string | null
+  url?: string | null
+  type?: $Enums.SecretType
+  notes?: string | null
+  position?: number
+  category?: string | null
+  orderInCategory?: number
+  userId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutMyaccountInput
+  archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutMyaccountInput
+  groupPermissions?: Prisma.GroupPermissionUncheckedCreateNestedManyWithoutMyaccountInput
+}
+
+export type MyAccountsCreateOrConnectWithoutPasswordsInput = {
+  where: Prisma.MyAccountsWhereUniqueInput
+  create: Prisma.XOR<Prisma.MyAccountsCreateWithoutPasswordsInput, Prisma.MyAccountsUncheckedCreateWithoutPasswordsInput>
+}
+
+export type MyAccountsUpsertWithoutPasswordsInput = {
+  update: Prisma.XOR<Prisma.MyAccountsUpdateWithoutPasswordsInput, Prisma.MyAccountsUncheckedUpdateWithoutPasswordsInput>
+  create: Prisma.XOR<Prisma.MyAccountsCreateWithoutPasswordsInput, Prisma.MyAccountsUncheckedCreateWithoutPasswordsInput>
+  where?: Prisma.MyAccountsWhereInput
+}
+
+export type MyAccountsUpdateToOneWithWhereWithoutPasswordsInput = {
+  where?: Prisma.MyAccountsWhereInput
+  data: Prisma.XOR<Prisma.MyAccountsUpdateWithoutPasswordsInput, Prisma.MyAccountsUncheckedUpdateWithoutPasswordsInput>
+}
+
+export type MyAccountsUpdateWithoutPasswordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumSecretTypeFieldUpdateOperationsInput | $Enums.SecretType
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.IntFieldUpdateOperationsInput | number
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutAccountsNestedInput
+  fixeds?: Prisma.FixedUpdateManyWithoutMyaccountNestedInput
+  archiveds?: Prisma.ArchivedUpdateManyWithoutMyaccountNestedInput
+  groupPermissions?: Prisma.GroupPermissionUpdateManyWithoutMyaccountNestedInput
+}
+
+export type MyAccountsUncheckedUpdateWithoutPasswordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  icon?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumSecretTypeFieldUpdateOperationsInput | $Enums.SecretType
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.IntFieldUpdateOperationsInput | number
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fixeds?: Prisma.FixedUncheckedUpdateManyWithoutMyaccountNestedInput
+  archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutMyaccountNestedInput
+  groupPermissions?: Prisma.GroupPermissionUncheckedUpdateManyWithoutMyaccountNestedInput
 }
 
 export type MyAccountsCreateWithoutFixedsInput = {
@@ -793,10 +872,10 @@ export type MyAccountsCreateWithoutFixedsInput = {
   position?: number
   category?: string | null
   orderInCategory?: number
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutAccountsInput
+  passwords?: Prisma.PasswordCreateNestedManyWithoutAccountInput
   archiveds?: Prisma.ArchivedCreateNestedManyWithoutMyaccountInput
   groupPermissions?: Prisma.GroupPermissionCreateNestedManyWithoutMyaccountInput
 }
@@ -813,9 +892,9 @@ export type MyAccountsUncheckedCreateWithoutFixedsInput = {
   category?: string | null
   orderInCategory?: number
   userId: string
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  passwords?: Prisma.PasswordUncheckedCreateNestedManyWithoutAccountInput
   archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutMyaccountInput
   groupPermissions?: Prisma.GroupPermissionUncheckedCreateNestedManyWithoutMyaccountInput
 }
@@ -847,10 +926,10 @@ export type MyAccountsUpdateWithoutFixedsInput = {
   position?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutAccountsNestedInput
+  passwords?: Prisma.PasswordUpdateManyWithoutAccountNestedInput
   archiveds?: Prisma.ArchivedUpdateManyWithoutMyaccountNestedInput
   groupPermissions?: Prisma.GroupPermissionUpdateManyWithoutMyaccountNestedInput
 }
@@ -867,9 +946,9 @@ export type MyAccountsUncheckedUpdateWithoutFixedsInput = {
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwords?: Prisma.PasswordUncheckedUpdateManyWithoutAccountNestedInput
   archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutMyaccountNestedInput
   groupPermissions?: Prisma.GroupPermissionUncheckedUpdateManyWithoutMyaccountNestedInput
 }
@@ -885,10 +964,10 @@ export type MyAccountsCreateWithoutArchivedsInput = {
   position?: number
   category?: string | null
   orderInCategory?: number
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutAccountsInput
+  passwords?: Prisma.PasswordCreateNestedManyWithoutAccountInput
   fixeds?: Prisma.FixedCreateNestedManyWithoutMyaccountInput
   groupPermissions?: Prisma.GroupPermissionCreateNestedManyWithoutMyaccountInput
 }
@@ -905,9 +984,9 @@ export type MyAccountsUncheckedCreateWithoutArchivedsInput = {
   category?: string | null
   orderInCategory?: number
   userId: string
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  passwords?: Prisma.PasswordUncheckedCreateNestedManyWithoutAccountInput
   fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutMyaccountInput
   groupPermissions?: Prisma.GroupPermissionUncheckedCreateNestedManyWithoutMyaccountInput
 }
@@ -939,10 +1018,10 @@ export type MyAccountsUpdateWithoutArchivedsInput = {
   position?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutAccountsNestedInput
+  passwords?: Prisma.PasswordUpdateManyWithoutAccountNestedInput
   fixeds?: Prisma.FixedUpdateManyWithoutMyaccountNestedInput
   groupPermissions?: Prisma.GroupPermissionUpdateManyWithoutMyaccountNestedInput
 }
@@ -959,9 +1038,9 @@ export type MyAccountsUncheckedUpdateWithoutArchivedsInput = {
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwords?: Prisma.PasswordUncheckedUpdateManyWithoutAccountNestedInput
   fixeds?: Prisma.FixedUncheckedUpdateManyWithoutMyaccountNestedInput
   groupPermissions?: Prisma.GroupPermissionUncheckedUpdateManyWithoutMyaccountNestedInput
 }
@@ -977,10 +1056,10 @@ export type MyAccountsCreateWithoutGroupPermissionsInput = {
   position?: number
   category?: string | null
   orderInCategory?: number
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutAccountsInput
+  passwords?: Prisma.PasswordCreateNestedManyWithoutAccountInput
   fixeds?: Prisma.FixedCreateNestedManyWithoutMyaccountInput
   archiveds?: Prisma.ArchivedCreateNestedManyWithoutMyaccountInput
 }
@@ -997,9 +1076,9 @@ export type MyAccountsUncheckedCreateWithoutGroupPermissionsInput = {
   category?: string | null
   orderInCategory?: number
   userId: string
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  passwords?: Prisma.PasswordUncheckedCreateNestedManyWithoutAccountInput
   fixeds?: Prisma.FixedUncheckedCreateNestedManyWithoutMyaccountInput
   archiveds?: Prisma.ArchivedUncheckedCreateNestedManyWithoutMyaccountInput
 }
@@ -1031,10 +1110,10 @@ export type MyAccountsUpdateWithoutGroupPermissionsInput = {
   position?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutAccountsNestedInput
+  passwords?: Prisma.PasswordUpdateManyWithoutAccountNestedInput
   fixeds?: Prisma.FixedUpdateManyWithoutMyaccountNestedInput
   archiveds?: Prisma.ArchivedUpdateManyWithoutMyaccountNestedInput
 }
@@ -1051,9 +1130,9 @@ export type MyAccountsUncheckedUpdateWithoutGroupPermissionsInput = {
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwords?: Prisma.PasswordUncheckedUpdateManyWithoutAccountNestedInput
   fixeds?: Prisma.FixedUncheckedUpdateManyWithoutMyaccountNestedInput
   archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutMyaccountNestedInput
 }
@@ -1069,7 +1148,6 @@ export type MyAccountsCreateManyUserInput = {
   position?: number
   category?: string | null
   orderInCategory?: number
-  password?: Prisma.MyAccountsCreatepasswordInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1085,9 +1163,9 @@ export type MyAccountsUpdateWithoutUserInput = {
   position?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwords?: Prisma.PasswordUpdateManyWithoutAccountNestedInput
   fixeds?: Prisma.FixedUpdateManyWithoutMyaccountNestedInput
   archiveds?: Prisma.ArchivedUpdateManyWithoutMyaccountNestedInput
   groupPermissions?: Prisma.GroupPermissionUpdateManyWithoutMyaccountNestedInput
@@ -1104,9 +1182,9 @@ export type MyAccountsUncheckedUpdateWithoutUserInput = {
   position?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwords?: Prisma.PasswordUncheckedUpdateManyWithoutAccountNestedInput
   fixeds?: Prisma.FixedUncheckedUpdateManyWithoutMyaccountNestedInput
   archiveds?: Prisma.ArchivedUncheckedUpdateManyWithoutMyaccountNestedInput
   groupPermissions?: Prisma.GroupPermissionUncheckedUpdateManyWithoutMyaccountNestedInput
@@ -1123,7 +1201,6 @@ export type MyAccountsUncheckedUpdateManyWithoutUserInput = {
   position?: Prisma.IntFieldUpdateOperationsInput | number
   category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderInCategory?: Prisma.IntFieldUpdateOperationsInput | number
-  password?: Prisma.MyAccountsUpdatepasswordInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1134,12 +1211,14 @@ export type MyAccountsUncheckedUpdateManyWithoutUserInput = {
  */
 
 export type MyAccountsCountOutputType = {
+  passwords: number
   fixeds: number
   archiveds: number
   groupPermissions: number
 }
 
 export type MyAccountsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  passwords?: boolean | MyAccountsCountOutputTypeCountPasswordsArgs
   fixeds?: boolean | MyAccountsCountOutputTypeCountFixedsArgs
   archiveds?: boolean | MyAccountsCountOutputTypeCountArchivedsArgs
   groupPermissions?: boolean | MyAccountsCountOutputTypeCountGroupPermissionsArgs
@@ -1153,6 +1232,13 @@ export type MyAccountsCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.E
    * Select specific fields to fetch from the MyAccountsCountOutputType
    */
   select?: Prisma.MyAccountsCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * MyAccountsCountOutputType without action
+ */
+export type MyAccountsCountOutputTypeCountPasswordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PasswordWhereInput
 }
 
 /**
@@ -1189,10 +1275,10 @@ export type MyAccountsSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   category?: boolean
   orderInCategory?: boolean
   userId?: boolean
-  password?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  passwords?: boolean | Prisma.MyAccounts$passwordsArgs<ExtArgs>
   fixeds?: boolean | Prisma.MyAccounts$fixedsArgs<ExtArgs>
   archiveds?: boolean | Prisma.MyAccounts$archivedsArgs<ExtArgs>
   groupPermissions?: boolean | Prisma.MyAccounts$groupPermissionsArgs<ExtArgs>
@@ -1211,7 +1297,6 @@ export type MyAccountsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   category?: boolean
   orderInCategory?: boolean
   userId?: boolean
-  password?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1229,7 +1314,6 @@ export type MyAccountsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   category?: boolean
   orderInCategory?: boolean
   userId?: boolean
-  password?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1247,14 +1331,14 @@ export type MyAccountsSelectScalar = {
   category?: boolean
   orderInCategory?: boolean
   userId?: boolean
-  password?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MyAccountsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "icon" | "url" | "type" | "notes" | "position" | "category" | "orderInCategory" | "userId" | "password" | "createdAt" | "updatedAt", ExtArgs["result"]["myAccounts"]>
+export type MyAccountsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "icon" | "url" | "type" | "notes" | "position" | "category" | "orderInCategory" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["myAccounts"]>
 export type MyAccountsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  passwords?: boolean | Prisma.MyAccounts$passwordsArgs<ExtArgs>
   fixeds?: boolean | Prisma.MyAccounts$fixedsArgs<ExtArgs>
   archiveds?: boolean | Prisma.MyAccounts$archivedsArgs<ExtArgs>
   groupPermissions?: boolean | Prisma.MyAccounts$groupPermissionsArgs<ExtArgs>
@@ -1271,6 +1355,7 @@ export type $MyAccountsPayload<ExtArgs extends runtime.Types.Extensions.Internal
   name: "MyAccounts"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    passwords: Prisma.$PasswordPayload<ExtArgs>[]
     fixeds: Prisma.$FixedPayload<ExtArgs>[]
     archiveds: Prisma.$ArchivedPayload<ExtArgs>[]
     groupPermissions: Prisma.$GroupPermissionPayload<ExtArgs>[]
@@ -1287,7 +1372,6 @@ export type $MyAccountsPayload<ExtArgs extends runtime.Types.Extensions.Internal
     category: string | null
     orderInCategory: number
     userId: string
-    password: string[]
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["myAccounts"]>
@@ -1685,6 +1769,7 @@ readonly fields: MyAccountsFieldRefs;
 export interface Prisma__MyAccountsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  passwords<T extends Prisma.MyAccounts$passwordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MyAccounts$passwordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   fixeds<T extends Prisma.MyAccounts$fixedsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MyAccounts$fixedsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FixedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   archiveds<T extends Prisma.MyAccounts$archivedsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MyAccounts$archivedsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArchivedPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   groupPermissions<T extends Prisma.MyAccounts$groupPermissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MyAccounts$groupPermissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupPermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1728,7 +1813,6 @@ export interface MyAccountsFieldRefs {
   readonly category: Prisma.FieldRef<"MyAccounts", 'String'>
   readonly orderInCategory: Prisma.FieldRef<"MyAccounts", 'Int'>
   readonly userId: Prisma.FieldRef<"MyAccounts", 'String'>
-  readonly password: Prisma.FieldRef<"MyAccounts", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"MyAccounts", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"MyAccounts", 'DateTime'>
 }
@@ -2124,6 +2208,30 @@ export type MyAccountsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many MyAccounts to delete.
    */
   limit?: number
+}
+
+/**
+ * MyAccounts.passwords
+ */
+export type MyAccounts$passwordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Password
+   */
+  select?: Prisma.PasswordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Password
+   */
+  omit?: Prisma.PasswordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasswordInclude<ExtArgs> | null
+  where?: Prisma.PasswordWhereInput
+  orderBy?: Prisma.PasswordOrderByWithRelationInput | Prisma.PasswordOrderByWithRelationInput[]
+  cursor?: Prisma.PasswordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PasswordScalarFieldEnum | Prisma.PasswordScalarFieldEnum[]
 }
 
 /**

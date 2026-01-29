@@ -389,6 +389,7 @@ export const ModelName = {
   Account: 'Account',
   EmailCode: 'EmailCode',
   MyAccounts: 'MyAccounts',
+  Password: 'Password',
   SortingCategory: 'SortingCategory',
   Fixed: 'Fixed',
   Archived: 'Archived',
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "emailCode" | "myAccounts" | "sortingCategory" | "fixed" | "archived" | "userGroup" | "groupMember" | "groupPermission"
+    modelProps: "user" | "session" | "account" | "emailCode" | "myAccounts" | "password" | "sortingCategory" | "fixed" | "archived" | "userGroup" | "groupMember" | "groupPermission"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -781,6 +782,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MyAccountsCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MyAccountsCountAggregateOutputType> | number
+        }
+      }
+    }
+    Password: {
+      payload: Prisma.$PasswordPayload<ExtArgs>
+      fields: Prisma.PasswordFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PasswordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PasswordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordPayload>
+        }
+        findFirst: {
+          args: Prisma.PasswordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PasswordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordPayload>
+        }
+        findMany: {
+          args: Prisma.PasswordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordPayload>[]
+        }
+        create: {
+          args: Prisma.PasswordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordPayload>
+        }
+        createMany: {
+          args: Prisma.PasswordCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PasswordCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordPayload>[]
+        }
+        delete: {
+          args: Prisma.PasswordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordPayload>
+        }
+        update: {
+          args: Prisma.PasswordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordPayload>
+        }
+        deleteMany: {
+          args: Prisma.PasswordDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PasswordUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PasswordUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordPayload>[]
+        }
+        upsert: {
+          args: Prisma.PasswordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PasswordPayload>
+        }
+        aggregate: {
+          args: Prisma.PasswordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePassword>
+        }
+        groupBy: {
+          args: Prisma.PasswordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PasswordGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PasswordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PasswordCountAggregateOutputType> | number
         }
       }
     }
@@ -1286,6 +1361,8 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const SessionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  sessionToken: 'sessionToken',
+  isValid: 'isValid',
   createdAt: 'createdAt',
   expiresAt: 'expiresAt'
 } as const
@@ -1327,12 +1404,26 @@ export const MyAccountsScalarFieldEnum = {
   category: 'category',
   orderInCategory: 'orderInCategory',
   userId: 'userId',
-  password: 'password',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type MyAccountsScalarFieldEnum = (typeof MyAccountsScalarFieldEnum)[keyof typeof MyAccountsScalarFieldEnum]
+
+
+export const PasswordScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  label: 'label',
+  value: 'value',
+  type: 'type',
+  hint: 'hint',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PasswordScalarFieldEnum = (typeof PasswordScalarFieldEnum)[keyof typeof PasswordScalarFieldEnum]
 
 
 export const SortingCategoryScalarFieldEnum = {
@@ -1644,6 +1735,7 @@ export type GlobalOmitConfig = {
   account?: Prisma.AccountOmit
   emailCode?: Prisma.EmailCodeOmit
   myAccounts?: Prisma.MyAccountsOmit
+  password?: Prisma.PasswordOmit
   sortingCategory?: Prisma.SortingCategoryOmit
   fixed?: Prisma.FixedOmit
   archived?: Prisma.ArchivedOmit

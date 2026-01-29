@@ -43,6 +43,11 @@ export type EmailCode = Prisma.EmailCodeModel
  */
 export type MyAccounts = Prisma.MyAccountsModel
 /**
+ * Model Password
+ * 
+ */
+export type Password = Prisma.PasswordModel
+/**
  * Model SortingCategory
  * 
  */

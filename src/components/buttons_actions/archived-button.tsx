@@ -92,7 +92,7 @@ const ArchivedButton: FC<PropsButton> = ({
       <Button
         onClick={handleArchiveToggle}
         disabled={isLoading}
-        variant={isArchived ? "destructive" : "outline"}
+        variant={isArchived ? "destructive" : "ghost"}
         size="sm"
         className="gap-2 transition-all duration-200 hover:scale-105"
       >
