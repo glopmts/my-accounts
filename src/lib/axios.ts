@@ -1,4 +1,5 @@
 import axios from "axios";
+let hasLoggedUnauthorized = false;
 
 export const api = axios.create({
   baseURL: "/api",
@@ -23,8 +24,14 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Redirecionar para login ou refresh token
-      console.error("Não autorizado");
+      if (!hasLoggedUnauthorized) {
+        console.error("Não autorizado - Sessão expirada");
+        hasLoggedUnauthorized = true;
+
+        setTimeout(() => {
+          hasLoggedUnauthorized = false;
+        }, 5000);
+      }
     }
     return Promise.reject(error);
   },

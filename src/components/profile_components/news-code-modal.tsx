@@ -1,45 +1,64 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { toast } from "sonner";
+import { api } from "../../lib/axios";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useValideCode } from "../../hooks/use-code-valide";
+} from "../ui/dialog";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
-type PropsModalConfirm = {
+type PropsModalCode = {
+  isOpen: boolean;
+  triggerElement?: string;
   userId: string;
-  triggerElement?: React.ReactNode;
-  onSuccess?: () => void;
+  refetch: () => void;
+  setIsOpen: (boolean: boolean) => void;
 };
 
-const ConfirmCode = ({
-  userId,
+const NewsCodeModal = ({
   triggerElement,
-  onSuccess,
-}: PropsModalConfirm) => {
-  const {
-    setIsOpen,
-    setCode,
-    handleConfirm,
+  isOpen,
+  userId,
+  setIsOpen,
+  refetch,
+}: PropsModalCode) => {
+  const [code, setCode] = useState("");
+  const [isPending, setPending] = useState(false);
 
-    isOpen,
-    isPending,
-    code,
-    hasActiveSession,
-  } = useValideCode({
-    userId,
-    onSuccess,
-  });
+  const handleUpdateCode = async () => {
+    if (!userId) {
+      return null;
+    }
+    setPending(true);
+    try {
+      const res = await api.post("/user/code/update", {
+        code: code,
+      });
 
-  if (hasActiveSession) {
-    return null;
-  }
+      if (res.status === 200) {
+        toast.success("Código único atualizado com sucesso!", {
+          description: `Código atualizado!`,
+          duration: 5000,
+        });
+      }
+      refetch();
+      setIsOpen(false);
+    } catch (error) {
+      toast.error("Erro ao atualizar código", {
+        description: "Tente novamente em alguns instantes" + error,
+      });
+    } finally {
+      setPending(false);
+      setIsOpen(false);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -80,7 +99,7 @@ const ConfirmCode = ({
             </Button>
             <Button
               type="button"
-              onClick={handleConfirm}
+              onClick={handleUpdateCode}
               disabled={isPending || code.length !== 6}
               className="flex-1"
             >
@@ -93,4 +112,4 @@ const ConfirmCode = ({
   );
 };
 
-export default ConfirmCode;
+export default NewsCodeModal;

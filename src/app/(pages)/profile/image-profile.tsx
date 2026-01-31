@@ -199,7 +199,7 @@ export function ImageProfile({
           </div>
         </DialogTrigger>
 
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="w-auto">
           <DialogHeader>
             <DialogTitle>Alterar Foto de Perfil</DialogTitle>
           </DialogHeader>
@@ -213,11 +213,11 @@ export function ImageProfile({
             onChange={handleFileSelect}
           />
 
-          <Card className="border-dashed border-2 border-muted-foreground/25 hover:border-primary/50 transition-colors">
-            <CardContent className="p-6">
+          <Card className="border-dashed border-2 border-muted-foreground/25 hover:border-primary/50 transition-colors w-full">
+            <CardContent className="p-6 w-full">
               <div
                 className={cn(
-                  "flex flex-col items-center justify-center gap-4 min-h-[200px] rounded-lg cursor-pointer",
+                  "flex flex-col items-center w-full justify-center gap-4 min-h-50 rounded-lg cursor-pointer",
                   "transition-colors hover:bg-muted/30",
                   preview && "bg-muted/50",
                 )}

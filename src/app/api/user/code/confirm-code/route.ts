@@ -59,7 +59,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Corrigido: await cookies() retorna o cookieStore diretamente
     const cookieStore = await cookies();
     cookieStore.set({
       name: "code_session",
@@ -97,7 +96,6 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    // Corrigido: await cookies() para obter o cookieStore
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get("code_session")?.value;
 
@@ -128,7 +126,6 @@ export async function GET(request: NextRequest) {
     });
 
     if (!session) {
-      // Corrigido: usa o cookieStore já obtido
       cookieStore.delete("code_session");
       return NextResponse.json(
         { success: false, message: "Sessão expirada ou inválida" },
@@ -158,17 +155,17 @@ export async function GET(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    // Corrigido: await cookies() para obter o cookieStore
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get("code_session")?.value;
 
     if (sessionToken) {
-      await prisma.session.updateMany({
-        where: { sessionToken },
-        data: { isValid: false },
+      await prisma.session.deleteMany({
+        where: {
+          sessionToken,
+          OR: [{ isValid: false }, { expiresAt: { lt: new Date() } }],
+        },
       });
 
-      // Remove o cookie
       cookieStore.delete("code_session");
     }
 

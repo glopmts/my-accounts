@@ -2,7 +2,7 @@
 
 import { useSession } from "@/context/SessionContext";
 import { usePathname } from "next/navigation";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useCallback, useEffect, useRef } from "react";
 import { SessionAlert } from "./SessionAlert";
 
 interface SessionWrapperProps {
@@ -12,39 +12,45 @@ interface SessionWrapperProps {
 export function SessionWrapper({ children }: SessionWrapperProps) {
   const { hasValidSession, showAlert, setShowAlert, isLoading } = useSession();
   const pathname = usePathname();
+  const prevPathnameRef = useRef(pathname);
 
-  // Define quais rotas devem mostrar o alerta
-  const shouldShowOnPath = () => {
-    const protectedPaths = ["/dashboard", "/admin", "/profile", "/settings"];
+  const shouldShowOnPath = useCallback(() => {
+    const protectedPaths = [
+      "/dashboard",
+      "/admin",
+      "/profile",
+      "/settings",
+      "/archived",
+    ];
     const homePaths = ["/", "/home"];
 
-    // Sempre mostra na home
-    if (homePaths.includes(pathname)) return true;
+    if (homePaths.includes(pathname)) {
+      return !hasValidSession && !isLoading;
+    }
 
-    // Mostra em rotas protegidas se não tiver sessão
     if (protectedPaths.some((path) => pathname.startsWith(path))) {
       return !hasValidSession && !isLoading;
     }
 
     return false;
-  };
+  }, [pathname, hasValidSession, isLoading]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (pathname !== prevPathnameRef.current && !isLoading) {
       const shouldShow = shouldShowOnPath();
       setShowAlert(shouldShow);
+      prevPathnameRef.current = pathname;
     }
-  }, [pathname, hasValidSession, isLoading, setShowAlert]);
+  }, [pathname, isLoading, setShowAlert, shouldShowOnPath]);
 
   if (isLoading) {
     return <>{children}</>;
   }
 
   return (
-    <>
+    <div className="w-full h-full">
       {showAlert && <SessionAlert />}
-
       {children}
-    </>
+    </div>
   );
 }

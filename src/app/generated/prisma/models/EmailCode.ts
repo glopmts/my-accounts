@@ -28,6 +28,7 @@ export type EmailCodeMinAggregateOutputType = {
   id: string | null
   email: string | null
   code: string | null
+  userId: string | null
   createdAt: Date | null
   expiresAt: Date | null
 }
@@ -36,6 +37,7 @@ export type EmailCodeMaxAggregateOutputType = {
   id: string | null
   email: string | null
   code: string | null
+  userId: string | null
   createdAt: Date | null
   expiresAt: Date | null
 }
@@ -44,6 +46,7 @@ export type EmailCodeCountAggregateOutputType = {
   id: number
   email: number
   code: number
+  userId: number
   createdAt: number
   expiresAt: number
   _all: number
@@ -54,6 +57,7 @@ export type EmailCodeMinAggregateInputType = {
   id?: true
   email?: true
   code?: true
+  userId?: true
   createdAt?: true
   expiresAt?: true
 }
@@ -62,6 +66,7 @@ export type EmailCodeMaxAggregateInputType = {
   id?: true
   email?: true
   code?: true
+  userId?: true
   createdAt?: true
   expiresAt?: true
 }
@@ -70,6 +75,7 @@ export type EmailCodeCountAggregateInputType = {
   id?: true
   email?: true
   code?: true
+  userId?: true
   createdAt?: true
   expiresAt?: true
   _all?: true
@@ -151,6 +157,7 @@ export type EmailCodeGroupByOutputType = {
   id: string
   email: string
   code: string
+  userId: string
   createdAt: Date
   expiresAt: Date
   _count: EmailCodeCountAggregateOutputType | null
@@ -180,16 +187,20 @@ export type EmailCodeWhereInput = {
   id?: Prisma.StringFilter<"EmailCode"> | string
   email?: Prisma.StringFilter<"EmailCode"> | string
   code?: Prisma.StringFilter<"EmailCode"> | string
+  userId?: Prisma.StringFilter<"EmailCode"> | string
   createdAt?: Prisma.DateTimeFilter<"EmailCode"> | Date | string
   expiresAt?: Prisma.DateTimeFilter<"EmailCode"> | Date | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type EmailCodeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type EmailCodeWhereUniqueInput = Prisma.AtLeast<{
@@ -199,14 +210,17 @@ export type EmailCodeWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.EmailCodeWhereInput[]
   NOT?: Prisma.EmailCodeWhereInput | Prisma.EmailCodeWhereInput[]
   email?: Prisma.StringFilter<"EmailCode"> | string
+  userId?: Prisma.StringFilter<"EmailCode"> | string
   createdAt?: Prisma.DateTimeFilter<"EmailCode"> | Date | string
   expiresAt?: Prisma.DateTimeFilter<"EmailCode"> | Date | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "code">
 
 export type EmailCodeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   _count?: Prisma.EmailCodeCountOrderByAggregateInput
@@ -221,6 +235,7 @@ export type EmailCodeScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"EmailCode"> | string
   email?: Prisma.StringWithAggregatesFilter<"EmailCode"> | string
   code?: Prisma.StringWithAggregatesFilter<"EmailCode"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"EmailCode"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"EmailCode"> | Date | string
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"EmailCode"> | Date | string
 }
@@ -231,12 +246,14 @@ export type EmailCodeCreateInput = {
   code: string
   createdAt?: Date | string
   expiresAt: Date | string
+  user: Prisma.UserCreateNestedOneWithoutEmailCodesInput
 }
 
 export type EmailCodeUncheckedCreateInput = {
   id?: string
   email: string
   code: string
+  userId: string
   createdAt?: Date | string
   expiresAt: Date | string
 }
@@ -247,12 +264,14 @@ export type EmailCodeUpdateInput = {
   code?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutEmailCodesNestedInput
 }
 
 export type EmailCodeUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -261,6 +280,7 @@ export type EmailCodeCreateManyInput = {
   id?: string
   email: string
   code: string
+  userId: string
   createdAt?: Date | string
   expiresAt: Date | string
 }
@@ -277,14 +297,26 @@ export type EmailCodeUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type EmailCodeListRelationFilter = {
+  every?: Prisma.EmailCodeWhereInput
+  some?: Prisma.EmailCodeWhereInput
+  none?: Prisma.EmailCodeWhereInput
+}
+
+export type EmailCodeOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type EmailCodeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
 }
@@ -293,6 +325,7 @@ export type EmailCodeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
 }
@@ -301,8 +334,137 @@ export type EmailCodeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   code?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+}
+
+export type EmailCodeCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.EmailCodeCreateWithoutUserInput, Prisma.EmailCodeUncheckedCreateWithoutUserInput> | Prisma.EmailCodeCreateWithoutUserInput[] | Prisma.EmailCodeUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.EmailCodeCreateOrConnectWithoutUserInput | Prisma.EmailCodeCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.EmailCodeCreateManyUserInputEnvelope
+  connect?: Prisma.EmailCodeWhereUniqueInput | Prisma.EmailCodeWhereUniqueInput[]
+}
+
+export type EmailCodeUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.EmailCodeCreateWithoutUserInput, Prisma.EmailCodeUncheckedCreateWithoutUserInput> | Prisma.EmailCodeCreateWithoutUserInput[] | Prisma.EmailCodeUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.EmailCodeCreateOrConnectWithoutUserInput | Prisma.EmailCodeCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.EmailCodeCreateManyUserInputEnvelope
+  connect?: Prisma.EmailCodeWhereUniqueInput | Prisma.EmailCodeWhereUniqueInput[]
+}
+
+export type EmailCodeUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.EmailCodeCreateWithoutUserInput, Prisma.EmailCodeUncheckedCreateWithoutUserInput> | Prisma.EmailCodeCreateWithoutUserInput[] | Prisma.EmailCodeUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.EmailCodeCreateOrConnectWithoutUserInput | Prisma.EmailCodeCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.EmailCodeUpsertWithWhereUniqueWithoutUserInput | Prisma.EmailCodeUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.EmailCodeCreateManyUserInputEnvelope
+  set?: Prisma.EmailCodeWhereUniqueInput | Prisma.EmailCodeWhereUniqueInput[]
+  disconnect?: Prisma.EmailCodeWhereUniqueInput | Prisma.EmailCodeWhereUniqueInput[]
+  delete?: Prisma.EmailCodeWhereUniqueInput | Prisma.EmailCodeWhereUniqueInput[]
+  connect?: Prisma.EmailCodeWhereUniqueInput | Prisma.EmailCodeWhereUniqueInput[]
+  update?: Prisma.EmailCodeUpdateWithWhereUniqueWithoutUserInput | Prisma.EmailCodeUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.EmailCodeUpdateManyWithWhereWithoutUserInput | Prisma.EmailCodeUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.EmailCodeScalarWhereInput | Prisma.EmailCodeScalarWhereInput[]
+}
+
+export type EmailCodeUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.EmailCodeCreateWithoutUserInput, Prisma.EmailCodeUncheckedCreateWithoutUserInput> | Prisma.EmailCodeCreateWithoutUserInput[] | Prisma.EmailCodeUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.EmailCodeCreateOrConnectWithoutUserInput | Prisma.EmailCodeCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.EmailCodeUpsertWithWhereUniqueWithoutUserInput | Prisma.EmailCodeUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.EmailCodeCreateManyUserInputEnvelope
+  set?: Prisma.EmailCodeWhereUniqueInput | Prisma.EmailCodeWhereUniqueInput[]
+  disconnect?: Prisma.EmailCodeWhereUniqueInput | Prisma.EmailCodeWhereUniqueInput[]
+  delete?: Prisma.EmailCodeWhereUniqueInput | Prisma.EmailCodeWhereUniqueInput[]
+  connect?: Prisma.EmailCodeWhereUniqueInput | Prisma.EmailCodeWhereUniqueInput[]
+  update?: Prisma.EmailCodeUpdateWithWhereUniqueWithoutUserInput | Prisma.EmailCodeUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.EmailCodeUpdateManyWithWhereWithoutUserInput | Prisma.EmailCodeUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.EmailCodeScalarWhereInput | Prisma.EmailCodeScalarWhereInput[]
+}
+
+export type EmailCodeCreateWithoutUserInput = {
+  id?: string
+  email: string
+  code: string
+  createdAt?: Date | string
+  expiresAt: Date | string
+}
+
+export type EmailCodeUncheckedCreateWithoutUserInput = {
+  id?: string
+  email: string
+  code: string
+  createdAt?: Date | string
+  expiresAt: Date | string
+}
+
+export type EmailCodeCreateOrConnectWithoutUserInput = {
+  where: Prisma.EmailCodeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EmailCodeCreateWithoutUserInput, Prisma.EmailCodeUncheckedCreateWithoutUserInput>
+}
+
+export type EmailCodeCreateManyUserInputEnvelope = {
+  data: Prisma.EmailCodeCreateManyUserInput | Prisma.EmailCodeCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type EmailCodeUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.EmailCodeWhereUniqueInput
+  update: Prisma.XOR<Prisma.EmailCodeUpdateWithoutUserInput, Prisma.EmailCodeUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.EmailCodeCreateWithoutUserInput, Prisma.EmailCodeUncheckedCreateWithoutUserInput>
+}
+
+export type EmailCodeUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.EmailCodeWhereUniqueInput
+  data: Prisma.XOR<Prisma.EmailCodeUpdateWithoutUserInput, Prisma.EmailCodeUncheckedUpdateWithoutUserInput>
+}
+
+export type EmailCodeUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.EmailCodeScalarWhereInput
+  data: Prisma.XOR<Prisma.EmailCodeUpdateManyMutationInput, Prisma.EmailCodeUncheckedUpdateManyWithoutUserInput>
+}
+
+export type EmailCodeScalarWhereInput = {
+  AND?: Prisma.EmailCodeScalarWhereInput | Prisma.EmailCodeScalarWhereInput[]
+  OR?: Prisma.EmailCodeScalarWhereInput[]
+  NOT?: Prisma.EmailCodeScalarWhereInput | Prisma.EmailCodeScalarWhereInput[]
+  id?: Prisma.StringFilter<"EmailCode"> | string
+  email?: Prisma.StringFilter<"EmailCode"> | string
+  code?: Prisma.StringFilter<"EmailCode"> | string
+  userId?: Prisma.StringFilter<"EmailCode"> | string
+  createdAt?: Prisma.DateTimeFilter<"EmailCode"> | Date | string
+  expiresAt?: Prisma.DateTimeFilter<"EmailCode"> | Date | string
+}
+
+export type EmailCodeCreateManyUserInput = {
+  id?: string
+  email: string
+  code: string
+  createdAt?: Date | string
+  expiresAt: Date | string
+}
+
+export type EmailCodeUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type EmailCodeUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type EmailCodeUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -311,43 +473,62 @@ export type EmailCodeSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   id?: boolean
   email?: boolean
   code?: boolean
+  userId?: boolean
   createdAt?: boolean
   expiresAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["emailCode"]>
 
 export type EmailCodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
   code?: boolean
+  userId?: boolean
   createdAt?: boolean
   expiresAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["emailCode"]>
 
 export type EmailCodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
   code?: boolean
+  userId?: boolean
   createdAt?: boolean
   expiresAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["emailCode"]>
 
 export type EmailCodeSelectScalar = {
   id?: boolean
   email?: boolean
   code?: boolean
+  userId?: boolean
   createdAt?: boolean
   expiresAt?: boolean
 }
 
-export type EmailCodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "code" | "createdAt" | "expiresAt", ExtArgs["result"]["emailCode"]>
+export type EmailCodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "code" | "userId" | "createdAt" | "expiresAt", ExtArgs["result"]["emailCode"]>
+export type EmailCodeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type EmailCodeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type EmailCodeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $EmailCodePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "EmailCode"
-  objects: {}
+  objects: {
+    user: Prisma.$UserPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
     code: string
+    userId: string
     createdAt: Date
     expiresAt: Date
   }, ExtArgs["result"]["emailCode"]>
@@ -744,6 +925,7 @@ readonly fields: EmailCodeFieldRefs;
  */
 export interface Prisma__EmailCodeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -776,6 +958,7 @@ export interface EmailCodeFieldRefs {
   readonly id: Prisma.FieldRef<"EmailCode", 'String'>
   readonly email: Prisma.FieldRef<"EmailCode", 'String'>
   readonly code: Prisma.FieldRef<"EmailCode", 'String'>
+  readonly userId: Prisma.FieldRef<"EmailCode", 'String'>
   readonly createdAt: Prisma.FieldRef<"EmailCode", 'DateTime'>
   readonly expiresAt: Prisma.FieldRef<"EmailCode", 'DateTime'>
 }
@@ -795,6 +978,10 @@ export type EmailCodeFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.EmailCodeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeInclude<ExtArgs> | null
+  /**
    * Filter, which EmailCode to fetch.
    */
   where: Prisma.EmailCodeWhereUniqueInput
@@ -813,6 +1000,10 @@ export type EmailCodeFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensi
    */
   omit?: Prisma.EmailCodeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeInclude<ExtArgs> | null
+  /**
    * Filter, which EmailCode to fetch.
    */
   where: Prisma.EmailCodeWhereUniqueInput
@@ -830,6 +1021,10 @@ export type EmailCodeFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the EmailCode
    */
   omit?: Prisma.EmailCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeInclude<ExtArgs> | null
   /**
    * Filter, which EmailCode to fetch.
    */
@@ -879,6 +1074,10 @@ export type EmailCodeFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.EmailCodeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeInclude<ExtArgs> | null
+  /**
    * Filter, which EmailCode to fetch.
    */
   where?: Prisma.EmailCodeWhereInput
@@ -927,6 +1126,10 @@ export type EmailCodeFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.EmailCodeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeInclude<ExtArgs> | null
+  /**
    * Filter, which EmailCodes to fetch.
    */
   where?: Prisma.EmailCodeWhereInput
@@ -970,6 +1173,10 @@ export type EmailCodeCreateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   omit?: Prisma.EmailCodeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeInclude<ExtArgs> | null
+  /**
    * The data needed to create a EmailCode.
    */
   data: Prisma.XOR<Prisma.EmailCodeCreateInput, Prisma.EmailCodeUncheckedCreateInput>
@@ -1003,6 +1210,10 @@ export type EmailCodeCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exten
    */
   data: Prisma.EmailCodeCreateManyInput | Prisma.EmailCodeCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1017,6 +1228,10 @@ export type EmailCodeUpdateArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the EmailCode
    */
   omit?: Prisma.EmailCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeInclude<ExtArgs> | null
   /**
    * The data needed to update a EmailCode.
    */
@@ -1069,6 +1284,10 @@ export type EmailCodeUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Exten
    * Limit how many EmailCodes to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1083,6 +1302,10 @@ export type EmailCodeUpsertArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the EmailCode
    */
   omit?: Prisma.EmailCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeInclude<ExtArgs> | null
   /**
    * The filter to search for the EmailCode to update in case it exists.
    */
@@ -1109,6 +1332,10 @@ export type EmailCodeDeleteArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the EmailCode
    */
   omit?: Prisma.EmailCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeInclude<ExtArgs> | null
   /**
    * Filter which EmailCode to delete.
    */
@@ -1141,4 +1368,8 @@ export type EmailCodeDefaultArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the EmailCode
    */
   omit?: Prisma.EmailCodeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailCodeInclude<ExtArgs> | null
 }

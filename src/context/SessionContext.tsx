@@ -1,12 +1,13 @@
 "use client";
 
 import { api } from "@/lib/axios";
-import { useRouter } from "next/navigation";
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -36,12 +37,38 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
-  const router = useRouter();
+  const isInitialized = useRef(false);
+  const isCheckingSession = useRef(false);
 
-  const validateSession = async () => {
+  // Limpa a sessão
+  const clearSession = useCallback(async () => {
+    try {
+      await api.delete("/user/code/confirm-code");
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.cause !== 401) {
+          console.error("Error clearing session:", error);
+        }
+      }
+    } finally {
+      setHasValidSession(false);
+      setSessionData(null);
+      setTimeLeft(null);
+      if (!isLoading) {
+        setShowAlert(true);
+      }
+    }
+  }, [isLoading]);
+
+  const validateSession = useCallback(async () => {
+    // Evitar múltiplas chamadas simultâneas
+    if (isCheckingSession.current) return;
+
+    isCheckingSession.current = true;
+
     try {
       setIsLoading(true);
-      const response = await api.get("/user/confirm-code");
+      const response = await api.get("/user/code/confirm-code");
 
       if (response.data.success) {
         const expiresAt = new Date(response.data.data.expiresAt);
@@ -67,33 +94,32 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         await clearSession();
       }
     } catch (error) {
+      if (error instanceof Error) {
+        if (error.cause !== 401) {
+          console.error("Error validating session:", error);
+        }
+      }
       await clearSession();
     } finally {
       setIsLoading(false);
+      isCheckingSession.current = false;
     }
-  };
-
-  // Limpa a sessão
-  const clearSession = async () => {
-    try {
-      await api.delete("/user/confirm-code");
-    } catch (error) {
-      console.error("Error clearing session:", error);
-    } finally {
-      setHasValidSession(false);
-      setSessionData(null);
-      setTimeLeft(null);
-      setShowAlert(true);
-    }
-  };
+  }, [clearSession]);
 
   useEffect(() => {
-    validateSession();
+    if (!isInitialized.current) {
+      isInitialized.current = true;
+      validateSession();
+    }
 
-    // Verifica a cada minuto
-    const interval = setInterval(validateSession, 60000);
+    const interval = setInterval(() => {
+      if (hasValidSession) {
+        validateSession();
+      }
+    }, 60000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [hasValidSession, validateSession]);
 
   // Atualiza contador em tempo real
   useEffect(() => {
@@ -117,13 +143,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft]);
-
-  useEffect(() => {
-    if (!hasValidSession && !isLoading) {
-      setShowAlert(true);
-    }
-  }, [hasValidSession, isLoading]);
+  }, [clearSession, timeLeft]);
 
   return (
     <SessionContext.Provider
