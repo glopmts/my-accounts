@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { Mail, MessageCircle, Shield } from "lucide-react";
+import { KeyRoundIcon, Mail, MessageCircle, Shield } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { api } from "../lib/axios";
@@ -19,13 +19,24 @@ interface ListOption {
 export function useSettings() {
   const { user, isLoading, refetch, error, userId } = useAuthCustom();
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Email State
   const [newEmail, setNewEmail] = useState("");
   const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
   const [isGeneratingCode, setIsGeneratingCode] = useState(false);
   const [isGeneratingCodeEmail, setIsGeneratingCodeEmail] = useState(false);
   const [isConfirmCodeEmail, setIsConfirmCodeEmail] = useState(false);
+
+  // Code State
   const [step, setStep] = useState<"request" | "validate">("request");
   const [code, setCode] = useState("");
+
+  // Password State
+  const [password, setPassword] = useState("");
+  const [newsPassword, setNewsPassword] = useState("");
+  const [confirmNewsPassword, setConfirmPassword] = useState("");
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+  const [isGeneratingPassword, setisGeneratingPassword] = useState(false);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -75,7 +86,6 @@ export function useSettings() {
     try {
       setIsGeneratingCodeEmail(true);
 
-      // MANTENDO SUA ROTA ATUAL
       const res = await api.post("/user/email/change", {
         newEmail: newEmail,
       });
@@ -85,7 +95,6 @@ export function useSettings() {
           description: "Verifique seu email atual para o código de verificação",
         });
 
-        // CORREÇÃO IMPORTANTE: Muda para etapa de validação
         setStep("validate");
       }
     } catch (err) {
@@ -114,7 +123,6 @@ export function useSettings() {
     try {
       setIsConfirmCodeEmail(true);
 
-      // MANTENDO SUA ROTA ATUAL
       const res = await api.post("/user/email/validate", {
         newEmail: newEmail,
         code: code,
@@ -125,13 +133,11 @@ export function useSettings() {
           description: "Seu email foi atualizado com sucesso",
         });
 
-        // Limpa tudo e fecha o modal
         setNewEmail("");
         setCode("");
         setStep("request");
         setIsEmailDialogOpen(false);
 
-        // Atualiza os dados do usuário
         await refetch();
       } else {
         toast.error("Erro ao validar código", {
@@ -149,16 +155,61 @@ export function useSettings() {
     }
   };
 
+  const handlePasswordChange = async () => {
+    if (!newsPassword) {
+      toast.info("Necessario a senha para alteração!");
+      return;
+    }
+    try {
+      setisGeneratingPassword(true);
+
+      const res = await api.post("/auth/password", {
+        password: newsPassword,
+        confirmPassword: confirmNewsPassword,
+      });
+
+      if (res.status === 201) {
+        toast.success("Senha alterado com sucesso!", {
+          description: "Sua senha foi atualizado com sucesso",
+        });
+
+        setPassword("");
+        setNewsPassword("");
+        setConfirmPassword("");
+        setisGeneratingPassword(false);
+
+        await refetch();
+      } else {
+        toast.error("Erro ao validar senha", {
+          description: res.data?.message || "Senha inválido",
+        });
+      }
+    } catch (err) {
+      const error = err as AxiosError<ErrorResponse>;
+      toast.error("Erro ao alterar senha", {
+        description: error.response?.data?.message || "Error ao alterar senha",
+      });
+    } finally {
+      setisGeneratingPassword(false);
+    }
+  };
+
   const handleContactSupport = () => {
     window.open("mailto:support@exemplo.com?subject=Suporte", "_blank");
   };
 
   const handleOpenEmailDialog = () => {
-    // Reseta o estado quando abre o modal
     setStep("request");
     setNewEmail("");
     setCode("");
     setIsEmailDialogOpen(true);
+  };
+
+  const handleOpenPasswordDialog = () => {
+    setPassword("");
+    setNewsPassword("");
+    setConfirmPassword("");
+    setIsPasswordDialogOpen(true);
   };
 
   const ListOptions: ListOption[] = [
@@ -167,7 +218,7 @@ export function useSettings() {
       label: "Alterar email",
       icon: Mail,
       description: "Altere seu email de contato",
-      action: handleOpenEmailDialog, // CORRIGIDO
+      action: handleOpenEmailDialog,
     },
     {
       id: 2,
@@ -184,6 +235,13 @@ export function useSettings() {
       description: "Entre em contato com nossa equipe",
       action: handleContactSupport,
     },
+    {
+      id: 4,
+      label: "Alterar senha",
+      icon: KeyRoundIcon,
+      description: "Altere sua senha de acesso!",
+      action: handleOpenPasswordDialog,
+    },
   ];
 
   return {
@@ -192,6 +250,7 @@ export function useSettings() {
     error,
     userId,
     isRefreshing,
+
     isEmailDialogOpen,
     isGeneratingCode,
     newEmail,
@@ -199,7 +258,20 @@ export function useSettings() {
     isConfirmCodeEmail,
     step,
     code,
+
     ListOptions,
+
+    password,
+    newsPassword,
+    isPasswordDialogOpen,
+    confirmNewsPassword,
+    isGeneratingPassword,
+    setIsPasswordDialogOpen,
+    setPassword,
+    setNewsPassword,
+    setConfirmPassword,
+    handlePasswordChange,
+
     handleRefresh,
     handleEmailChange,
     handleValidateCode,

@@ -40,7 +40,7 @@ export function useValideCode({ userId, onSuccess }: UseValideCodeProps) {
 
     try {
       hasCheckedSession.current = true;
-      const response = await api.get("/user/code/confirm-code");
+      const response = await api.get("/auth/session-token");
 
       if (response.data.success) {
         const expiresAt = new Date(response.data.data.expiresAt);
@@ -64,7 +64,7 @@ export function useValideCode({ userId, onSuccess }: UseValideCodeProps) {
         } else {
           setTimeLeft(null);
           toastShown.current = false;
-          await api.delete("/user/code/confirm-code");
+          await api.delete("/auth/session-token");
         }
       } else {
         setTimeLeft(null);
@@ -155,7 +155,7 @@ export function useValideCode({ userId, onSuccess }: UseValideCodeProps) {
     if (timeLeft === 0) {
       const cleanupSession = async () => {
         try {
-          await api.delete("/user/code/confirm-code");
+          await api.delete("/auth/session-token");
           toastShown.current = false;
           toast.info("Sessão expirada. Por favor, valide novamente.");
         } catch (error) {

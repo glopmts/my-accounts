@@ -13,6 +13,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useSettings } from "@/hooks/use-settings";
 import { cn } from "@/lib/utils";
 import { Mail, RefreshCw, User } from "lucide-react";
+import NewsPasswordModal from "../../../components/profile_components/password-modal";
 
 const Settings = () => {
   const {
@@ -29,6 +30,17 @@ const Settings = () => {
     step,
     code,
 
+    password,
+    newsPassword,
+    isPasswordDialogOpen,
+    confirmNewsPassword,
+    isGeneratingPassword,
+    setIsPasswordDialogOpen,
+    handlePasswordChange,
+    setPassword,
+    setNewsPassword,
+    setConfirmPassword,
+
     ListOptions,
 
     handleRefresh,
@@ -41,7 +53,7 @@ const Settings = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full min-h-[calc(100vh-4rem)] flex items-center justify-center bg-linear-to-b dark:from-zinc-900 dark:to-black">
+      <div className="w-full min-h-[calc(100vh-4rem)] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <Spinner className="h-8 w-8 dark:text-zinc-300" />
           <p className="text-sm dark:text-zinc-400">Carregando perfil...</p>
@@ -61,12 +73,12 @@ const Settings = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-linear-to-b dark:from-zinc-900 dark:to-black ">
+    <div className="min-h-[calc(100vh-4rem)] w-full">
       <div className="max-w-7xl mx-auto p-4 md:p-6">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center  items-baseline justify-between gap-4 mb-8">
+        <div className="flex flex-col md:flex-row md:items-center items-baseline justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold bg-linear-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent">
               Configurações
             </h1>
             <p className="dark:text-zinc-400 mt-1">
@@ -202,17 +214,21 @@ const Settings = () => {
         />
       )}
 
-      {/* Modal code */}
+      {/* Modal password */}
 
-      {/* {isModalCode && (
-        <NewsCodeModal
-          userId={userId}
-          isOpen={isModalCode}
-          refetch={refetch}
-          setIsOpen={setIsModalCode}
-          i18nIsDynamicList={true}
-        />
-      )} */}
+      <NewsPasswordModal
+        isPasswordExinsting={user.password}
+        password={password}
+        newPassword={newsPassword}
+        confirmNewPassword={confirmNewsPassword}
+        handlePasswordChange={handlePasswordChange}
+        isPasswordDialogOpen={isPasswordDialogOpen}
+        setIsPasswordDialogOpen={setIsPasswordDialogOpen}
+        setPassword={setPassword}
+        setNewPassword={setNewsPassword}
+        setConfirmNewPassword={setConfirmPassword}
+        isGeneratingPassword={isGeneratingPassword}
+      />
     </div>
   );
 };

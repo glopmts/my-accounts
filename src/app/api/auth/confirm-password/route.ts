@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { validateUserSession } from "@/lib/auth/auth.middleware";
+import { PasswordService } from "@/lib/crypto";
 import crypto from "crypto";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
@@ -8,80 +8,67 @@ const SESSION_EXPIRY = 40 * 60 * 1000;
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId: clerkUserId } = await auth();
+    const authenticatedUser = await validateUserSession(request);
 
-    if (!clerkUserId) {
-      return NextResponse.json(
-        { success: false, message: "Não autorizado" },
-        { status: 401 },
-      );
+    if (authenticatedUser.errorResponse) {
+      return authenticatedUser.errorResponse;
     }
 
     const body = await request.json();
-    const { code } = body;
+    const { password } = body;
 
-    if (!code) {
+    if (!password) {
       return NextResponse.json(
-        { success: false, message: "Código é obrigatório" },
+        { success: false, message: "Senha é obrigatória" },
         { status: 400 },
       );
     }
 
-    // Busca o usuário pelo clerkId
-    const authenticatedUser = await prisma.user.findUnique({
-      where: { clerkId: clerkUserId },
-      select: { id: true, code: true },
-    });
-
-    if (!authenticatedUser) {
+    if (!authenticatedUser.user?.password) {
       return NextResponse.json(
-        { success: false, message: "Usuário não encontrado" },
+        { success: false, message: "Nenhuma senha encontrado!" },
         { status: 404 },
       );
     }
 
-    if (authenticatedUser.code !== code) {
+    // Valida a senha
+    const isValid = await PasswordService.verifyPassword(
+      password,
+      authenticatedUser.user?.password || "",
+    );
+
+    if (!isValid) {
       return NextResponse.json(
-        { success: false, message: "Código inválido" },
-        { status: 400 },
+        { success: false, message: "Senha incorreta" },
+        { status: 401 },
       );
     }
 
     const sessionToken = crypto.randomBytes(32).toString("hex");
     const expiresAt = new Date(Date.now() + SESSION_EXPIRY);
 
-    const session = await prisma.session.create({
-      data: {
-        userId: authenticatedUser.id,
-        sessionToken,
-        expiresAt,
-        isValid: true,
-      },
-    });
-
     const cookieStore = await cookies();
     cookieStore.set({
-      name: "code_session",
+      name: "password_validated",
       value: sessionToken,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       expires: expiresAt,
-      path: "/",
     });
 
     return NextResponse.json(
       {
         success: true,
-        message: "Código validado com sucesso",
+        message: "Senha validada com sucesso",
         data: {
-          expiresAt: session.expiresAt,
+          expiresAt: expiresAt.toISOString(),
         },
       },
       { status: 200 },
     );
   } catch (error) {
-    console.error("Error validating user code:", error);
+    console.error("Error validating password:", error);
 
     return NextResponse.json(
       {

@@ -43,7 +43,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   // Limpa a sessão
   const clearSession = useCallback(async () => {
     try {
-      await api.delete("/user/code/confirm-code");
+      await api.delete("/auth/session-token");
     } catch (error) {
       if (error instanceof Error) {
         if (error.cause !== 401) {
@@ -68,7 +68,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
     try {
       setIsLoading(true);
-      const response = await api.get("/user/code/confirm-code");
+      const response = await api.get("/auth/session-token");
 
       if (response.data.success) {
         const expiresAt = new Date(response.data.data.expiresAt);

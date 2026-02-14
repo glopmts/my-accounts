@@ -1,10 +1,11 @@
 import prisma from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
     const { userId: clerkUserId } = await auth();
+    const client = await clerkClient();
 
     if (!clerkUserId) {
       return NextResponse.json(
@@ -70,6 +71,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const clerkUser = await client.users.getUser(clerkUserId);
+
+    const newEmailAddress = await client.emailAddresses.createEmailAddress({
+      userId: clerkUserId,
+      emailAddress: newEmail,
+    });
+
+    await client.emailAddresses.updateEmailAddress(newEmailAddress.id, {
+      verified: true,
+    });
+
+    await client.users.updateUser(clerkUserId, {
+      primaryEmailAddressID: newEmailAddress.id,
+    });
+
+    if (clerkUser.primaryEmailAddressId) {
+      await client.emailAddresses.deleteEmailAddress(
+        clerkUser.primaryEmailAddressId,
+      );
+    }
+
+    // Atualizar no banco
     const updatedUser = await prisma.user.update({
       where: { id: authenticatedUser.id },
       data: { email: newEmail },

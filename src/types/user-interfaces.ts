@@ -3,12 +3,14 @@ export interface User {
   name?: string | null;
   email: string;
   code?: string | null;
+  password?: string | null;
   image?: string | null;
   role: "USER" | "ADMIN";
   clerkId: string | null;
   emailVerified?: boolean | null;
-  createdAt: Date | string;
   updatedAt: Date | string;
+  createdAt: Date | string;
+  codeGeneratedAt: Date | string;
 }
 
 export interface ApiResponse<T = any> {

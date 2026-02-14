@@ -16,9 +16,9 @@ type PropsModalEmail = {
   code: string;
   setCode: (code: string) => void;
   handleEmailChange: () => void;
-  handleValidateCode: () => void; // NOME CORRIGIDO
+  handleValidateCode: () => void;
   setNewEmail: (email: string) => void;
-  step?: "validate" | "request"; // NOME ALTERADO (de type para step)
+  step?: "validate" | "request";
   length?: number;
 };
 
@@ -28,13 +28,13 @@ const NewsEmailModal = ({
   isConfirmCodeEmail,
   newEmail,
   code,
-  step = "request", // VALOR PADRÃO
+  step = "request",
   length = 6,
   setCode,
   setIsEmailDialogOpen,
   setNewEmail,
   handleEmailChange,
-  handleValidateCode, // NOME CORRIGIDO
+  handleValidateCode,
 }: PropsModalEmail) => {
   return (
     <Dialog open={isEmailDialogOpen} onOpenChange={setIsEmailDialogOpen}>
