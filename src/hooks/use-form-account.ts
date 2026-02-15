@@ -4,7 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { SecretType } from "../app/generated/prisma/enums";
 import { useAuthCustom } from "../lib/useAuth";
-import { MyAccounts, PasswordFormData } from "../types/interfaces";
+import {
+  MyAccounts,
+  PasswordFormData,
+  PasswordFormDataInput,
+  TypePassword,
+} from "../types/interfaces";
 import {
   schemaAccountCreater,
   schemaAccountUpdater,
@@ -22,6 +27,16 @@ type UseFormAccountProps = {
   isOpenProp?: boolean;
   onCloseProp?: () => void;
   refetch?: () => void;
+};
+
+type passwordData = {
+  id?: string;
+  _action?: string;
+  value?: string;
+  label: string;
+  type: string;
+  hint: string | null;
+  notes: string | null;
 };
 
 export function useFormAccount({
@@ -48,7 +63,7 @@ export function useFormAccount({
     url: "",
     notes: "",
     icon: "",
-    passwords: [] as PasswordFormData[],
+    passwords: [] as PasswordFormDataInput[],
   });
 
   const [validationErrors, setValidationErrors] = useState<
@@ -97,8 +112,8 @@ export function useFormAccount({
             editingAccount.passwords?.map((p) => ({
               id: p.id,
               label: p.label || "Password",
-              value: "", // Não preencher por segurança
-              type: (p.type as any) || "password",
+              value: "",
+              type: (p.type as TypePassword) || "password",
               hint: p.hint || "",
               notes: p.notes || "",
             })) || [],
@@ -115,7 +130,7 @@ export function useFormAccount({
             {
               label: "Main Password",
               value: "",
-              type: "password",
+              type: "password" as TypePassword,
               hint: "",
               notes: "",
             },
@@ -150,11 +165,11 @@ export function useFormAccount({
           url: formData.url || undefined,
           notes: formData.notes || undefined,
           passwords: formData.passwords.map((pwd) => {
-            const passwordData: any = {
+            const passwordData: passwordData = {
               label: pwd.label,
               type: pwd.type,
-              hint: pwd.hint || undefined,
-              notes: pwd.notes || undefined,
+              hint: pwd.hint || "",
+              notes: pwd.notes || "",
             };
 
             // Se é uma senha existente (tem id)
@@ -288,7 +303,7 @@ export function useFormAccount({
         {
           label: `Password ${prev.passwords.length + 1}`,
           value: "",
-          type: "password" as const,
+          type: "password" as TypePassword,
           hint: "",
           notes: "",
         },

@@ -2,6 +2,7 @@ import {
   SchemaAccountCreater,
   SchemaAccountUpdater,
 } from "@/utils/validations/schema-my-accounts";
+import { toast } from "sonner";
 import { api } from "../lib/axios";
 import { MyAccounts } from "../types/interfaces";
 
@@ -80,6 +81,9 @@ export class MyAccountsService {
         `/accounts/delete?accountId=${accountId}`,
       );
 
+      if (response.status === 200) {
+        toast.success("Conta deletado com sucesso!");
+      }
       return response.data;
     } catch (error) {
       console.error("Error deleting account:", error);

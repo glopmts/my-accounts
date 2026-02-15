@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { api } from "../lib/axios";
+import { api } from "../../lib/axios";
 
 type UseValideCodeProps = {
   userId: string;
@@ -40,7 +40,7 @@ export function useValideCode({ userId, onSuccess }: UseValideCodeProps) {
 
     try {
       hasCheckedSession.current = true;
-      const response = await api.get("/auth/session-token");
+      const response = await api.get("/auth/session/session-token");
 
       if (response.data.success) {
         const expiresAt = new Date(response.data.data.expiresAt);
@@ -64,7 +64,7 @@ export function useValideCode({ userId, onSuccess }: UseValideCodeProps) {
         } else {
           setTimeLeft(null);
           toastShown.current = false;
-          await api.delete("/auth/session-token");
+          await api.delete("/auth/session/session-token");
         }
       } else {
         setTimeLeft(null);
@@ -155,9 +155,11 @@ export function useValideCode({ userId, onSuccess }: UseValideCodeProps) {
     if (timeLeft === 0) {
       const cleanupSession = async () => {
         try {
-          await api.delete("/auth/session-token");
+          await api.delete("/auth/session/session-token");
           toastShown.current = false;
           toast.info("Sessão expirada. Por favor, valide novamente.");
+
+          window.dispatchEvent(new CustomEvent("session-expired"));
         } catch (error) {
           console.error("Error cleaning up session:", error);
         }

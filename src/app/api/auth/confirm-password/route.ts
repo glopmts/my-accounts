@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Valida a senha
-    const isValid = await PasswordService.verifyPassword(
+    const isValid = await PasswordService.decryptText(
       password,
       authenticatedUser.user?.password || "",
     );

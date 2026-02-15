@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
         notes: pwd.notes,
       }));
 
-      const processedPasswords = await PasswordService.processMultiplePasswords(
+      const processedPasswords = await PasswordService.encryptPasswords(
         passwordsToProcess,
         ENCRYPTION_KEY,
       );

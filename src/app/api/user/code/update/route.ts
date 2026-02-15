@@ -24,7 +24,6 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Busca o usuário autenticado
     const authenticatedUser = await prisma.user.findUnique({
       where: { clerkId: clerkUserId },
       select: {
@@ -55,7 +54,6 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Verifica se o código já existe (exceto para o próprio usuário)
     const existingCodeUser = await prisma.user.findFirst({
       where: {
         code: code,
@@ -94,14 +92,13 @@ export async function PUT(request: NextRequest) {
     // Opcional: Enviar email de confirmação
     try {
       const { emailService } = await import("@/lib/email/nodemailer");
-      await emailService.sendCodeEmail(
+      await emailService.sendEmailChangeCode(
         authenticatedUser.email || "",
         authenticatedUser.name || "Usuário",
         code,
       );
     } catch (emailError) {
       console.error("Erro ao enviar email de confirmação:", emailError);
-      // Não falha a operação se o email falhar
     }
 
     return NextResponse.json(

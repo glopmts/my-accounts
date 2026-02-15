@@ -5,13 +5,19 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "@/context/SessionContext";
 import { AlertTriangle, Key, Lock, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useValideCode } from "../hooks/use-code-valide";
+import { useValideCode } from "../hooks/session-alert/use-code-valide";
 import { useAuthCustom } from "../lib/useAuth";
 import ConfirmCode from "./modals/confirm-code";
 import ConfirmPassword from "./modals/confirm-password";
 
 export function SessionAlert() {
-  const { showAlert, setShowAlert, hasValidSession, isLoading } = useSession();
+  const {
+    showAlert,
+    setShowAlert,
+    validateSession,
+    hasValidSession,
+    isLoading,
+  } = useSession();
   const { userId } = useAuthCustom();
   const [isVisible, setIsVisible] = useState(false);
   const [validationMethod, setValidationMethod] = useState<
@@ -27,12 +33,46 @@ export function SessionAlert() {
   const shouldShow = showAlert && !hasValidSession && !isLoading;
 
   useEffect(() => {
+    if (!hasValidSession && !isLoading) {
+      setShowAlert(true);
+    }
+  }, [hasValidSession, isLoading, setShowAlert]);
+
+  // Ouvir evento de sessão expirada
+  useEffect(() => {
+    const handleSessionExpired = () => {
+      setShowAlert(true);
+      setValidationMethod(null);
+
+      // Forçar revalidação da sessão no contexto
+      validateSession();
+    };
+
+    window.addEventListener("session-expired", handleSessionExpired);
+
+    return () => {
+      window.removeEventListener("session-expired", handleSessionExpired);
+    };
+  }, [setShowAlert, validateSession]);
+
+  // Verificar periodicamente se a sessão expirou
+  useEffect(() => {
+    const checkSession = () => {
+      if (!hasValidSession && !isLoading) {
+        setShowAlert(true);
+      }
+    };
+
+    const interval = setInterval(checkSession, 5000);
+
+    return () => clearInterval(interval);
+  }, [hasValidSession, isLoading, setShowAlert]);
+
+  useEffect(() => {
     if (shouldShow) {
-      // Salvar os estilos originais
       originalBodyOverflow.current = document.body.style.overflow;
       originalBodyPadding.current = document.body.style.paddingRight;
 
-      // Aplicar estilos para bloquear scroll
       document.body.style.overflow = "hidden";
       document.body.style.paddingRight = "15px";
 
@@ -44,7 +84,6 @@ export function SessionAlert() {
         clearTimeout(timer);
       };
     } else {
-      // Restaurar estilos originais
       if (originalBodyOverflow.current !== null) {
         document.body.style.overflow = originalBodyOverflow.current;
       }
@@ -78,7 +117,6 @@ export function SessionAlert() {
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       style={{
-        // Garantir que o alerta fique fixo no topo
         position: "fixed",
         top: 0,
         left: 0,

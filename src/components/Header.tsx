@@ -1,9 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useAuthCustom } from "../lib/useAuth";
 import { User } from "../types/user-interfaces";
 import { Button } from "./ui/button";
@@ -19,8 +17,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@clerk/nextjs";
 import { Settings, User as UserIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
+import { Link, usePathname } from "../i18n/navigation";
 import { cn } from "../lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar-custom";
 import LanguageSwitcher from "./language-switcher";
@@ -45,7 +44,7 @@ const Header = () => {
   const { signOut } = useAuth();
   const pathame = usePathname();
 
-  const { t, i18n } = useTranslation("common");
+  const t = useTranslations("header");
 
   useEffect(() => {
     const handleShadow = () => {
@@ -90,11 +89,9 @@ const Header = () => {
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-lg">{t("header.title")}</span>
+            <span className="font-bold text-lg">{t("title")}</span>
             <span className="truncate w-28">
-              {user?.name
-                ? `${t("header.message")}, ${user.name}`
-                : `${t("header.message")}`}
+              {user?.name ? `${t("message")}, ${user.name}` : `${t("message")}`}
             </span>
           </div>
         </Link>

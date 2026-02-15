@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
-import { SessionWrapper } from "../../components/SessionWrapper";
-import { SessionProvider } from "../../context/SessionContext";
+import { SessionWrapper } from "@/components/SessionWrapper";
+import { SessionProvider } from "@/context/SessionContext";
 
 export default async function ProtectedLayout({
   children,

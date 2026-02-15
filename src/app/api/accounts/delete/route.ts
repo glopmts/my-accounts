@@ -37,6 +37,9 @@ export async function DELETE(request: NextRequest) {
 
     const myAccounts = await prisma.myAccounts.findUnique({
       where: { id: accountId },
+      include: {
+        passwords: true, // Include passwords to check if they exist
+      },
     });
 
     if (!myAccounts) {
@@ -56,13 +59,20 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
+    if (myAccounts.passwords && myAccounts.passwords.length > 0) {
+      await prisma.password.deleteMany({
+        where: { accountId: accountId },
+      });
+    }
+
     await prisma.myAccounts.delete({
       where: { id: accountId },
     });
 
     return NextResponse.json({
+      status: 200,
       success: true,
-      message: "Conta deletada com sucesso",
+      message: "Conta e senhas relacionadas deletadas com sucesso",
     });
   } catch (error) {
     console.error("Error deleting account:", error);

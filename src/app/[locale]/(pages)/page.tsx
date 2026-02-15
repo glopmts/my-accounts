@@ -1,9 +1,9 @@
 "use client";
 
+import { Spinner } from "@/components/ui/spinner";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Spinner } from "../../components/ui/spinner";
 
 const App = () => {
   const { isSignedIn, isLoaded } = useUser();

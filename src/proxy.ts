@@ -1,29 +1,30 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
+const locales = ["pt", "en"];
+
 const isPublicRoute = createRouteMatcher([
-  "/", // Landing page é pública
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-  "/forgot-password(.*)",
-  "/reset-password(.*)",
+  "/",
+  "/(pt|en)",
+  "/(pt|en)/sign-in(.*)",
+  "/(pt|en)/sign-up(.*)",
+  "/(pt|en)/forgot-password(.*)",
+  "/(pt|en)/reset-password(.*)",
   "/api/webhooks(.*)",
 ]);
 
 const isAuthRoute = createRouteMatcher([
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-  "/forgot-password(.*)",
-  "/reset-password(.*)",
+  "/(pt|en)/sign-in(.*)",
+  "/(pt|en)/sign-up(.*)",
+  "/(pt|en)/forgot-password(.*)",
+  "/(pt|en)/reset-password(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth();
-  const url = new URL(req.url);
-  const pathname = url.pathname;
 
   if (isAuthRoute(req) && userId) {
-    return NextResponse.redirect(new URL("/home", req.url));
+    return NextResponse.redirect(new URL("/pt/home", req.url));
   }
 
   if (!isPublicRoute(req)) {
@@ -34,8 +35,5 @@ export default clerkMiddleware(async (auth, req) => {
 });
 
 export const config = {
-  matcher: [
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    "/(api|trpc)(.*)",
-  ],
+  matcher: ["/((?!_next|.*\\..*).*)", "/(api|trpc)(.*)"],
 };

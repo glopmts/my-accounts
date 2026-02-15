@@ -58,7 +58,7 @@ export const useUploadThing = (
 
       if (data && Array.isArray(data) && data[0]?.url) {
         config?.onClientUploadComplete?.(
-          data.map((file: any) => ({
+          data.map((file: { url: string; name: string }) => ({
             url: file.url,
             name: file.name,
           })),

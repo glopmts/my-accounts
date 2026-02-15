@@ -18,10 +18,11 @@ import {
   Trash2,
 } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 import { TYPE_METADATA } from "../../types/constantes";
 import { MyAccounts } from "../../types/interfaces";
+import PasswordList from "../password/PasswordList";
 import { Button } from "../ui/button";
 
 type PropsDataAccount = {
@@ -37,6 +38,22 @@ const DetailsAccountModel = ({
   onClose,
   handleDelete,
 }: PropsDataAccount) => {
+  const [visiblePasswords, setVisiblePasswords] = useState<Set<string>>(
+    new Set(),
+  );
+
+  const togglePasswordVisibility = (passwordId: string) => {
+    setVisiblePasswords((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(passwordId)) {
+        newSet.delete(passwordId);
+      } else {
+        newSet.add(passwordId);
+      }
+      return newSet;
+    });
+  };
+
   if (!account) return null;
 
   const meta = TYPE_METADATA[account.type];
@@ -59,14 +76,14 @@ const DetailsAccountModel = ({
       <DialogTrigger className="hidden">Open</DialogTrigger>
       <DialogContent className="md:max-w-lg lg:max-w-3xl w-full max-h-[85vh] overflow-hidden flex flex-col p-0">
         <DialogHeader className="shrink-0 p-0">
-          <div className="relative h-32 bg-zinc-900 overflow-hidden">
+          <div className="relative h-32 bg-zinc-300 dark:bg-zinc-900 overflow-hidden">
             <div
               className={`absolute inset-0 opacity-10 ${meta.color.replace("text", "bg")}`}
             />
 
             <div className="absolute -bottom-8 left-8">
               <div
-                className={`w-20 h-20 rounded-2xl dark:bg-zinc-950 border-4 dark:border-zinc-950 shadow-2xl flex items-center justify-center ${meta.color}`}
+                className={`w-20 h-20 rounded-2xl bg-zinc-300 dark:bg-zinc-950 border-4 dark:border-zinc-950 shadow-2xl flex items-center justify-center ${meta.color}`}
               >
                 {account.icon ? (
                   <Image
@@ -93,7 +110,7 @@ const DetailsAccountModel = ({
         <div className="flex-1 overflow-y-auto pr-1 mt-4 space-y-4 p-4">
           <div className="flex items-start justify-between mb-6">
             <div>
-              <DialogTitle className="text-3xl font-bold tracking-tight text-white mb-1">
+              <DialogTitle className="text-3xl font-bold tracking-tight dark:text-white mb-1">
                 {account.title || "Untitled"}
               </DialogTitle>
               <div className="flex items-center gap-2">
@@ -107,7 +124,7 @@ const DetailsAccountModel = ({
                     href={account.url}
                     target="_blank"
                     rel="noopener"
-                    className="flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+                    className="flex items-center gap-1 text-xs dark:text-zinc-500 dark:hover:text-zinc-300 transition-colors"
                   >
                     <ExternalLink size={12} /> {new URL(account.url).hostname}
                   </a>
@@ -116,30 +133,30 @@ const DetailsAccountModel = ({
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div className="bg-zinc-900/50 rounded-2xl p-4 border border-zinc-800/50">
-              <div className="flex items-center gap-2 text-zinc-500 mb-1">
+            <div className="dark:bg-zinc-900/50 rounded-2xl p-4 border border-zinc-800/50">
+              <div className="flex items-center gap-2 dark:text-zinc-500 mb-1">
                 <Calendar size={14} />
                 <span className="text-[10px] uppercase font-bold tracking-widest">
                   Created
                 </span>
               </div>
-              <div className="text-sm font-medium text-zinc-300">
+              <div className="text-sm font-medium dark:text-zinc-300">
                 {new Date(account.createdAt).toLocaleDateString()}
               </div>
             </div>
-            <div className="bg-zinc-900/50 rounded-2xl p-4 border border-zinc-800/50">
-              <div className="flex items-center gap-2 text-zinc-500 mb-1">
+            <div className="dark:bg-zinc-900/50 rounded-2xl p-4 border border-zinc-800/50">
+              <div className="flex items-center gap-2 dark:text-zinc-500 mb-1">
                 <Clock size={14} />
                 <span className="text-[10px] uppercase font-bold tracking-widest">
                   Updated
                 </span>
               </div>
-              <div className="text-sm font-medium text-zinc-300">
+              <div className="text-sm font-medium dark:text-zinc-300">
                 {new Date(account.updatedAt).toLocaleDateString()}
               </div>
             </div>
-            <div className="bg-zinc-900/50 rounded-2xl p-4 border border-zinc-800/50">
-              <div className="flex items-center gap-2 text-zinc-500 mb-1">
+            <div className="dark:bg-zinc-900/50 rounded-2xl p-4 border border-zinc-800/50">
+              <div className="flex items-center gap-2 dark:text-zinc-500 mb-1">
                 <Shield size={14} />
                 <span className="text-[10px] uppercase font-bold tracking-widest">
                   Security
@@ -206,6 +223,13 @@ const DetailsAccountModel = ({
                 </p>
               </div>
             </div>
+          )}
+
+          {account.passwords && account.passwords.length > 0 && (
+            <PasswordList
+              passwords={account.passwords}
+              accountId={account.id}
+            />
           )}
 
           {/* Datas */}

@@ -1,20 +1,12 @@
+import { ThemeProvider } from "@/components/theme-provider";
+import LayoutProtect from "@/context/layout-protect";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { getMessages, setRequestLocale } from "next-intl/server";
+import { notFound } from "next/navigation";
 import { Toaster } from "sonner";
-import { ThemeProvider } from "../components/theme-provider";
-import LayoutProtect from "../context/layout-protect";
-import "./globals.css";
-import Providers from "./providers";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { routing } from "../../i18n/routing";
+import ".././globals.css";
 
 export const metadata: Metadata = {
   title: "Minhas Contas - Gerenciamento de contas, anotações e mais...",
@@ -49,30 +41,38 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+type Props = {
   children: React.ReactNode;
-}>) {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function RootLayout({ children, params }: Props) {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  setRequestLocale(locale);
+
+  const messages = await getMessages();
+
   return (
-    <html lang="pt-br" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <link rel="shortcut icon" href="/icon.ico-1.png" type="image/x-icon" />
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <LayoutProtect>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Providers>
+      <body className={`antialiased`}>
+        <NextIntlClientProvider messages={messages}>
+          <LayoutProtect>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
               <main className="w-full h-full min-h-screen">{children}</main>
-            </Providers>
-            <Toaster />
-          </ThemeProvider>
-        </LayoutProtect>
+              <Toaster />
+            </ThemeProvider>
+          </LayoutProtect>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

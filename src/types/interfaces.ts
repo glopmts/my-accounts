@@ -10,6 +10,13 @@ export enum SecretTypeSelector {
   OUTHER = "OUTHER",
 }
 
+export enum TypePassword {
+  asswor = "password",
+  pin = "pin",
+  toke = "token",
+  security_answer = "security_answer",
+}
+
 export interface MyAccounts {
   id: string;
   title: string | null;
@@ -31,11 +38,20 @@ export interface PasswordFormData {
   id: string;
   label: string;
   value: string;
-  type: "password" | "pin" | "token" | "security_answer";
+  type: TypePassword;
   hint?: string;
   notes?: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface PasswordFormDataInput {
+  id?: string;
+  label: string;
+  value: string;
+  type: TypePassword;
+  hint?: string;
+  notes?: string;
 }
 
 export interface PasswordAccounts {
@@ -188,7 +204,7 @@ export interface PasswordFormData {
   id: string;
   label: string;
   value: string;
-  type: "password" | "pin" | "token" | "security_answer";
+  type: TypePassword;
   hint?: string;
   notes?: string;
 }

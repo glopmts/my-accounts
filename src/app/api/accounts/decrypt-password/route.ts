@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY!;
+
 export async function POST(request: NextRequest) {
   try {
     const { userId: clerkUserId } = await auth();
@@ -14,9 +16,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { accountId, passwordId, password } = await request.json();
+    const { accountId, passwordId } = await request.json();
 
-    if (!accountId || !passwordId || !password) {
+    if (!accountId || !passwordId) {
       return NextResponse.json(
         { success: false, message: "Dados incompletos" },
         { status: 400 },
@@ -50,7 +52,7 @@ export async function POST(request: NextRequest) {
       select: {
         value: true,
         label: true,
-        type: true,
+        hint: true,
       },
     });
 
@@ -61,23 +63,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const isValid = await PasswordService.verifyPassword(
-      password,
+    const decryptedValue = PasswordService.decryptText(
       passwordRecord.value,
+      ENCRYPTION_KEY,
     );
+
+    console.log(decryptedValue, "decryptedValue");
+
+    const decryptedHint = passwordRecord.hint
+      ? PasswordService.decryptText(passwordRecord.hint, ENCRYPTION_KEY)
+      : null;
 
     return NextResponse.json({
       success: true,
-      isValid,
+      value: decryptedValue,
+      hint: decryptedHint,
       label: passwordRecord.label,
-      type: passwordRecord.type,
     });
   } catch (error) {
-    console.error("Error verifying password:", error);
+    console.error("Error decrypting password:", error);
     return NextResponse.json(
       {
         success: false,
-        message: "Erro interno do servidor",
+        message: "Erro ao descriptografar senha",
         error: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 },

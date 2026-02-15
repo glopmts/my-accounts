@@ -10,10 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { api } from "@/lib/axios";
+import { usePasswordValide } from "@/hooks/session-alert/use-password-valide";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 
 type PropsModalConfirm = {
   userId: string;
@@ -26,48 +25,20 @@ const ConfirmPassword = ({
   triggerElement,
   onSuccess,
 }: PropsModalConfirm) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [password, setPassword] = useState("");
-  const [isPending, setIsPending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleConfirm = async () => {
-    if (!userId) {
-      toast.error("ID do usuário não encontrado");
-      return;
-    }
+  const {
+    isPending,
+    isOpen,
+    setIsOpen,
+    password,
+    setPassword,
 
-    if (!password || password.length < 6) {
-      toast.error("Senha inválida. Deve ter no mínimo 6 caracteres");
-      return;
-    }
-
-    setIsPending(true);
-
-    try {
-      const res = await api.post("/user/confirm-password", {
-        password,
-      });
-
-      if (res.data.success) {
-        toast.success("Senha validada com sucesso!");
-        setPassword("");
-        setIsOpen(false);
-
-        if (onSuccess) onSuccess();
-      } else {
-        toast.error(res.data.message || "Erro ao validar senha");
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        const errorMessage = error.message || "Erro ao validar senha";
-        toast.error(errorMessage);
-        console.error("Error confirming password:", error);
-      }
-    } finally {
-      setIsPending(false);
-    }
-  };
+    handleConfirm,
+  } = usePasswordValide({
+    userId,
+    onSuccess,
+  });
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

@@ -13,7 +13,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useSettings } from "@/hooks/use-settings";
 import { cn } from "@/lib/utils";
 import { Mail, RefreshCw, User } from "lucide-react";
-import NewsPasswordModal from "../../../components/profile_components/password-modal";
+import NewsPasswordModal from "../../../../components/profile_components/password-modal";
 
 const Settings = () => {
   const {

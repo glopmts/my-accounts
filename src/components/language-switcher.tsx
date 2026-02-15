@@ -8,7 +8,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Languages } from "lucide-react";
-import { useTranslation } from "react-i18next";
+
+import { useLocale } from "next-intl";
+import { usePathname, useRouter } from "next/navigation";
 
 const languages = [
   { code: "pt", label: "Português" },
@@ -16,17 +18,21 @@ const languages = [
 ];
 
 export default function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
 
-  const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
-    localStorage.setItem("lang", lang);
+  const changeLanguage = (newLocale: string) => {
+    const segments = pathname.split("/");
+    segments[1] = newLocale;
+
+    router.replace(segments.join("/"));
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="icon" title="Change language">
+        <Button variant="secondary" size="icon">
           <Languages className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
@@ -36,7 +42,7 @@ export default function LanguageSwitcher() {
           <DropdownMenuItem
             key={lang.code}
             onClick={() => changeLanguage(lang.code)}
-            className={i18n.language === lang.code ? "font-semibold" : ""}
+            className={locale === lang.code ? "font-semibold" : ""}
           >
             {lang.label}
           </DropdownMenuItem>
