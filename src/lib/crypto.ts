@@ -19,7 +19,7 @@ export interface EncryptedPasswordData {
 export class PasswordService {
   private static readonly SALT_ROUNDS = 10;
   private static readonly ALGORITHM = "aes-256-gcm";
-  private static readonly KEY_LENGTH = 32;
+  private static readonly KEY_LENGTH_BYTES = 32; // AES-256 requer 32 bytes (256 bits)
   private static readonly IV_LENGTH = 16;
   private static readonly SCRYPT_SALT = process.env.ENCRYPTION_SALT!;
 
@@ -69,7 +69,7 @@ export class PasswordService {
   ): Buffer {
     try {
       const salt = userSpecificSalt || this.SCRYPT_SALT;
-      return crypto.scryptSync(masterPassword, salt, this.KEY_LENGTH, {
+      return crypto.scryptSync(masterPassword, salt, this.KEY_LENGTH_BYTES, {
         N: 16384, // Custo de CPU/memória (2^14)
         r: 8, // Tamanho do bloco
         p: 1, // Paralelização
@@ -88,22 +88,62 @@ export class PasswordService {
   }
 
   /**
+   * Prepara a chave para uso com AES-256-GCM
+   * Converte qualquer input para uma chave de 32 bytes
+   */
+  private static prepareKeyForAES(key: string | Buffer): Buffer {
+    if (typeof key === "string") {
+      // Tenta interpretar como hex primeiro
+      try {
+        const hexBuffer = Buffer.from(key, "hex");
+
+        // Se for exatamente 32 bytes (64 caracteres hex), usa diretamente
+        if (hexBuffer.length === 32) {
+          return hexBuffer;
+        }
+
+        // Se for 64 bytes (128 caracteres hex), pega os primeiros 32 bytes
+        if (hexBuffer.length === 64) {
+          console.warn(
+            "Chave tem 64 bytes, usando apenas os primeiros 32 bytes para AES-256",
+          );
+          return hexBuffer.slice(0, 32);
+        }
+      } catch {
+        // Não é hex válido, continua com scrypt
+      }
+
+      // Para qualquer outro tamanho, deriva usando scrypt para 32 bytes
+      return crypto.scryptSync(key, this.SCRYPT_SALT, 32);
+    } else {
+      // É um buffer
+      if (key.length === 32) {
+        return key;
+      }
+
+      if (key.length === 64) {
+        console.warn(
+          "Buffer de chave tem 64 bytes, usando apenas os primeiros 32 bytes para AES-256",
+        );
+        return key.slice(0, 32);
+      }
+
+      // Se não tem o tamanho correto, faz hash
+      return crypto.scryptSync(key, this.SCRYPT_SALT, 32);
+    }
+  }
+
+  /**
    * Criptografa texto sensível usando AES-256-GCM
-   * Inclui autenticação para detectar modificações
    */
   static encryptText(text: string, key: string | Buffer): string {
     try {
       if (!text) {
-        return text; // Retorna vazio se não houver texto
+        return text;
       }
 
-      // Converte string key para Buffer se necessário
-      const keyBuffer = typeof key === "string" ? Buffer.from(key, "hex") : key;
-
-      // Garante que a chave tem o tamanho correto
-      if (keyBuffer.length !== this.KEY_LENGTH) {
-        throw new Error(`Chave deve ter ${this.KEY_LENGTH} bytes`);
-      }
+      // Prepara a chave para AES-256 (32 bytes)
+      const keyBuffer = this.prepareKeyForAES(key);
 
       // Gera IV aleatório
       const iv = crypto.randomBytes(this.IV_LENGTH);
@@ -152,13 +192,8 @@ export class PasswordService {
         throw new Error("Formato de dados criptografados inválido");
       }
 
-      // Prepara key buffer
-      const keyBuffer = typeof key === "string" ? Buffer.from(key, "hex") : key;
-
-      // Valida tamanho da chave
-      if (keyBuffer.length !== this.KEY_LENGTH) {
-        throw new Error(`Chave deve ter ${this.KEY_LENGTH} bytes`);
-      }
+      // Prepara a chave para AES-256 (32 bytes)
+      const keyBuffer = this.prepareKeyForAES(key);
 
       const decipher = crypto.createDecipheriv(
         parsed.algorithm || this.ALGORITHM,
@@ -175,7 +210,6 @@ export class PasswordService {
       return decrypted;
     } catch (error) {
       console.error("Erro ao descriptografar:", error);
-      // Em vez de lançar erro, retorna marcador de erro
       return "[Falha na descriptografia]";
     }
   }

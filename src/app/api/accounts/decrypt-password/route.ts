@@ -68,8 +68,6 @@ export async function POST(request: NextRequest) {
       ENCRYPTION_KEY,
     );
 
-    console.log(decryptedValue, "decryptedValue");
-
     const decryptedHint = passwordRecord.hint
       ? PasswordService.decryptText(passwordRecord.hint, ENCRYPTION_KEY)
       : null;

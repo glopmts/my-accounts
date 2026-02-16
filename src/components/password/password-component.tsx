@@ -99,52 +99,55 @@ const PasswordComponent = ({
   return (
     <div className="space-y-4">
       {/* Campo de senha atual */}
-      <div className="space-y-2">
-        <Label htmlFor="current-password" className="dark:text-zinc-300">
-          Senha atual
-        </Label>
-        <div className="relative">
-          <Input
-            id="current-password"
-            type={showNewPassword ? "text" : "password"}
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={cn(
-              "dark:border-zinc-700 dark:bg-zinc-800 pr-10",
-              dbPasswordValid === false && "border-red-500 dark:border-red-500",
-              dbPasswordValid === true &&
-                "border-green-500 dark:border-green-500",
+      {isPasswordExinsting && (
+        <div className="space-y-2">
+          <Label htmlFor="current-password" className="dark:text-zinc-300">
+            Senha atual
+          </Label>
+          <div className="relative">
+            <Input
+              id="current-password"
+              type={showNewPassword ? "text" : "password"}
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={cn(
+                "dark:border-zinc-700 dark:bg-zinc-800 pr-10",
+                dbPasswordValid === false &&
+                  "border-red-500 dark:border-red-500",
+                dbPasswordValid === true &&
+                  "border-green-500 dark:border-green-500",
+              )}
+              disabled={isGeneratingPassword || isVerifying}
+            />
+            <button
+              type="button"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-300"
+            >
+              {showNewPassword ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </button>
+            {isVerifying && (
+              <div className="absolute right-12 top-1/2 -translate-y-1/2">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-400 border-t-transparent" />
+              </div>
             )}
-            disabled={isGeneratingPassword || isVerifying}
-          />
-          <button
-            type="button"
-            onClick={() => setShowNewPassword(!showNewPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-300"
-          >
-            {showNewPassword ? (
-              <EyeOff className="h-4 w-4" />
-            ) : (
-              <Eye className="h-4 w-4" />
+            {!isVerifying && dbPasswordValid === true && (
+              <Check className="absolute right-12 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500" />
             )}
-          </button>
-          {isVerifying && (
-            <div className="absolute right-12 top-1/2 -translate-y-1/2">
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-400 border-t-transparent" />
-            </div>
-          )}
-          {!isVerifying && dbPasswordValid === true && (
-            <Check className="absolute right-12 top-1/2 -translate-y-1/2 h-4 w-4 text-green-500" />
-          )}
-          {!isVerifying && dbPasswordValid === false && (
-            <X className="absolute right-12 top-1/2 -translate-y-1/2 h-4 w-4 text-red-500" />
+            {!isVerifying && dbPasswordValid === false && (
+              <X className="absolute right-12 top-1/2 -translate-y-1/2 h-4 w-4 text-red-500" />
+            )}
+          </div>
+          {dbPasswordValid === false && (
+            <p className="text-xs text-red-500 mt-1">Senha atual incorreta</p>
           )}
         </div>
-        {dbPasswordValid === false && (
-          <p className="text-xs text-red-500 mt-1">Senha atual incorreta</p>
-        )}
-      </div>
+      )}
 
       {/* Campo de nova senha */}
       <div className="space-y-2">

@@ -29,7 +29,7 @@ export function usePasswordValide({
     setIsPending(true);
 
     try {
-      const res = await api.post("/auth/confirm-password", {
+      const res = await api.post("/auth/password/valide-password", {
         password,
       });
 

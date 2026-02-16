@@ -87,8 +87,7 @@ export async function GET(request: NextRequest) {
 
 /// Creater
 
-const ENCRYPTION_KEY =
-  process.env.ENCRYPTION_KEY || "chave-de-fallback-dev-somente";
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY!;
 
 export async function POST(request: NextRequest) {
   try {

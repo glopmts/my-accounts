@@ -91,7 +91,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const validateWithPassword = useCallback(
     async (password: string): Promise<boolean> => {
       try {
-        const res = await api.post("/auth/confirm-password", { password });
+        const res = await api.post("/auth/password/valide-password", {
+          password,
+        });
 
         if (res.data.success) {
           // Atualiza a sessão com 60 minutos
