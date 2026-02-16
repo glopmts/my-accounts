@@ -16,8 +16,9 @@ import { useState } from "react";
 
 type PropsModalConfirm = {
   userId: string;
+  isLoading: boolean;
   triggerElement?: React.ReactNode;
-  onSuccess?: () => void;
+  onSuccess: (password: string) => Promise<void>;
 };
 
 const ConfirmPassword = ({

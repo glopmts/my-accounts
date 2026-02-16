@@ -14,8 +14,9 @@ import { useValideCode } from "../../hooks/session-alert/use-code-valide";
 
 type PropsModalConfirm = {
   userId: string;
+  isLoading: boolean;
   triggerElement?: React.ReactNode;
-  onSuccess?: () => void;
+  onSuccess: (code: string) => Promise<void>;
 };
 
 const ConfirmCode = ({

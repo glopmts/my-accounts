@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { setLocaleCookie } from "../../actions/locale";
 
 export default function HomePage() {
   const { isSignedIn, isLoaded } = useUser();
@@ -14,7 +15,19 @@ export default function HomePage() {
   useEffect(() => {
     if (!isLoaded) return;
 
-    router.replace(isSignedIn ? `/${locale}/home` : `/${locale}/sign-in`);
+    const initializeLocale = async () => {
+      const hasLocaleCookie = document.cookie.includes("locale=");
+
+      if (!hasLocaleCookie) {
+        const acceptLanguage = navigator.language;
+        const detectedLocale = acceptLanguage.includes("en") ? "en" : "pt";
+        await setLocaleCookie(detectedLocale);
+      }
+    };
+
+    initializeLocale().then(() => {
+      router.replace(isSignedIn ? `/${locale}/home` : `/${locale}/sign-in`);
+    });
   }, [isLoaded, isSignedIn, router, locale]);
 
   if (!isLoaded) {

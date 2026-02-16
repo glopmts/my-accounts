@@ -1,20 +1,31 @@
 "use client";
 
+import { useLanguage } from "@/context/LanguageContext";
 import { useSession } from "@/context/SessionContext";
 import { usePathname } from "next/navigation";
 import { ReactNode, useCallback, useEffect, useRef } from "react";
 import { SessionAlert } from "./SessionAlert";
 
-interface SessionWrapperProps {
+interface LayoutProtectProps {
   children: ReactNode;
 }
 
-export function SessionWrapper({ children }: SessionWrapperProps) {
-  const { hasValidSession, showAlert, setShowAlert, isLoading } = useSession();
+export default function LayoutProtect({ children }: LayoutProtectProps) {
+  const {
+    hasValidSession,
+    showAlert,
+    setShowAlert,
+    isLoading: sessionLoading,
+  } = useSession();
+  const { isLoading: languageLoading } = useLanguage();
   const pathname = usePathname();
   const prevPathnameRef = useRef(pathname);
 
   const shouldShowOnPath = useCallback(() => {
+    const pathSegments = pathname.split("/");
+    const basePath =
+      pathSegments.length > 1 ? `/${pathSegments.slice(2).join("/")}` : "/";
+
     const protectedPaths = [
       "/dashboard",
       "/admin",
@@ -24,27 +35,41 @@ export function SessionWrapper({ children }: SessionWrapperProps) {
     ];
     const homePaths = ["/", "/home"];
 
-    if (homePaths.includes(pathname)) {
-      return !hasValidSession && !isLoading;
+    if (homePaths.includes(basePath) || basePath === "") {
+      return !hasValidSession && !sessionLoading;
     }
 
-    if (protectedPaths.some((path) => pathname.startsWith(path))) {
-      return !hasValidSession && !isLoading;
+    if (protectedPaths.some((path) => basePath.startsWith(path))) {
+      return !hasValidSession && !sessionLoading;
     }
 
     return false;
-  }, [pathname, hasValidSession, isLoading]);
+  }, [pathname, hasValidSession, sessionLoading]);
 
   useEffect(() => {
-    if (pathname !== prevPathnameRef.current && !isLoading) {
+    if (
+      pathname !== prevPathnameRef.current &&
+      !sessionLoading &&
+      !languageLoading
+    ) {
       const shouldShow = shouldShowOnPath();
       setShowAlert(shouldShow);
       prevPathnameRef.current = pathname;
     }
-  }, [pathname, isLoading, setShowAlert, shouldShowOnPath]);
+  }, [
+    pathname,
+    sessionLoading,
+    languageLoading,
+    setShowAlert,
+    shouldShowOnPath,
+  ]);
 
-  if (isLoading) {
-    return <>{children}</>;
+  if (sessionLoading || languageLoading) {
+    return (
+      <div className="w-full h-full min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-gray-200 dark:bg-zinc-900" />
+      </div>
+    );
   }
 
   return (

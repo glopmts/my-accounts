@@ -27,6 +27,8 @@ interface SessionContextType {
   clearSession: () => Promise<void>;
   showAlert: boolean;
   setShowAlert: (show: boolean) => void;
+  validateWithCode: (code: string) => Promise<boolean>;
+  validateWithPassword: (password: string) => Promise<boolean>;
 }
 
 const SessionContext = createContext<SessionContextType | undefined>(undefined);
@@ -40,15 +42,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const isInitialized = useRef(false);
   const isCheckingSession = useRef(false);
 
-  // Limpa a sessão
   const clearSession = useCallback(async () => {
     try {
-      await api.delete("/auth/session-token");
+      await api.delete("/auth/session/session-token");
     } catch (error) {
-      if (error instanceof Error) {
-        if (error.cause !== 401) {
-          console.error("Error clearing session:", error);
-        }
+      if (error instanceof Error && error.cause !== 601) {
+        console.error("Error clearing session:", error);
       }
     } finally {
       setHasValidSession(false);
@@ -56,19 +55,71 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setTimeLeft(null);
       if (!isLoading) {
         setShowAlert(true);
+        window.dispatchEvent(new CustomEvent("session-expired"));
       }
     }
   }, [isLoading]);
 
+  // Validar com código
+  const validateWithCode = useCallback(
+    async (code: string): Promise<boolean> => {
+      try {
+        const res = await api.post("/user/code/confirm-code", {
+          code: code.toUpperCase(),
+        });
+
+        if (res.data.success) {
+          // Atualiza a sessão com 60 minutos
+          setTimeLeft(60 * 60);
+          setHasValidSession(true);
+          setShowAlert(false);
+
+          // Dispara evento de sucesso
+          window.dispatchEvent(new CustomEvent("session-validated"));
+          return true;
+        }
+        return false;
+      } catch (error) {
+        console.error("Error validating code:", error);
+        return false;
+      }
+    },
+    [],
+  );
+
+  // Validar com senha
+  const validateWithPassword = useCallback(
+    async (password: string): Promise<boolean> => {
+      try {
+        const res = await api.post("/auth/confirm-password", { password });
+
+        if (res.data.success) {
+          // Atualiza a sessão com 60 minutos
+          setTimeLeft(60 * 60);
+          setHasValidSession(true);
+          setShowAlert(false);
+
+          // Dispara evento de sucesso
+          window.dispatchEvent(new CustomEvent("session-validated"));
+          return true;
+        }
+        return false;
+      } catch (error) {
+        console.error("Error validating password:", error);
+        return false;
+      }
+    },
+    [],
+  );
+
   const validateSession = useCallback(async () => {
-    // Evitar múltiplas chamadas simultâneas
     if (isCheckingSession.current) return;
 
     isCheckingSession.current = true;
 
     try {
       setIsLoading(true);
-      const response = await api.get("/auth/session-token");
+      const response = await api.get("/auth/session/session-token");
 
       if (response.data.success) {
         const expiresAt = new Date(response.data.data.expiresAt);
@@ -94,10 +145,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         await clearSession();
       }
     } catch (error) {
-      if (error instanceof Error) {
-        if (error.cause !== 401) {
-          console.error("Error validating session:", error);
-        }
+      if (error instanceof Error && error.cause !== 601) {
+        console.error("Error validating session:", error);
       }
       await clearSession();
     } finally {
@@ -121,7 +170,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval);
   }, [hasValidSession, validateSession]);
 
-  // Atualiza contador em tempo real
   useEffect(() => {
     if (timeLeft === null || timeLeft <= 0) return;
 
@@ -156,6 +204,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         clearSession,
         showAlert,
         setShowAlert,
+        validateWithCode,
+        validateWithPassword,
       }}
     >
       {children}

@@ -7,10 +7,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { setCookie } from "cookies-next";
 import { Languages } from "lucide-react";
-
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
+
+function setClientCookie(name: string, value: string) {
+  document.cookie = `${name}=${value}; path=/; max-age=${60 * 60 * 24 * 365}`;
+}
 
 const languages = [
   { code: "pt", label: "Português" },
@@ -23,9 +27,9 @@ export default function LanguageSwitcher() {
   const router = useRouter();
 
   const changeLanguage = (newLocale: string) => {
+    setCookie("locale", newLocale, { path: "/", maxAge: 60 * 60 * 24 * 365 });
     const segments = pathname.split("/");
     segments[1] = newLocale;
-
     router.replace(segments.join("/"));
   };
 
@@ -36,7 +40,6 @@ export default function LanguageSwitcher() {
           <Languages className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
-
       <DropdownMenuContent align="end">
         {languages.map((lang) => (
           <DropdownMenuItem

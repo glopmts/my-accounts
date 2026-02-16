@@ -31,7 +31,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import GoogleButton from "../../../components/auth/oauth-buttons";
+import GoogleButton from "../../../../components/auth/oauth-buttons";
 
 export default function SignInPage() {
   const router = useRouter();

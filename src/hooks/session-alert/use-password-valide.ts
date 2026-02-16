@@ -9,7 +9,7 @@ export function usePasswordValide({
   onSuccess,
 }: {
   userId: string;
-  onSuccess?: () => void;
+  onSuccess: (password: string) => Promise<void>;
 }) {
   const [isPending, setIsPending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +38,7 @@ export function usePasswordValide({
         setPassword("");
         setIsOpen(false);
 
-        if (onSuccess) onSuccess();
+        if (onSuccess) onSuccess(password);
       } else {
         toast.error(res.data.message || "Erro ao validar senha");
       }

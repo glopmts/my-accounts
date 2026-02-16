@@ -1,11 +1,15 @@
+import { SessionAlert } from "@/components/SessionAlert";
+import SessionWrapper from "@/components/SessionWrapper";
 import { ThemeProvider } from "@/components/theme-provider";
+import { LanguageProvider } from "@/context/LanguageContext";
 import LayoutProtect from "@/context/layout-protect";
+import { SessionProvider } from "@/context/SessionContext";
+import { routing } from "@/i18n/routing";
 import type { Metadata } from "next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Toaster } from "sonner";
-import { routing } from "../../i18n/routing";
 import ".././globals.css";
 
 export const metadata: Metadata = {
@@ -61,17 +65,26 @@ export default async function RootLayout({ children, params }: Props) {
       <link rel="shortcut icon" href="/icon.ico-1.png" type="image/x-icon" />
       <body className={`antialiased`}>
         <NextIntlClientProvider messages={messages}>
-          <LayoutProtect>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <main className="w-full h-full min-h-screen">{children}</main>
-              <Toaster />
-            </ThemeProvider>
-          </LayoutProtect>
+          <LanguageProvider initialLocale={locale}>
+            <LayoutProtect>
+              <SessionProvider>
+                <SessionWrapper>
+                  <SessionAlert />
+                  <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                  >
+                    <main className="w-full h-full min-h-screen">
+                      {children}
+                    </main>
+                    <Toaster />
+                  </ThemeProvider>
+                </SessionWrapper>
+              </SessionProvider>
+            </LayoutProtect>
+          </LanguageProvider>
         </NextIntlClientProvider>
       </body>
     </html>
