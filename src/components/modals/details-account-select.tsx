@@ -12,48 +12,40 @@ import {
   Clock,
   Copy,
   ExternalLink,
-  FileText,
   Globe,
   Shield,
   Trash2,
 } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { toast } from "sonner";
 import { TYPE_METADATA } from "../../types/constantes";
 import { MyAccounts } from "../../types/interfaces";
 import PasswordList from "../password/PasswordList";
+import ProseAccountNotes from "../prose-account-notes";
 import { Button } from "../ui/button";
 
 type PropsDataAccount = {
   account: MyAccounts;
   isOpen: boolean;
+  isExpanded: boolean;
   onClose: () => void;
+  notes: string;
+  setNotes: React.Dispatch<React.SetStateAction<string>>;
   handleDelete?: (id: string) => void;
+  setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const DetailsAccountModel = ({
   account,
   isOpen,
+  isExpanded,
+  notes,
+  setNotes,
   onClose,
   handleDelete,
+  setIsExpanded,
 }: PropsDataAccount) => {
-  const [visiblePasswords, setVisiblePasswords] = useState<Set<string>>(
-    new Set(),
-  );
-
-  const togglePasswordVisibility = (passwordId: string) => {
-    setVisiblePasswords((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(passwordId)) {
-        newSet.delete(passwordId);
-      } else {
-        newSet.add(passwordId);
-      }
-      return newSet;
-    });
-  };
-
   if (!account) return null;
 
   const meta = TYPE_METADATA[account.type];
@@ -212,17 +204,11 @@ const DetailsAccountModel = ({
 
           {/* Notas */}
           {account.notes && (
-            <div className="space-y-2 dark:bg-zinc-900 p-1 border rounded-md">
-              <div className="flex items-center gap-2 text-sm font-medium dark:text-gray-400">
-                <FileText className="w-4 h-4 shrink-0" />
-                <span>Notas</span>
-              </div>
-              <div className="p-3 rounded-lg">
-                <p className="text-sm whitespace-pre-wrap wrap-break-word max-h-32 overflow-y-auto">
-                  {account.notes}
-                </p>
-              </div>
-            </div>
+            <ProseAccountNotes
+              notes={notes}
+              isExpanded={isExpanded}
+              setIsExpanded={setIsExpanded}
+            />
           )}
 
           {account.passwords && account.passwords.length > 0 && (

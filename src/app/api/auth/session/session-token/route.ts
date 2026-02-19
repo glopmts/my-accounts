@@ -70,7 +70,6 @@ export async function DELETE(request: NextRequest) {
       await prisma.session.deleteMany({
         where: {
           sessionToken,
-          OR: [{ isValid: false }, { expiresAt: { lt: new Date() } }],
         },
       });
 

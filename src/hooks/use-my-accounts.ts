@@ -6,6 +6,7 @@ import {
   SchemaAccountUpdater,
 } from "@/utils/validations/schema-my-accounts";
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
 import { MyAccounts } from "../types/interfaces";
 
 type PropsMyAccounts = {
@@ -119,10 +120,9 @@ export const useMyAccounts = ({ refetch, userId }: PropsMyAccounts = {}) => {
 
         if (!response.success) {
           setError(response.message || "Erro ao deletar conta");
+          toast.error(response.message || "Erro ao deletar conta");
         }
-
         refetch?.();
-
         return response;
       } catch (err) {
         const errorMessage =

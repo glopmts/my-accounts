@@ -14,9 +14,7 @@ function getLocaleFromPath(pathname: string): string | null {
 function getPreferredLocale(request: NextRequest): string {
   const acceptLanguage = request.headers.get("accept-language");
   if (!acceptLanguage) return defaultLocale;
-
   if (acceptLanguage.includes("en")) return "en";
-
   return defaultLocale;
 }
 
@@ -41,6 +39,12 @@ const isAuthRoute = createRouteMatcher([
 
 const isRootRoute = createRouteMatcher(["/", "/api(.*)", "/_next(.*)"]);
 
+// Rotas que NÃO devem renovar a sessão
+const isPublicApiRoute = createRouteMatcher([
+  "/api/webhooks(.*)",
+  "/api/health(.*)",
+]);
+
 export default clerkMiddleware(async (auth, req: NextRequest) => {
   const { userId } = await auth();
   const { pathname } = req.nextUrl;
@@ -60,7 +64,6 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
     return NextResponse.redirect(url);
   }
 
-  // Atualizar cookie de locale se necessário
   if (urlLocale && urlLocale !== localeCookie) {
     const response = NextResponse.next();
     response.cookies.set("locale", urlLocale, {
@@ -77,12 +80,9 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
     return NextResponse.redirect(new URL(`/${locale}/home`, req.url));
   }
 
-  // Proteger rotas privadas
   if (!isPublicRoute(req)) {
     await auth.protect();
   }
-
-  return NextResponse.next();
 });
 
 export const config = {

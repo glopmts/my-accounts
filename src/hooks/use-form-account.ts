@@ -354,5 +354,6 @@ export function useFormAccount({
     addPasswordField,
     removePasswordField,
     getTypeLabel,
+    setValidationErrors,
   };
 }

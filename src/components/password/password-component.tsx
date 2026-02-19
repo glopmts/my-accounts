@@ -263,6 +263,8 @@ const PasswordComponent = ({
         </div>
       )}
 
+      
+
       {/* Resumo da validação */}
       <div className="mt-4 text-xs space-y-1">
         <ValidationStatus

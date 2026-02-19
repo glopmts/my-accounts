@@ -32,7 +32,7 @@ export function useValideCode({ userId, onSuccess }: UseValideCodeProps) {
     setPending(true);
 
     try {
-      const res = await api.post("/user/code/confirm-code", {
+      const res = await api.post("/auth/session/confirm-code", {
         code: code.toUpperCase(),
       });
 

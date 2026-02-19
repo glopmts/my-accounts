@@ -66,8 +66,8 @@ const Archived = () => {
   }, []);
 
   const handleDeleteAccount = useCallback(
-    async (archivedId: string) => {
-      await deleteAccount(archivedId);
+    async (accountId: string) => {
+      await deleteAccount(accountId);
       refetch();
     },
     [deleteAccount, refetch],
@@ -163,7 +163,7 @@ const Archived = () => {
                   account={archivedItem.accountData}
                   viewMode={viewMode}
                   userId={userId}
-                  onDelete={() => handleDeleteAccount(archivedItem.id)}
+                  onDelete={handleDeleteAccount}
                   onEdit={() => handleEdit(archivedItem)}
                   onView={() => handleView(archivedItem)}
                   refetch={refetch}

@@ -64,7 +64,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const validateWithCode = useCallback(
     async (code: string): Promise<boolean> => {
       try {
-        const res = await api.post("/user/code/confirm-code", {
+        const res = await api.post("/auth/session/confirm-code", {
           code: code.toUpperCase(),
         });
 
@@ -91,7 +91,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const validateWithPassword = useCallback(
     async (password: string): Promise<boolean> => {
       try {
-        const res = await api.post("/auth/password/valide-password", {
+        const res = await api.post("/auth/session/valide-password", {
           password,
         });
 

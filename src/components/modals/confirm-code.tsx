@@ -35,7 +35,10 @@ const ConfirmCode = ({
     hasActiveSession,
   } = useValideCode({
     userId,
-    onSuccess,
+    onSuccess: async (code) => {
+      setIsOpen(false);
+      await onSuccess(code);
+    },
   });
 
   if (hasActiveSession) {

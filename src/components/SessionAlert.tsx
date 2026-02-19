@@ -32,21 +32,25 @@ export function SessionAlert() {
   // Efeito para controle do body scroll
   useEffect(() => {
     if (shouldShow) {
+      // Salva os estilos originais
       originalBodyOverflow.current = document.body.style.overflow;
       originalBodyPadding.current = document.body.style.paddingRight;
 
+      // Aplica o overflow hidden
       document.body.style.overflow = "hidden";
       document.body.style.paddingRight = "15px";
 
       const timer = setTimeout(() => setIsVisible(true), 0);
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+        // FORÇA a remoção do overflow no cleanup
+        document.body.style.overflow = "";
+        document.body.style.paddingRight = "";
+      };
     } else {
-      if (originalBodyOverflow.current !== null) {
-        document.body.style.overflow = originalBodyOverflow.current;
-      }
-      if (originalBodyPadding.current !== null) {
-        document.body.style.paddingRight = originalBodyPadding.current;
-      }
+      // Quando shouldShow é false, remove o overflow imediatamente
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
 
       const timer = setTimeout(() => setIsVisible(false), 300);
       return () => clearTimeout(timer);
@@ -77,10 +81,15 @@ export function SessionAlert() {
     try {
       const success = await validateWithCode(code);
       if (success) {
-        setShowAlert(false);
-        setValidationMethod(null);
+        setTimeout(() => {
+          setShowAlert(false);
+          setValidationMethod(null);
+          setIsValidating(false);
+        }, 100);
+      } else {
+        setIsValidating(false);
       }
-    } finally {
+    } catch (error) {
       setIsValidating(false);
     }
   };
@@ -90,10 +99,15 @@ export function SessionAlert() {
     try {
       const success = await validateWithPassword(password);
       if (success) {
-        setShowAlert(false);
-        setValidationMethod(null);
+        setTimeout(() => {
+          setShowAlert(false);
+          setValidationMethod(null);
+          setIsValidating(false);
+        }, 100);
+      } else {
+        setIsValidating(false);
       }
-    } finally {
+    } catch (error) {
       setIsValidating(false);
     }
   };
@@ -143,7 +157,7 @@ export function SessionAlert() {
                   <p className="text-sm">
                     Para continuar com acesso completo ao sistema, valide seu
                     código de segurança ou senha. Esta validação protege suas
-                    informações e dura 40 minutos.
+                    informações e dura 1 hora.
                   </p>
 
                   <div className="bg-amber-50/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">

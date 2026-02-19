@@ -38,7 +38,8 @@ export async function DELETE(request: NextRequest) {
     const myAccounts = await prisma.myAccounts.findUnique({
       where: { id: accountId },
       include: {
-        passwords: true, // Include passwords to check if they exist
+        passwords: true,
+        archiveds: true,
       },
     });
 
@@ -62,6 +63,12 @@ export async function DELETE(request: NextRequest) {
     if (myAccounts.passwords && myAccounts.passwords.length > 0) {
       await prisma.password.deleteMany({
         where: { accountId: accountId },
+      });
+    }
+
+    if (myAccounts.archiveds && myAccounts.archiveds.length > 0) {
+      await prisma.archived.deleteMany({
+        where: { myaccountId: accountId },
       });
     }
 

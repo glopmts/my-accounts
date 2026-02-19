@@ -7,8 +7,10 @@ import { LayoutGrid, List, ViewMode } from "@/types/constantes";
 import { MyAccounts } from "@/types/interfaces";
 import { useCallback, useMemo, useState } from "react";
 import { AccountCard } from "../card-account";
+import CustomModal from "../custom-modal";
 import AddSecretModal from "../modals/auto-form-secret";
 import DetailsAccountModel from "../modals/details-account-select";
+import ProseAccountNotes from "../prose-account-notes";
 import { SortableContainer } from "../sortable/SortableContainer";
 import { SortableItem } from "../sortable/SortableItem";
 import { Skeleton } from "../ui/skeleton";
@@ -31,6 +33,8 @@ const CardsHomeContent = () => {
   const [isViewData, setViewData] = useState<MyAccounts | null>(null);
   const [editingAccount, setEditingAccount] = useState<MyAccounts | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedNotes, setSelectedNotes] = useState("");
 
   const sortedAccounts = useMemo(() => {
     if (!accounts) return [];
@@ -39,7 +43,7 @@ const CardsHomeContent = () => {
     return [...accounts].sort((a, b) => (a.position || 0) - (b.position || 0));
   }, [accounts]);
 
-  const handleOrderChange = useCallback((newAccounts: MyAccounts[]) => {
+  const handleOrderChange = useCallback(() => {
     const currentIsDragging =
       document.body.classList.contains("dragging-active");
     if (!currentIsDragging) {
@@ -56,7 +60,13 @@ const CardsHomeContent = () => {
 
   const handleView = useCallback((account: MyAccounts) => {
     setViewData(account);
+    setSelectedNotes(account.notes || "");
     setView(true);
+  }, []);
+
+  const handleExpandNotes = useCallback(() => {
+    setIsExpanded(true);
+    setView(false);
   }, []);
 
   if (isAccountsLoading) {
@@ -206,9 +216,30 @@ const CardsHomeContent = () => {
           onClose={() => {
             setView(false);
             setViewData(null);
+            setSelectedNotes("");
           }}
           handleDelete={deleteAccount}
+          isExpanded={isExpanded}
+          notes={selectedNotes}
+          setIsExpanded={handleExpandNotes}
+          setNotes={setSelectedNotes}
         />
+      )}
+
+      {isExpanded && (
+        <CustomModal
+          isOpen={isExpanded}
+          onClose={() => setIsExpanded(false)}
+          title="Contéudo da conta"
+          maxWidth="max-w-4xl"
+          className="z-999"
+        >
+          <ProseAccountNotes
+            notes={selectedNotes}
+            isExpanded={isExpanded}
+            setIsExpanded={setIsExpanded}
+          />
+        </CustomModal>
       )}
     </div>
   );
@@ -216,7 +247,7 @@ const CardsHomeContent = () => {
 
 // Componente principal
 const CardsHomeAccounts = () => {
-  const { userId, isLoading } = useAuthCustom();
+  const { isLoading } = useAuthCustom();
 
   if (isLoading) {
     return (

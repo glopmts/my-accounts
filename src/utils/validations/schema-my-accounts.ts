@@ -19,7 +19,7 @@ export const schemaAccountCreater = z.object({
   icon: z.string().optional(),
   passwords: z.array(passwordSchema).optional(),
   url: z.string().optional(),
-  notes: z.string().max(230, "Máximo de caracteres é 230").optional(),
+  notes: z.string().max(2000, "Máximo de caracteres é 2000").optional(),
 });
 
 export const passwordUpdateSchema = z.object({
