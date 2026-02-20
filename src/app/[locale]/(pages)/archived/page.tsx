@@ -1,8 +1,11 @@
 "use client";
 
 import { AccountCard } from "@/components/card-account";
+import CustomModal from "@/components/custom-modal";
 import AddSecretModal from "@/components/modals/auto-form-secret";
 import DetailsAccountModel from "@/components/modals/details-account-select";
+import ProseAccountNotes from "@/components/prose-account-notes";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { useMyAccounts } from "@/hooks/use-my-accounts";
@@ -36,6 +39,8 @@ const Archived = () => {
   const [isViewData, setViewData] = useState<MyAccounts | null>(null);
   const [editingAccount, setEditingAccount] = useState<MyAccounts | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedNotes, setSelectedNotes] = useState("");
 
   const transformedAccounts = useMemo(() => {
     if (!archiveds || archiveds.length === 0) return [];
@@ -62,7 +67,13 @@ const Archived = () => {
 
   const handleView = useCallback((archivedItem: ArchivedWithAccount) => {
     setViewData(archivedItem.accountData);
+    setSelectedNotes(archivedItem.accountData.notes || "");
     setView(true);
+  }, []);
+
+  const handleExpandNotes = useCallback(() => {
+    setIsExpanded(true);
+    setView(false);
   }, []);
 
   const handleDeleteAccount = useCallback(
@@ -86,12 +97,9 @@ const Archived = () => {
       <div className="w-full h-full flex items-center justify-center min-h-screen">
         <div className="text-center">
           <p className="text-red-500">Erro ao carregar itens arquivados</p>
-          <button
-            onClick={() => refetch()}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-          >
+          <Button onClick={() => refetch()} className="mt-4">
             Tentar novamente
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -214,14 +222,34 @@ const Archived = () => {
             setView(false);
             setViewData(null);
           }}
+          isExpanded={isExpanded}
+          notes={selectedNotes}
+          setIsExpanded={handleExpandNotes}
+          setNotes={setSelectedNotes}
         />
+      )}
+
+      {isExpanded && (
+        <CustomModal
+          isOpen={isExpanded}
+          onClose={() => setIsExpanded(false)}
+          title="Contéudo da conta"
+          maxWidth="max-w-4xl"
+          className="z-999"
+        >
+          <ProseAccountNotes
+            notes={selectedNotes}
+            isExpanded={isExpanded}
+            setIsExpanded={setIsExpanded}
+          />
+        </CustomModal>
       )}
     </div>
   );
 };
 
 const ArchivedPage = () => {
-  const { userId, isLoading } = useAuthCustom();
+  const { isLoading } = useAuthCustom();
 
   if (isLoading) {
     return (

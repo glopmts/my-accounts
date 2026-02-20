@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "@/context/SessionContext";
 import { AlertTriangle, Key, Lock, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import { useAuthCustom } from "../lib/useAuth";
 import ConfirmCode from "./modals/confirm-code";
 import ConfirmPassword from "./modals/confirm-password";
@@ -90,6 +91,7 @@ export function SessionAlert() {
         setIsValidating(false);
       }
     } catch (error) {
+      toast.error("Ocorreu um erro durante a validação. Tente novamente.");
       setIsValidating(false);
     }
   };
@@ -108,6 +110,7 @@ export function SessionAlert() {
         setIsValidating(false);
       }
     } catch (error) {
+      toast.error("Ocorreu um erro durante a validação. Tente novamente.");
       setIsValidating(false);
     }
   };

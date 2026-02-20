@@ -254,7 +254,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
     return (
       <div
         onClick={() => onView(account)}
-        className="group relative bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl transition-all duration-200 overflow-hidden cursor-pointer hover:shadow-md dark:hover:shadow-zinc-900/30 p-5 flex flex-col h-full"
+        className="group relative bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl transition-all duration-200 overflow-hidden cursor-pointer hover:shadow-md dark:hover:shadow-zinc-900/30 p-5 flex flex-col h-auto"
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
@@ -347,7 +347,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
   return (
     <div
       onClick={() => onView(account)}
-      className="group relative bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl transition-all duration-200 overflow-hidden cursor-pointer hover:shadow-md dark:hover:shadow-zinc-900/30 p-5 flex flex-col h-full"
+      className="group relative bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl transition-all duration-200 overflow-hidden cursor-pointer hover:shadow-md dark:hover:shadow-zinc-900/30 p-5 flex flex-col h-auto"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">

@@ -20,6 +20,7 @@ export default function LayoutProtect({ children }: LayoutProtectProps) {
   const { isLoading: languageLoading } = useLanguage();
   const pathname = usePathname();
   const prevPathnameRef = useRef(pathname);
+  const initialCheckDone = useRef(false);
 
   const shouldShowOnPath = useCallback(() => {
     const pathSegments = pathname.split("/");
@@ -46,6 +47,16 @@ export default function LayoutProtect({ children }: LayoutProtectProps) {
     return false;
   }, [pathname, hasValidSession, sessionLoading]);
 
+  // Efeito para verificar na montagem inicial
+  useEffect(() => {
+    if (!sessionLoading && !languageLoading && !initialCheckDone.current) {
+      const shouldShow = shouldShowOnPath();
+      setShowAlert(shouldShow);
+      initialCheckDone.current = true;
+    }
+  }, [sessionLoading, languageLoading, shouldShowOnPath, setShowAlert]);
+
+  // Efeito para verificar em mudanças de rota
   useEffect(() => {
     if (
       pathname !== prevPathnameRef.current &&

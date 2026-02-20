@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useArchivedQuery } from "@/services/query/use-archived-query";
 import { Archive, ArchiveX } from "lucide-react";
 import { FC, useEffect, useState } from "react";
@@ -89,32 +95,37 @@ const ArchivedButton: FC<PropsButton> = ({
 
   return (
     <div className="flex items-center">
-      <Button
-        onClick={handleArchiveToggle}
-        disabled={isLoading}
-        variant={isArchived ? "destructive" : "ghost"}
-        size="sm"
-        className="gap-2 transition-all duration-200 hover:scale-105"
-      >
-        {isLoading ? (
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-        ) : isArchived ? (
-          <>
-            <ArchiveX size={16} className="mr-1" />
-          </>
-        ) : (
-          <>
-            <Archive size={16} className="mr-1" />
-          </>
-        )}
-      </Button>
-
-      {/* Tooltip opcional */}
-      {isArchived && (
-        <span className="ml-2 text-xs text-muted-foreground">
-          Esta conta está arquivada
-        </span>
-      )}
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleArchiveToggle();
+              }}
+              disabled={isLoading}
+              variant={"ghost"}
+              size="sm"
+              className="gap-2 transition-all duration-200 hover:scale-105"
+            >
+              {isLoading ? (
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+              ) : isArchived ? (
+                <>
+                  <ArchiveX size={16} className="mr-1" />
+                </>
+              ) : (
+                <>
+                  <Archive size={16} className="mr-1" />
+                </>
+              )}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            {isArchived ? "Desarquivar conta" : "Arquivar conta"}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 };

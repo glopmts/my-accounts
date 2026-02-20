@@ -75,7 +75,11 @@ export async function POST(request: NextRequest) {
         success: true,
         message: "Código validado com sucesso",
         data: {
+          sessionToken,
           expiresAt: session.expiresAt,
+          user: {
+            id: authenticatedUser.id,
+          },
         },
       },
       { status: 200 },

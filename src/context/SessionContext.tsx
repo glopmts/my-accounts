@@ -60,60 +60,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
   }, [isLoading]);
 
-  // Validar com código
-  const validateWithCode = useCallback(
-    async (code: string): Promise<boolean> => {
-      try {
-        const res = await api.post("/auth/session/confirm-code", {
-          code: code.toUpperCase(),
-        });
-
-        if (res.data.success) {
-          // Atualiza a sessão com 60 minutos
-          setTimeLeft(60 * 60);
-          setHasValidSession(true);
-          setShowAlert(false);
-
-          // Dispara evento de sucesso
-          window.dispatchEvent(new CustomEvent("session-validated"));
-          return true;
-        }
-        return false;
-      } catch (error) {
-        console.error("Error validating code:", error);
-        return false;
-      }
-    },
-    [],
-  );
-
-  // Validar com senha
-  const validateWithPassword = useCallback(
-    async (password: string): Promise<boolean> => {
-      try {
-        const res = await api.post("/auth/session/valide-password", {
-          password,
-        });
-
-        if (res.data.success) {
-          // Atualiza a sessão com 60 minutos
-          setTimeLeft(60 * 60);
-          setHasValidSession(true);
-          setShowAlert(false);
-
-          // Dispara evento de sucesso
-          window.dispatchEvent(new CustomEvent("session-validated"));
-          return true;
-        }
-        return false;
-      } catch (error) {
-        console.error("Error validating password:", error);
-        return false;
-      }
-    },
-    [],
-  );
-
   const validateSession = useCallback(async () => {
     if (isCheckingSession.current) return;
 
@@ -156,6 +102,60 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       isCheckingSession.current = false;
     }
   }, [clearSession]);
+
+  // Validar com senha
+  const validateWithPassword = useCallback(
+    async (password: string): Promise<boolean> => {
+      try {
+        const res = await api.post("/auth/session/valide-password", {
+          password,
+        });
+
+        if (res.data.success) {
+          await validateSession();
+
+          window.dispatchEvent(new CustomEvent("session-validated"));
+          return true;
+        }
+        return false;
+      } catch (error) {
+        console.error("Error validating password:", error);
+        return false;
+      }
+    },
+    [validateSession],
+  );
+
+  // Validar com código
+  const validateWithCode = useCallback(
+    async (code: string): Promise<boolean> => {
+      try {
+        const res = await api.post("/auth/session/confirm-code", {
+          code: code.toUpperCase(),
+        });
+
+        if (res.data.success) {
+          const expiresAt = new Date(res.data.data.expiresAt);
+          const now = new Date();
+          const diffInSeconds = Math.floor(
+            (expiresAt.getTime() - now.getTime()) / 1000,
+          );
+
+          setHasValidSession(true);
+          setTimeLeft(diffInSeconds);
+          setShowAlert(false);
+
+          window.dispatchEvent(new CustomEvent("session-validated"));
+          return true;
+        }
+        return false;
+      } catch (error) {
+        console.error("Error validating code:", error);
+        return false;
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!isInitialized.current) {
