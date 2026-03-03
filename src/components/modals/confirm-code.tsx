@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useEffect } from "react";
 import { useValideCode } from "../../hooks/session-alert/use-code-valide";
 
 type PropsModalConfirm = {
@@ -41,15 +42,21 @@ const ConfirmCode = ({
     },
   });
 
+  useEffect(() => {
+    if (!triggerElement) {
+      setIsOpen(true);
+    }
+  }, [triggerElement, setIsOpen]);
+
   if (hasActiveSession) {
     return null;
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        {triggerElement || <Button>Validar Código</Button>}
-      </DialogTrigger>
+      {triggerElement && (
+        <DialogTrigger asChild>{triggerElement}</DialogTrigger>
+      )}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Validar Código de Acesso</DialogTitle>

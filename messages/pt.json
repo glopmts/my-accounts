@@ -2,5 +2,36 @@
   "header": {
     "title": "Minhas Contas",
     "message": "Óla"
+  },
+  "session": {
+    "modal": {
+      "title": "Sessão Expirada",
+      "message": "Sua sessão expirou. Por favor, faça login novamente."
+    },
+    "sesseionAlert": {
+      "title": "Validação de Segurança Necessária",
+      "message": "Para continuar com acesso completo ao sistema, valide seu código de segurança ou senha. Esta validação protege suas informações e dura 1 hora.",
+      "infor": "Funcionalidades restritas",
+      "infor2": "Sem validação, você terá acesso limitado às ferramentas do sistema.",
+      "infor3": "Validar com Código",
+      "infor5": "Código de 6 dígitos",
+      "infor4": "Validar com Senha",
+      "infor6": "Sua senha de acesso",
+      "infor7": "Continuar sem Validar",
+      "infor8": "Você pode validar seu código ou senha a qualquer momento através do seu perfil.",
+      "back": "Voltar para opções"
+    }
+  },
+  "button": {
+    "validate": "Validar",
+    "continue": "Continuar",
+    "back": "Voltar",
+    "code": "Código",
+    "password": "Senha",
+    "close": "Fechar"
+  },
+  "infors:": {
+    "code": "Digite o código de segurança enviado para seu email ou telefone.",
+    "password": "Digite sua senha para validar sua sessão."
   }
 }

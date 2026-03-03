@@ -6,11 +6,13 @@ import { useMyAccountsQuery } from "@/services/query/use-accounts-quey";
 import { LayoutGrid, List, ViewMode } from "@/types/constantes";
 import { MyAccounts } from "@/types/interfaces";
 import { useCallback, useMemo, useState } from "react";
+import { useSession } from "../../context/SessionContext";
 import { AccountCard } from "../card-account";
 import CustomModal from "../custom-modal";
 import AddSecretModal from "../modals/auto-form-secret";
 import DetailsAccountModel from "../modals/details-account-select";
 import ProseAccountNotes from "../prose-account-notes";
+import { SessionAlert } from "../session/SessionAlert";
 import { SortableContainer } from "../sortable/SortableContainer";
 import { SortableItem } from "../sortable/SortableItem";
 import { Skeleton } from "../ui/skeleton";
@@ -28,6 +30,12 @@ const CardsHomeContent = () => {
     userId,
   });
 
+  const {
+    setShowAlert,
+    hasValidSession,
+    isLoading: isSessionLoading,
+  } = useSession();
+
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [isView, setView] = useState(false);
   const [isViewData, setViewData] = useState<MyAccounts | null>(null);
@@ -38,8 +46,6 @@ const CardsHomeContent = () => {
 
   const sortedAccounts = useMemo(() => {
     if (!accounts) return [];
-
-    // Ordena apenas pela posição
     return [...accounts].sort((a, b) => (a.position || 0) - (b.position || 0));
   }, [accounts]);
 
@@ -53,23 +59,54 @@ const CardsHomeContent = () => {
   }, []);
 
   // Handlers
-  const handleEdit = useCallback((account: MyAccounts) => {
-    setEditingAccount(account);
-    setIsEditingModalOpen(true);
-  }, []);
+  const handleEdit = useCallback(
+    (account: MyAccounts) => {
+      // Verifica se tem sessão antes de permitir edição
+      if (!hasValidSession) {
+        setShowAlert(true);
+        return;
+      }
+      setEditingAccount(account);
+      setIsEditingModalOpen(true);
+    },
+    [hasValidSession, setShowAlert],
+  );
 
-  const handleView = useCallback((account: MyAccounts) => {
-    setViewData(account);
-    setSelectedNotes(account.notes || "");
-    setView(true);
-  }, []);
+  const handleView = useCallback(
+    (account: MyAccounts) => {
+      if (!hasValidSession) {
+        setShowAlert(true);
+        return;
+      }
+      setViewData(account);
+      setSelectedNotes(account.notes || "");
+      setView(true);
+    },
+    [hasValidSession, setShowAlert],
+  );
 
   const handleExpandNotes = useCallback(() => {
     setIsExpanded(true);
     setView(false);
   }, []);
 
-  if (isAccountsLoading) {
+  const handleDelete = useCallback(
+    (accountId: string) => {
+      // Verifica se tem sessão antes de permitir deleção
+      if (!hasValidSession) {
+        setShowAlert(true); // Ativa o alerta no contexto
+        return;
+      }
+      deleteAccount(accountId);
+    },
+    [hasValidSession, deleteAccount, setShowAlert],
+  );
+
+  const handleSessionAlertClose = () => {
+    setShowAlert(false);
+  };
+
+  if (isAccountsLoading || isSessionLoading) {
     return (
       <div className="w-full h-full p-4">
         <div className="pb-2 flex justify-between items-center w-full mb-8">
@@ -105,7 +142,7 @@ const CardsHomeContent = () => {
   return (
     <div className="w-full h-full space-y-6 animate-in fade-in duration-500 md:p-3">
       {/* Header */}
-      <div className="flex  w-full flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+      <div className="flex w-full flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
         <div>
           <h2 className="text-2xl font-semibold dark:text-zinc-100">
             Minhas contas
@@ -140,7 +177,7 @@ const CardsHomeContent = () => {
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`flex  cursor-pointer items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              className={`flex cursor-pointer items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
                 viewMode === "list"
                   ? "dark:bg-zinc-800 dark:text-zinc-100 shadow-sm bg-zinc-400"
                   : "dark:text-zinc-500 dark:hover:text-zinc-300"
@@ -159,7 +196,7 @@ const CardsHomeContent = () => {
           </div>
         </div>
 
-        {/* Accounts Grid/List - Use sortedAccounts diretamente */}
+        {/* Accounts Grid/List */}
         <SortableContainer
           accounts={sortedAccounts}
           onOrderChange={handleOrderChange}
@@ -178,7 +215,7 @@ const CardsHomeContent = () => {
                   account={account}
                   userId={userId}
                   viewMode={viewMode}
-                  onDelete={deleteAccount}
+                  onDelete={handleDelete}
                   onEdit={handleEdit}
                   onView={handleView}
                   refetch={refetch}
@@ -188,6 +225,9 @@ const CardsHomeContent = () => {
           </div>
         </SortableContainer>
       </div>
+
+      {/* Session Aler */}
+      <SessionAlert />
 
       {/* Modals */}
       {editingAccount && (
@@ -218,7 +258,7 @@ const CardsHomeContent = () => {
             setViewData(null);
             setSelectedNotes("");
           }}
-          handleDelete={deleteAccount}
+          handleDelete={handleDelete}
           isExpanded={isExpanded}
           notes={selectedNotes}
           setIsExpanded={handleExpandNotes}
@@ -230,7 +270,7 @@ const CardsHomeContent = () => {
         <CustomModal
           isOpen={isExpanded}
           onClose={() => setIsExpanded(false)}
-          title="Contéudo da conta"
+          title="Conteúdo da conta"
           maxWidth="max-w-4xl"
           className="z-999"
         >

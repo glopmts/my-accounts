@@ -1,5 +1,5 @@
-import { SessionAlert } from "@/components/SessionAlert";
-import SessionWrapper from "@/components/SessionWrapper";
+import { SessionAlert } from "@/components/session/SessionAlert";
+import SessionWrapper from "@/components/session/SessionWrapper";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import LayoutProtect from "@/context/layout-protect";

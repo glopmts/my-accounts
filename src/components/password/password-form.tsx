@@ -18,12 +18,15 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import { SecretType } from "../app/generated/prisma/enums";
-import { Plus } from "../types/constantes";
-import { PasswordFormData, PasswordFormDataInput } from "../types/interfaces";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { SecretType } from "../../app/generated/prisma/enums";
+import { Plus } from "../../types/constantes";
+import {
+  PasswordFormData,
+  PasswordFormDataInput,
+} from "../../types/interfaces";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 type PropsPasswordForm = {
   formData: {

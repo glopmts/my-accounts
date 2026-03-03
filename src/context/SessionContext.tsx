@@ -1,6 +1,7 @@
 "use client";
 
 import { api } from "@/lib/axios";
+import axios from "axios";
 import {
   createContext,
   ReactNode,
@@ -23,6 +24,7 @@ interface SessionContextType {
   sessionData: SessionData | null;
   timeLeft: number | null;
   isLoading: boolean;
+  error: string | null;
   validateSession: () => Promise<void>;
   clearSession: () => Promise<void>;
   showAlert: boolean;
@@ -35,8 +37,10 @@ const SessionContext = createContext<SessionContextType | undefined>(undefined);
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [hasValidSession, setHasValidSession] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
   const [isLoading, setIsLoading] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const isInitialized = useRef(false);
@@ -46,8 +50,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     try {
       await api.delete("/auth/session/session-token");
     } catch (error) {
-      if (error instanceof Error && error.cause !== 601) {
-        console.error("Error clearing session:", error);
+      if (axios.isAxiosError(error) && error.response?.status !== 601) {
+        setError("Error clearing session" + (error.message || ""));
       }
     } finally {
       setHasValidSession(false);
@@ -93,8 +97,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         await clearSession();
       }
     } catch (error) {
-      if (error instanceof Error && error.cause !== 601) {
-        console.error("Error validating session:", error);
+      if (axios.isAxiosError(error) && error.response?.status !== 601) {
+        setError("Error validating session: " + (error.message || ""));
       }
       await clearSession();
     } finally {
@@ -119,7 +123,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         }
         return false;
       } catch (error) {
-        console.error("Error validating password:", error);
+        if (axios.isAxiosError(error) && error.response?.status !== 601) {
+          setError("Error validating password: " + (error.message || ""));
+        }
         return false;
       }
     },
@@ -150,7 +156,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         }
         return false;
       } catch (error) {
-        console.error("Error validating code:", error);
+        if (axios.isAxiosError(error) && error.response?.status !== 601) {
+          setError("Error validating code: " + (error.message || ""));
+        }
         return false;
       }
     },
@@ -163,11 +171,14 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       validateSession();
     }
 
-    const interval = setInterval(() => {
-      if (hasValidSession) {
-        validateSession();
-      }
-    }, 60000);
+    const interval = setInterval(
+      () => {
+        if (hasValidSession) {
+          validateSession();
+        }
+      },
+      10 * 60 * 1000,
+    ); // Verificar a cada 10 minutos
 
     return () => clearInterval(interval);
   }, [hasValidSession, validateSession]);
@@ -201,6 +212,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         hasValidSession,
         sessionData,
         timeLeft,
+        error,
         isLoading,
         validateSession,
         clearSession,

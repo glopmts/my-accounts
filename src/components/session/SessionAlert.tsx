@@ -4,11 +4,12 @@ import { AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/context/SessionContext";
 import { AlertTriangle, Key, Lock, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { useAuthCustom } from "../lib/useAuth";
-import ConfirmCode from "./modals/confirm-code";
-import ConfirmPassword from "./modals/confirm-password";
+import { useAuthCustom } from "../../lib/useAuth";
+import ConfirmCode from "../modals/confirm-code";
+import ConfirmPassword from "../modals/confirm-password";
 
 export function SessionAlert() {
   const {
@@ -27,6 +28,8 @@ export function SessionAlert() {
   const [isValidating, setIsValidating] = useState(false);
   const originalBodyOverflow = useRef<string | null>(null);
   const originalBodyPadding = useRef<string | null>(null);
+
+  const t = useTranslations("session.sesseionAlert");
 
   const shouldShow = showAlert && !hasValidSession && !isLoading;
 
@@ -58,7 +61,6 @@ export function SessionAlert() {
     }
   }, [shouldShow]);
 
-  // Cleanup no unmount
   useEffect(() => {
     return () => {
       if (originalBodyOverflow.current !== null) {
@@ -153,21 +155,13 @@ export function SessionAlert() {
             <div className="flex items-start gap-3">
               <AlertTriangle className="h-5 w-5 mt-0.5 shrink-0" />
               <div className="space-y-2 w-full pr-2">
-                <AlertTitle className="text-base">
-                  Validação de Segurança Necessária
-                </AlertTitle>
+                <AlertTitle className="text-base">{t("title")}</AlertTitle>
                 <AlertDescription className="space-y-3 w-full">
-                  <p className="text-sm">
-                    Para continuar com acesso completo ao sistema, valide seu
-                    código de segurança ou senha. Esta validação protege suas
-                    informações e dura 1 hora.
-                  </p>
+                  <p className="text-sm">{t("message")}</p>
 
                   <div className="bg-amber-50/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
                     <p className="text-xs">
-                      ⚠️ <strong>Funcionalidades restritas:</strong> Sem
-                      validação, você terá acesso limitado às ferramentas do
-                      sistema.
+                      ⚠️ <strong>{t("infor")}:</strong> {t("infor2")}
                     </p>
                   </div>
 
@@ -183,11 +177,9 @@ export function SessionAlert() {
                         >
                           <Key className="h-4 w-4" />
                           <div className="text-left">
-                            <div className="font-semibold">
-                              Validar com Código
-                            </div>
+                            <div className="font-semibold">{t("infor3")}</div>
                             <div className="text-xs text-muted-foreground">
-                              Código de 6 dígitos
+                              {t("infor5")}
                             </div>
                           </div>
                         </Button>
@@ -201,11 +193,9 @@ export function SessionAlert() {
                         >
                           <Lock className="h-4 w-4" />
                           <div className="text-left">
-                            <div className="font-semibold">
-                              Validar com Senha
-                            </div>
+                            <div className="font-semibold">{t("infor4")}</div>
                             <div className="text-xs text-muted-foreground">
-                              Sua senha de acesso
+                              {t("infor6")}
                             </div>
                           </div>
                         </Button>
@@ -219,7 +209,7 @@ export function SessionAlert() {
                           disabled={isValidating}
                           className="w-full text-muted-foreground"
                         >
-                          Continuar sem Validar
+                          {t("infor7")}
                         </Button>
                       </div>
                     </>
@@ -233,7 +223,7 @@ export function SessionAlert() {
                           disabled={isValidating}
                           className="text-sm"
                         >
-                          ← Voltar para opções
+                          ← {t("back")}
                         </Button>
                       </div>
 
@@ -254,8 +244,7 @@ export function SessionAlert() {
                   )}
 
                   <p className="text-xs text-muted-foreground pt-2">
-                    Você pode validar seu código ou senha a qualquer momento
-                    através do seu perfil.
+                    {t("infor8")}
                   </p>
                 </AlertDescription>
               </div>

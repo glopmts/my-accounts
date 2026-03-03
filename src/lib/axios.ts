@@ -25,7 +25,6 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       if (!hasLoggedUnauthorized) {
-        console.error("Não autorizado - Sessão expirada");
         hasLoggedUnauthorized = true;
 
         setTimeout(() => {

@@ -32,8 +32,6 @@ export async function GET(req: NextRequest) {
       where: { clerkId: userId },
     });
 
-    console.log("Usuário encontrado:", existingUser ? "Sim" : "Não");
-
     return NextResponse.json({
       exists: !!existingUser,
       user: existingUser || null,

@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { usePasswordValide } from "@/hooks/session-alert/use-password-valide";
 import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type PropsModalConfirm = {
   userId: string;
@@ -41,11 +41,17 @@ const ConfirmPassword = ({
     onSuccess,
   });
 
+  useEffect(() => {
+    if (!triggerElement) {
+      setIsOpen(true);
+    }
+  }, [triggerElement, setIsOpen]);
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        {triggerElement || <Button>Validar com Senha</Button>}
-      </DialogTrigger>
+      {triggerElement && (
+        <DialogTrigger asChild>{triggerElement}</DialogTrigger>
+      )}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Validar com Senha</DialogTitle>

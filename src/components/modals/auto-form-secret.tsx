@@ -12,7 +12,7 @@ import React from "react";
 import { useFormAccount } from "../../hooks/use-form-account";
 import CustomModal from "../custom-modal";
 import EditorContent from "../md-editor";
-import PasswordForm from "../password-form";
+import PasswordForm from "../password/password-form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
