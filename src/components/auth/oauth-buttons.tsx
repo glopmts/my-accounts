@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useSignIn, useSignUp } from "@clerk/clerk-react";
+import { useSignIn, useSignUp, useUser } from "@clerk/clerk-react";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type FC, useEffect, useState } from "react";
+import { useLogin } from "../../hooks/auth/use-login";
 
 type Option = {
   type?: "signIn" | "signUp";
@@ -13,9 +14,11 @@ type Option = {
 const GoogleButton: FC<Option> = ({ type }) => {
   const { isLoaded, signIn } = useSignIn();
   const { isLoaded: loader, signUp } = useSignUp();
+  const { user, isLoaded: userLoaded } = useUser();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+  const { createSession, isCreatingSession, validateSession } = useLogin();
 
   const handleGoogleSignIn = async () => {
     if (!isLoaded || !loader) return;
@@ -47,14 +50,20 @@ const GoogleButton: FC<Option> = ({ type }) => {
   };
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      if (signIn) {
-        router.refresh();
+    const handleUserAuthentication = async () => {
+      if (userLoaded && user) {
+        const hasValidSession = await validateSession();
+
+        if (!hasValidSession) {
+          await createSession();
+        } else {
+          router.push("/dashboard");
+        }
       }
     };
 
-    checkAuthStatus();
-  }, [signIn, router]);
+    handleUserAuthentication();
+  }, [user, userLoaded, createSession, validateSession, router]);
 
   return (
     <div className="space-y-2 mt-3.5">
@@ -62,9 +71,11 @@ const GoogleButton: FC<Option> = ({ type }) => {
         variant="outline"
         className="w-full flex items-center gap-1.5 rounded-3xl bg-transparent"
         onClick={handleGoogleSignIn}
-        disabled={pending}
+        disabled={pending || isCreatingSession}
       >
-        {pending && <Loader size={20} className="animate-spin" />}
+        {(pending || isCreatingSession) && (
+          <Loader size={20} className="animate-spin" />
+        )}
         <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
           <path
             fill="#4285F4"

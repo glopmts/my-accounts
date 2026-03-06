@@ -4,7 +4,7 @@ import crypto from "crypto";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-const SESSION_EXPIRY = 60 * 60 * 1000;
+import { SESSION_EXPIRY } from "@/utils/session_expiry";
 
 export async function POST(request: NextRequest) {
   try {

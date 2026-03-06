@@ -1,9 +1,10 @@
 import prisma from "@/lib/prisma";
-import { SESSION_EXPIRY } from "@/utils/session_expiry";
 import { auth } from "@clerk/nextjs/server";
 import crypto from "crypto";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+
+import { SESSION_EXPIRY } from "@/utils/session_expiry";
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,20 +17,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
-    const { code } = body;
+    const sessionToken = crypto.randomBytes(32).toString("hex");
+    const expiresAt = new Date(Date.now() + SESSION_EXPIRY);
 
-    if (!code) {
-      return NextResponse.json(
-        { success: false, message: "Código é obrigatório" },
-        { status: 400 },
-      );
-    }
-
-    // Busca o usuário pelo clerkId
     const authenticatedUser = await prisma.user.findUnique({
       where: { clerkId: clerkUserId },
-      select: { id: true, code: true },
+      select: { id: true },
     });
 
     if (!authenticatedUser) {
@@ -39,17 +32,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (authenticatedUser.code !== code) {
-      return NextResponse.json(
-        { success: false, message: "Código inválido" },
-        { status: 400 },
-      );
-    }
-
-    const sessionToken = crypto.randomBytes(32).toString("hex");
-    const expiresAt = new Date(Date.now() + SESSION_EXPIRY);
-
-    const session = await prisma.session.create({
+    await prisma.session.create({
       data: {
         userId: authenticatedUser.id,
         sessionToken,
@@ -60,7 +43,7 @@ export async function POST(request: NextRequest) {
 
     const cookieStore = await cookies();
     cookieStore.set({
-      name: "code_session",
+      name: "session_auth",
       value: sessionToken,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -72,26 +55,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        message: "Código validado com sucesso",
-        data: {
-          sessionToken,
-          expiresAt: session.expiresAt,
-          user: {
-            id: authenticatedUser.id,
-          },
-        },
+        message: "Sessão válida",
       },
       { status: 200 },
     );
-  } catch (error) {
-    console.error("Error validating user code:", error);
-
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : "Erro no login";
     return NextResponse.json(
-      {
-        success: false,
-        message: "Erro interno do servidor",
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
+      { success: false, message: errorMessage },
       { status: 500 },
     );
   }

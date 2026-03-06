@@ -29,7 +29,7 @@ export function SessionAlert() {
   const originalBodyOverflow = useRef<string | null>(null);
   const originalBodyPadding = useRef<string | null>(null);
 
-  const t = useTranslations("session.sesseionAlert");
+  const t = useTranslations("session.sessionAlert");
 
   const shouldShow = showAlert && !hasValidSession && !isLoading;
 

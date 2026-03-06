@@ -189,7 +189,10 @@ function UserDropdown({ user, logout }: UserDropdownProps) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-red-600 hover:text-red-800 focus:text-red-800">
+        <DropdownMenuItem
+          className="text-red-600 hover:text-red-800 focus:text-red-800"
+          asChild
+        >
           <button onClick={logout}>Sign Out</button>
         </DropdownMenuItem>
       </DropdownMenuContent>

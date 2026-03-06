@@ -7,13 +7,13 @@ import {
 } from "@/components/avatar-custom";
 import ErrorAlert from "@/components/profile_components/error-alert";
 import NewsEmailModal from "@/components/profile_components/news-email-modal";
+import NewsPasswordModal from "@/components/profile_components/password-modal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { useSettings } from "@/hooks/use-settings";
 import { cn } from "@/lib/utils";
 import { Mail, RefreshCw, User } from "lucide-react";
-import NewsPasswordModal from "../../../../components/profile_components/password-modal";
 
 const Settings = () => {
   const {

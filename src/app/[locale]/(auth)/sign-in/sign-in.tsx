@@ -50,6 +50,7 @@ export default function SignInPage() {
     error,
     resetError,
     isLoaded,
+    createSession,
   } = useLogin();
 
   const form = useForm<EmailOnlyFormData>({
@@ -92,10 +93,10 @@ export default function SignInPage() {
         setEmailSent(true);
         toast.success("Código de login enviado para seu email!");
       } else {
-        // Se não precisa de verificação, redireciona diretamente
         toast.success("Login realizado com sucesso!");
         router.push(redirectUrl);
         router.refresh();
+        createSession(); // Verifica a sessão após o login bem-sucedido
       }
     } else {
       if (result.error) {
@@ -157,7 +158,6 @@ export default function SignInPage() {
     }
   }
 
-  // Função para voltar ao formulário de email
   function handleBack() {
     setEmailSent(false);
     setPendingEmail("");

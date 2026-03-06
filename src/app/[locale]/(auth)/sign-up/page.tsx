@@ -102,7 +102,6 @@ export default function SignUpPage() {
           });
         }, 1000);
       }
-      // Se houver erro, o toast já é mostrado no hook
     } catch (err) {
       console.error("Erro ao reenviar código:", err);
     } finally {

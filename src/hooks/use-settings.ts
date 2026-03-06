@@ -1,3 +1,4 @@
+import { useAuth } from "@clerk/nextjs";
 import { AxiosError } from "axios";
 import { KeyRoundIcon, Mail, MessageCircle, Shield } from "lucide-react";
 import { useState } from "react";
@@ -19,6 +20,7 @@ interface ListOption {
 export function useSettings() {
   const { user, isLoading, refetch, error, userId } = useAuthCustom();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const { signOut } = useAuth();
 
   // Email State
   const [newEmail, setNewEmail] = useState("");
@@ -179,6 +181,10 @@ export function useSettings() {
         setisGeneratingPassword(false);
 
         await refetch();
+
+        setTimeout(() => {
+          signOut();
+        }, 2000);
       } else {
         toast.error("Erro ao validar senha", {
           description: res.data?.message || "Senha inválido",

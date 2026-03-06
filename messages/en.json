@@ -4,22 +4,34 @@
     "message": "Hello"
   },
   "session": {
-   "modal": {
-    "title": "Session Expired",
-    "message": "Your session has expired. Please log in again."
-   },
-   "sessionAlert": {
-    "title": "Security Validation Required",
-    "message": "To continue with full system access, validate your security code or password. This validation protects your information and lasts 1 hour.",
-    "infor": "Restricted features",
-    "infor2": "Without validation, you will have limited access to system tools.",
-    "infor3": "Validate with Code",
-    "infor5": "6-digit code",
-    "infor4": "Validate with Password",
-    "infor6": "Your access password",
-    "infor7": "Continue without Validation",
-    "infor8": "You can validate your code or password at any time through your profile.",
-    "back": "Back to options"
-   }
+    "modal": {
+      "title": "Session Expired",
+      "message": "Your session has expired. Please log in again."
+    },
+    "sessionAlert": {
+      "title": "Security Validation Required",
+      "message": "To continue with full system access, validate your security code or password. This validation protects your information and lasts 1 hour.",
+      "infor": "Restricted features",
+      "infor2": "Without validation, you will have limited access to system tools.",
+      "infor3": "Validate with Code",
+      "infor5": "6-digit code",
+      "infor4": "Validate with Password",
+      "infor6": "Your access password",
+      "infor7": "Continue without Validation",
+      "infor8": "You can validate your code or password at any time through your profile.",
+      "back": "Back to options"
+    }
+  },
+  "button": {
+    "validate": "Validate",
+    "continue": "Continue",
+    "back": "Back",
+    "code": "Code",
+    "password": "Password",
+    "close": "Close"
+  },
+  "infos": {
+    "code": "Enter the security code sent to your email or phone.",
+    "password": "Enter your password to validate your session."
   }
 }

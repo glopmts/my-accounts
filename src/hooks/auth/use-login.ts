@@ -1,8 +1,10 @@
 "use client";
 
-import { useSignIn } from "@clerk/nextjs";
+import { useSignIn, useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "../../i18n/navigation";
+import { api } from "../../lib/axios";
 
 export const useLogin = () => {
   const {
@@ -12,6 +14,9 @@ export const useLogin = () => {
   } = useSignIn();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { user } = useUser();
+  const router = useRouter();
+  const [isCreatingSession, setIsCreatingSession] = useState(false);
 
   const handleEmailSignIn = async (emailAddress: string) => {
     setLoading(true);
@@ -86,6 +91,43 @@ export const useLogin = () => {
     }
   };
 
+  const createSession = async () => {
+    if (!user) {
+      console.error("Usuário não está autenticado no Clerk");
+      return false;
+    }
+
+    setIsCreatingSession(true);
+
+    try {
+      const response = await api.post("/auth/session/create");
+
+      if (response.data.success) {
+        toast.success("Login realizado com sucesso!");
+        router.push("/");
+        return true;
+      } else {
+        throw new Error(response.data.message || "Erro ao criar sessão");
+      }
+    } catch (error) {
+      console.error("Erro ao criar sessão:", error);
+      toast.error("Erro ao criar sessão. Tente novamente.");
+      return false;
+    } finally {
+      setIsCreatingSession(false);
+    }
+  };
+
+  const validateSession = async () => {
+    try {
+      const res = await api.post("/api/auth/session/validate");
+      return res.data.success;
+    } catch (err) {
+      console.error("Erro ao validar sessão:", err);
+      return false;
+    }
+  };
+
   const resetError = () => setError("");
 
   return {
@@ -94,6 +136,9 @@ export const useLogin = () => {
     loading,
     error,
     resetError,
+    isCreatingSession,
+    validateSession,
+    createSession,
     isLoaded: signInLoaded,
   };
 };
