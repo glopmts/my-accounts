@@ -32,7 +32,7 @@ export default function HomePage() {
 
   if (!isLoaded) {
     return (
-      <div className="w-full h-screen flex items-center justify-center dark:*:bg-zinc-900">
+      <div className="w-full h-screen flex items-center justify-center dark:bg-zinc-900">
         <Spinner className="size-8 dark:text-white" />
       </div>
     );

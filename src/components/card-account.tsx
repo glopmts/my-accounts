@@ -66,9 +66,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       userId={userId}
     />
 
-    {account.description && (
-      <DownloadButton accountText={account.description} />
-    )}
+    {account.notes && <DownloadButton accountText={account.notes} />}
 
     <TooltipProvider>
       <Tooltip>

@@ -1,11 +1,12 @@
 "use client";
 
-import { FileText, Minimize2, MoveDiagonal2 } from "lucide-react";
+import { Copy, FileText, Minimize2, MoveDiagonal2 } from "lucide-react";
 import React from "react";
 
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
+import { copyToClipboard } from "../utils/copy-clipboard";
 import { Button } from "./ui/button";
 
 const ProseAccountNotes = ({
@@ -32,7 +33,7 @@ const ProseAccountNotes = ({
               <FileText className="w-4 h-4 shrink-0" />
               <span>Contéudo</span>
             </div>
-            <div className="pb-1">
+            <div className="pb-1 gap-1.5 flex items-center">
               <Button
                 variant="outline"
                 size="sm"
@@ -47,6 +48,13 @@ const ProseAccountNotes = ({
                     <MoveDiagonal2 className="w-4 h-4 shrink-0" />
                   </span>
                 )}
+              </Button>
+              <Button
+                onClick={() => copyToClipboard(notes!, "URL")}
+                title="Copiar URL"
+                variant="outline"
+              >
+                <Copy className="w-4 h-4 shrink-0" />
               </Button>
             </div>
           </div>

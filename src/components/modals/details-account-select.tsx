@@ -18,9 +18,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import { toast } from "sonner";
 import { TYPE_METADATA } from "../../types/constantes";
 import { MyAccounts } from "../../types/interfaces";
+import { copyToClipboard } from "../../utils/copy-clipboard";
 import PasswordList from "../password/PasswordList";
 import ProseAccountNotes from "../prose-account-notes";
 import { Button } from "../ui/button";
@@ -49,15 +49,6 @@ const DetailsAccountModel = ({
   if (!account) return null;
 
   const meta = TYPE_METADATA[account.type];
-
-  const copyToClipboard = async (text: string, type: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      toast.success(`${type} copiado para a área de transferência!`);
-    } catch (err) {
-      toast.error("Falha ao copiar");
-    }
-  };
 
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString("pt-BR");
